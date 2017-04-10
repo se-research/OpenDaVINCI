@@ -22,7 +22,7 @@
 #include <string>
 #include <memory>
 #include <opendavinci/odcore/base/Thread.h>
-#include <opendavinci/odcore/io/Packet.h>
+#include <opendavinci/generated/odcore/data/Packet.h>
 #include <opendavinci/odcore/io/udp/UDPReceiver.h>
 #include <opendavinci/odcore/io/udp/UDPFactory.h>
 
@@ -30,8 +30,9 @@
 
 using namespace std;
 
-void UDPReceivePackets::nextPacket(const odcore::io::Packet &p) {
-    cout << "Received a packet from " << p.getSender() << ", "
+void UDPReceivePackets::nextPacket(const odcore::data::Packet &p) {
+    cout << "Received a packet from " << p.getSender() << " at "
+         << p.getReceived().toString() << " "
          << "with " << p.getData().length() << " bytes containing '"
          << p.getData() << "'" << endl;
 }

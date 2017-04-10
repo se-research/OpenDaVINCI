@@ -61,7 +61,7 @@ class StartStopWidget;
                  * @param conf Client conference to send data to.
                  * @param prnt Pointer to the containing super window.
                  */
-                StartStopPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
+                StartStopPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
                 virtual ~StartStopPlugIn();
 

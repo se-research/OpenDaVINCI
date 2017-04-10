@@ -39,10 +39,8 @@ ENDIF()
 ###########################################################################
 # Find curses to enable odlivefeed.
 FIND_PACKAGE (Curses)
-FIND_PACKAGE (DL)
-FIND_PACKAGE (CPPexperimental)
 
-IF(CURSES_FOUND AND DL_FOUND AND CPPEXPERIMENTAL_FOUND)
+IF(CURSES_FOUND)
     ADD_SUBDIRECTORY (odlivefeed)
 ENDIF()
 
@@ -54,7 +52,6 @@ ADD_SUBDIRECTORY (odrecinspect)
 ADD_SUBDIRECTORY (odrecorder)
 ADD_SUBDIRECTORY (odredirector)
 ADD_SUBDIRECTORY (odsplit)
-ADD_SUBDIRECTORY (odspy)
 
 ###########################################################################
 # Enable CPack to create .deb and .rpm.

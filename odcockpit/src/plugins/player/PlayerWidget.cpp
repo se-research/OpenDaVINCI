@@ -1,7 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
- * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,14 +26,14 @@
 #include <vector>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/io/URL.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
 #include "opendavinci/odtools/player/Player.h"
-#include "opendavinci/odtools/splitter/Splitter.h"
-#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
+#include "opendavinci/generated/odcore/data/player/PlayerStatus.h"
 
 #include "plugins/player/PlayerWidget.h"
 
@@ -51,19 +50,23 @@ namespace cockpit {
         namespace player {
 
             using namespace std;
+            using namespace odcore::base;
             using namespace odcore::data;
             using namespace odtools::player;
-            using namespace odtools::splitter;
 
-            PlayerWidget::PlayerWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt) :
+            PlayerWidget::PlayerWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
                 QWidget(prnt),
                 m_kvc(kvc),
                 m_conference(conf),
+                m_multiplexer(multiplexer),
                 m_playBtn(NULL),
                 m_pauseBtn(NULL),
                 m_rewindBtn(NULL),
                 m_stepBtn(NULL),
                 m_autoRewind(NULL),
+                m_relayToConference(NULL),
+                m_speedValueMutex(),
+                m_speedValue(100),
                 m_desc(NULL),
                 m_containerCounterDesc(NULL),
                 m_containerCounter(0),
@@ -71,22 +74,24 @@ namespace cockpit {
                 m_processBtn(NULL),
                 m_start(NULL),
                 m_end(NULL),
+                m_timeline(NULL),
                 m_player(NULL),
                 m_fileName(""),
-                m_currentWorkingDirectory("") {
+                m_currentWorkingDirectory(""),
+                m_exitAtEndOfFile(false) {
                 m_currentWorkingDirectory = QDir::currentPath().toStdString();
 
                 // Set size.
-                setMinimumSize(400, 150);
+                setMinimumSize(400, 200);
 
                 // Button control.
-                QPushButton *loadFileBtn = new QPushButton("Load recording", this);
-                QObject::connect(loadFileBtn, SIGNAL(clicked()), this, SLOT(loadFile()));
+                QPushButton *loadFileBtn = new QPushButton("Load .rec file", this);
+                QObject::connect(loadFileBtn, SIGNAL(clicked()), this, SLOT(openFile()));
 
                 QHBoxLayout *fileOperations = new QHBoxLayout();
                 fileOperations->addWidget(loadFileBtn);
 
-                m_desc = new QLabel("No file loaded.");
+                m_desc = new QLabel("No .rec file loaded.");
                 m_containerCounterDesc = new QLabel("0/0 container(s) replayed.");
 
                 // Play/pause control.
@@ -135,20 +140,68 @@ namespace cockpit {
 //                splitting->addWidget(lblEnd);
 //                splitting->addWidget(m_end);
 
+                m_timeline = new QProgressBar(this);
+                m_timeline->setValue(0);
+                connect(this, SIGNAL(showProgress(int)), m_timeline, SLOT(setValue(int)));
+
+                QHBoxLayout *speedSliderLayout = new QHBoxLayout();
+                QSlider *speedSlider = NULL;
+                {
+                    QLabel *lblSpeedSlider = new QLabel(tr("Replay speed up:"));
+
+                    speedSlider = new QSlider(Qt::Horizontal, this);
+                    speedSlider->setValue(99);
+                    connect(speedSlider, SIGNAL(valueChanged(int)), this, SLOT(speedValue(int)));
+
+                    speedSliderLayout->addWidget(lblSpeedSlider);
+                    speedSliderLayout->addWidget(speedSlider);
+                }
+
+                m_relayToConference = new QCheckBox("Relay Containers to Conference.", this);
+
                 // Final layout.
                 QVBoxLayout *mainLayout = new QVBoxLayout(this);
                 mainLayout->addLayout(fileOperations);
                 mainLayout->addWidget(m_desc);
                 mainLayout->addWidget(m_containerCounterDesc);
+                mainLayout->addWidget(m_timeline);
                 mainLayout->addLayout(operations);
+                mainLayout->addLayout(speedSliderLayout);
+                mainLayout->addWidget(m_relayToConference);
 //TODO: Validate splitting for h264 files.
 //                mainLayout->addLayout(splitting);
 
                 setLayout(mainLayout);
+
+                // Try to configure player plugin.
+                try {
+                    if (speedSlider != NULL) {
+                        const float TIMESCALE = m_kvc.getValue<float>("odcockpit.player.timescale");
+                        uint32_t value = 100 * TIMESCALE;
+                        speedSlider->setValue(value);
+                    }
+
+                    const string INPUT = m_kvc.getValue<string>("odcockpit.player.input");
+                    odcore::io::URL url(INPUT);
+                    loadFile(url.getResource());
+                    play();
+
+                    m_exitAtEndOfFile = m_kvc.getValue<int32_t>("odcockpit.player.exitAtEndOfFile") == 1;
+                }
+                catch(...) {}
             }
 
             PlayerWidget::~PlayerWidget() {
                 m_player.reset();
+            }
+
+            void PlayerWidget::percentagePlayedBack(const float &pPB) {
+                emit showProgress(static_cast<uint32_t>(fabs(pPB) * 100));
+            }
+
+            void PlayerWidget::speedValue(int value) {
+                Lock l(m_speedValueMutex);
+                m_speedValue = value + 1;
             }
 
             void PlayerWidget::play() {
@@ -209,16 +262,26 @@ namespace cockpit {
                         }
 
                         stringstream sstr;
-                        sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed.";
+                        sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed; " << nextContainerToBeSent.getSampleTimeStamp().getYYYYMMDD_HHMMSSms();
                         m_containerCounterDesc->setText(sstr.str().c_str());
 
                         // Get delay to wait _after_ sending the container.
-                        uint32_t delay = m_player->getDelay() / 1000;
+                        uint32_t delay = m_player->getCorrectedDelay() / 1000;
+
+                        {
+                            // Fasten playback if desired.
+                            Lock l(m_speedValueMutex);
+                            float f = m_speedValue/100.0;
+                            f = (f > 0.1) ? f : 0.1;
+                            delay *= f;
+                        }
 
                         // Send container.
-                        if ( (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) &&
-                             (nextContainerToBeSent.getDataType() != odcore::data::player::PlayerCommand::ID()) ) {
-                            m_conference.send(nextContainerToBeSent);
+                        if (nextContainerToBeSent.getDataType() != Container::UNDEFINEDDATA) {
+                            if ((m_relayToConference != NULL) && m_relayToConference->isChecked()) {
+                                m_conference.send(nextContainerToBeSent);
+                            }
+                            m_multiplexer.distributeContainer(nextContainerToBeSent);
                         }
 
                         // Continously playing if "pause" button is enabled.
@@ -229,6 +292,11 @@ namespace cockpit {
                         // If end of file has been reached, stop playback.
                         if (!m_player->hasMoreData() && (m_autoRewind != NULL) && !m_autoRewind->isChecked()) {
                             pause();
+                        }
+                    }
+                    else {
+                        if (m_exitAtEndOfFile) {
+                            QApplication::quit();
                         }
                     }
                 }
@@ -247,10 +315,10 @@ namespace cockpit {
 
                     if (start < end) {
                         // Size of the memory buffer.
-                        const uint32_t MEMORY_SEGMENT_SIZE = m_kvc.getValue<uint32_t>("global.buffer.memorySegmentSize");
+//                        const uint32_t MEMORY_SEGMENT_SIZE = m_kvc.getValue<uint32_t>("global.buffer.memorySegmentSize");
 
-                        Splitter s;
-                        s.process(m_fileName, MEMORY_SEGMENT_SIZE, start, end);
+//                        Splitter s;
+//                        s.process(m_fileName, MEMORY_SEGMENT_SIZE, start, end);
                         
                         QMessageBox msgBox;
                         msgBox.setText("Current file split completed.");
@@ -269,17 +337,22 @@ namespace cockpit {
                 }
             }
 
-            void PlayerWidget::loadFile() {
+            void PlayerWidget::openFile() {
                 QDir::setCurrent(m_currentWorkingDirectory.c_str());
                 m_fileName = QFileDialog::getOpenFileName(this, tr("Open previous recording file"), "", tr("Recording files (*.rec)")).toStdString();
 
-                if (!m_fileName.empty()) {
+                loadFile(m_fileName);
+            }
+
+            void PlayerWidget::loadFile(const string &fileName) {
+                if (!fileName.empty()) {
                     m_player.reset();
+                    emit showProgress(0);
 
                     // Set current working directory.
                     {
                         m_currentWorkingDirectory = "";
-                        vector<string> tokens = odcore::strings::StringToolbox::split(m_fileName, '/');
+                        vector<string> tokens = odcore::strings::StringToolbox::split(fileName, '/');
                         auto it = tokens.begin();
                         while ((it+1) != tokens.end()) {
                             m_currentWorkingDirectory += "/" + (*it);
@@ -289,7 +362,7 @@ namespace cockpit {
                     }
 
                     stringstream s;
-                    s << "file://" << m_fileName;
+                    s << "file://" << fileName;
                     odcore::io::URL url(s.str());
 
                     m_desc->setText(url.toString().c_str());
@@ -301,15 +374,25 @@ namespace cockpit {
                     const uint32_t NUMBER_OF_SEGMENTS = m_kvc.getValue<uint32_t>("global.buffer.numberOfMemorySegments");
 
                     // We use the asychronous player to allow data caching in background.
-                    const bool THREADING = false;
+                    const bool THREADING = true;
                     const bool AUTO_REWIND = false;
 #ifdef HAVE_ODPLAYERH264
-                    // Base port for letting spawned children connect to parent process.
-                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
-                    m_player = shared_ptr<Player>(new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, BASE_PORT));
+//                    // Base port for letting spawned children connect to parent process.
+//                    const uint32_t BASE_PORT = m_kvc.getValue<uint32_t>("odplayerh264.portbaseforchildprocesses");
+//                    m_player = shared_ptr<Player>(new odplayerh264::PlayerH264(url, AUTO_REWIND, BASE_PORT));
+
+                    m_player = shared_ptr<Player>(new odplayerh264::PlayerH264(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
 #else
                     m_player = shared_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
 #endif
+                    m_player->setPlayerListener(this);
+                    // Inform Qt widgets that a new file has been loaded.
+                    {
+                        odcore::data::player::PlayerStatus ps;
+                        ps.setStatus(odcore::data::player::PlayerStatus::NEW_FILE_LOADED);
+                        Container c(ps);
+                        m_multiplexer.distributeContainer(c);
+                    }
 
                     m_playBtn->setEnabled(true);
                     m_pauseBtn->setEnabled(false);
@@ -317,7 +400,7 @@ namespace cockpit {
 //                    m_rewindBtn->setEnabled(false);
 
                     m_containerCounter = 0;
-                    m_containerCounterTotal = 0;
+                    m_containerCounterTotal = m_player->getTotalNumberOfContainersInRecFile()-1;
 
                     stringstream sstr;
                     sstr << m_containerCounter << "/" << m_containerCounterTotal << " container(s) replayed.";

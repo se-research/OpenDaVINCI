@@ -35,8 +35,8 @@ namespace cockpit {
 
             using namespace odcore::io::conference;
 
-            StartStopPlugIn::StartStopPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, ContainerConference &conf, QWidget *prnt) :
-                ControlPlugIn(name, kvc, conf, prnt),
+            StartStopPlugIn::StartStopPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt) :
+                ControlPlugIn(name, kvc, conf, multiplexer, prnt),
                 m_startStopWidget(NULL) {
                 setDescription("This plugin allows to activate/deactivate autonomous control of the vehicle.");
             }

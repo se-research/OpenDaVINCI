@@ -1,7 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
- * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -60,9 +59,10 @@ class PlayerWidget;
                      * @param name Name of this plugin.
                      * @param kvc KeyValueConfiguration for this GL-based widget.
                      * @param conf ContainerConference.
+                     * @param multiplexer FIFOMultiplexer to bypass conference for replay.
                      * @param prnt Pointer to the container super window.
                      */
-                    PlayerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
+                    PlayerPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
                     virtual ~PlayerPlugIn();
 

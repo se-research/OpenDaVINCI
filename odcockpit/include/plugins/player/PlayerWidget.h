@@ -1,7 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
- * Copyright (C) 2008 - 2011 (as monitor component) Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,6 +27,10 @@
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odtools/player/PlayerListener.h"
+
+#include "FIFOMultiplexer.h"
 
 class QCheckBox;
 class QLabel;
@@ -49,7 +52,8 @@ namespace cockpit {
             /**
              * This class is the container for the cutter widget.
              */
-            class PlayerWidget : public QWidget {
+            class PlayerWidget : public QWidget,
+                                  public odtools::player::PlayerListener {
 
                     Q_OBJECT
 
@@ -77,12 +81,15 @@ namespace cockpit {
                      * @param conf Conference to send data to.
                      * @param prnt Pointer to the parental widget.
                      */
-                    PlayerWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
+                    PlayerWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget *prnt);
 
                     virtual ~PlayerWidget();
 
+                    virtual void percentagePlayedBack(const float &percentagePlayedBack);
+
                 public slots:
-                    void loadFile();
+                    void speedValue(int);
+                    void openFile();
 
                     void play();
                     void pause();
@@ -93,15 +100,24 @@ namespace cockpit {
 
                     void process();
 
+                signals:
+                    void showProgress(int);
+
                 private:
                     const odcore::base::KeyValueConfiguration &m_kvc;
                     odcore::io::conference::ContainerConference &m_conference;
+                    FIFOMultiplexer &m_multiplexer;
 
                     QPushButton *m_playBtn;
                     QPushButton *m_pauseBtn;
                     QPushButton *m_rewindBtn;
                     QPushButton *m_stepBtn;
                     QCheckBox *m_autoRewind;
+                    QCheckBox *m_relayToConference;
+
+                    odcore::base::Mutex m_speedValueMutex;
+                    int m_speedValue;
+
                     QLabel *m_desc;
                     QLabel *m_containerCounterDesc;
                     int32_t m_containerCounter;
@@ -111,10 +127,16 @@ namespace cockpit {
                     QLineEdit *m_start;
                     QLineEdit *m_end;
 
+                    QProgressBar *m_timeline;
+
                     shared_ptr<odtools::player::Player> m_player;
 
                     string m_fileName;
                     string m_currentWorkingDirectory;
+                    bool m_exitAtEndOfFile;
+
+                private:
+                    void loadFile(const string &f);
             };
 
         }

@@ -33,6 +33,7 @@
 #include <QtOpenGL>
 
 #include <cmath>
+#include <iostream>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Lock.h"
@@ -65,8 +66,11 @@ class PlugIn;
                 m_pitchY(0),
                 m_pitchZ(0),
                 m_scale(1),
-                m_phi(static_cast<float>(-cartesian::Constants::PI)),
-                m_theta(static_cast<float>(-cartesian::Constants::PI / 4)),
+//                m_phi(-36.0/180.0*static_cast<float>(-cartesian::Constants::PI)),
+                m_phi(-7/180.0*static_cast<float>(-cartesian::Constants::PI)),
+                m_theta(0),
+//                m_phi(static_cast<float>(-cartesian::Constants::PI)),
+//                m_theta(static_cast<float>(-cartesian::Constants::PI / 4)),
                 m_epsilon(0),
                 m_mouseSensitivity(0.03f),
                 m_keySensitivity(1.0f),
@@ -234,6 +238,7 @@ class PlugIn;
                 // Rotation around the Y-axis.
                 m_theta -= m_mouseSensitivity *  (m_mouseY - evnt->pos().y());
                 emit thetaChanged((double)m_theta);
+cout << "m_phi = " << m_phi/M_PI*180.0 << ", m_theta = " << m_theta/M_PI*180.0 << endl;
             }
 
             // Right mouse button pressed.

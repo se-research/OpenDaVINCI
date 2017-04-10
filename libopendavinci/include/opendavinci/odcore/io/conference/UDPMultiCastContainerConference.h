@@ -25,7 +25,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/exceptions/Exceptions.h"
-#include "opendavinci/odcore/io/StringListener.h"
+#include "opendavinci/odcore/io/PacketListener.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/io/udp/UDPReceiver.h"
 #include "opendavinci/odcore/io/udp/UDPSender.h"
@@ -45,7 +45,7 @@ namespace odcore {
              * a StringListener for getting informed about new strings from
              * the UDPReceiver and informs any connected ContainerListener.
              */
-            class OPENDAVINCI_API UDPMultiCastContainerConference : public ContainerConference, public odcore::io::StringListener {
+            class OPENDAVINCI_API UDPMultiCastContainerConference : public ContainerConference, public odcore::io::PacketListener {
                 private:
                     friend class ContainerConferenceFactory;
 
@@ -77,7 +77,7 @@ namespace odcore {
                 public:
                     virtual ~UDPMultiCastContainerConference();
 
-                    virtual void nextString(const string &s);
+                    virtual void nextPacket(const odcore::data::Packet &p);
 
                     virtual void send(odcore::data::Container &container) const;
 

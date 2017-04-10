@@ -37,6 +37,9 @@ namespace odcore {
          */
         class OPENDAVINCI_API TimeStamp : public odcore::data::TimePoint {
             private:
+                friend class Container;
+
+            private:
                 enum CUMULATIVE_DAYS {
                     January = 31,   // 31
                     February = 59,  // 28
@@ -78,6 +81,13 @@ namespace odcore {
                  * @param obj Reference to an object of this class.
                  */
                 TimeStamp(const TimeStamp &obj);
+
+                /**
+                 * Copy constructor.
+                 *
+                 * @param obj Reference to an object of this class.
+                 */
+                TimeStamp(const TimePoint &obj);
 
                 /**
                  * Assignment operator.
@@ -189,6 +199,14 @@ namespace odcore {
                  * @return Time in the given specified format.
                  */
                 const string getYYYYMMDD_HHMMSS_noBlank() const;
+
+                /**
+                 * This method returns this time in the following format:
+                 * YYYY-MM-DD_HHMMSS
+                 *
+                 * @return Time in the given specified format.
+                 */
+                const string getYYYYMMDD_HHMMSS_noBlankNoColons() const;
 
                 /**
                  * This method returns this time in the following format:

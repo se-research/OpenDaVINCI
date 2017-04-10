@@ -53,7 +53,7 @@
 #include "opendavinci/generated/odcore/data/dmcp/PulseAckContainersMessage.h"
 #include "opendavinci/generated/odcore/data/Configuration.h"
 #include "opendavinci/generated/odcore/data/buffer/MemorySegment.h"
-#include "opendavinci/generated/odcore/data/player/PlayerCommand.h"
+#include "opendavinci/generated/odcore/data/player/PlayerStatus.h"
 #include "opendavinci/generated/odcore/data/recorder/RecorderCommand.h"
 #include "opendavinci/generated/odcore/data/SharedData.h"
 #include "opendavinci/generated/odcore/data/image/SharedImage.h"
@@ -2486,9 +2486,9 @@ class ProtoMessageTest : public CxxTest::TestSuite {
 
         ///////////////////////////////////////////////////////////////////////
 
-        void testSerializationDeserializationPlayerCommand() {
-            PlayerCommand tm1;
-            tm1.setCommand(PlayerCommand::REWIND);
+        void testSerializationDeserializationPlayerStatus() {
+            PlayerStatus tm1;
+            tm1.setStatus(PlayerStatus::NEW_FILE_LOADED);
 
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
@@ -2499,20 +2499,20 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             out << tm1;
 
             // Read back the data.
-            PlayerCommand tm2;
+            PlayerStatus tm2;
             out >> tm2;
 
-            TS_ASSERT(tm1.getCommand() == tm2.getCommand());
-            TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
+            TS_ASSERT(tm1.getStatus() == tm2.getStatus());
+            TS_ASSERT(tm2.getStatus() == PlayerStatus::NEW_FILE_LOADED);
         }
 
-        void testSerializationDeserializationPlayerCommandContainer() {
+        void testSerializationDeserializationPlayerStatusContainer() {
             // Replace default serializer/deserializers.
             SerializationFactoryTestCase tmp;
             (void)tmp;
 
-            PlayerCommand tm1;
-            tm1.setCommand(PlayerCommand::REWIND);
+            PlayerStatus tm1;
+            tm1.setStatus(PlayerStatus::NEW_FILE_LOADED);
 
             Container c(tm1);
 
@@ -2523,17 +2523,17 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             // Read back the data.
             Container c2;
             out >> c2;
-            TS_ASSERT(c2.getDataType() == PlayerCommand::ID());
+            TS_ASSERT(c2.getDataType() == PlayerStatus::ID());
 
-            PlayerCommand tm2 = c2.getData<PlayerCommand>();
+            PlayerStatus tm2 = c2.getData<PlayerStatus>();
 
-            TS_ASSERT(tm1.getCommand() == tm2.getCommand());
-            TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
+            TS_ASSERT(tm1.getStatus() == tm2.getStatus());
+            TS_ASSERT(tm2.getStatus() == PlayerStatus::NEW_FILE_LOADED);
         }
 
-        void testSerializationDeserializationPlayerCommandVisitor() {
-            PlayerCommand tm1;
-            tm1.setCommand(PlayerCommand::REWIND);
+        void testSerializationDeserializationPlayerStatusVisitor() {
+            PlayerStatus tm1;
+            tm1.setStatus(PlayerStatus::NEW_FILE_LOADED);
 
             // Create a Proto serialization visitor.
             ProtoSerializerVisitor protoSerializerVisitor;
@@ -2549,11 +2549,11 @@ class ProtoMessageTest : public CxxTest::TestSuite {
             protoDeserializerVisitor.deserializeDataFrom(out);
 
             // Read back the data by using the visitor.
-            PlayerCommand tm2;
+            PlayerStatus tm2;
             tm2.accept(protoDeserializerVisitor);
 
-            TS_ASSERT(tm1.getCommand() == tm2.getCommand());
-            TS_ASSERT(tm2.getCommand() == PlayerCommand::REWIND);
+            TS_ASSERT(tm1.getStatus() == tm2.getStatus());
+            TS_ASSERT(tm2.getStatus() == PlayerStatus::NEW_FILE_LOADED);
         }
 
         ///////////////////////////////////////////////////////////////////////

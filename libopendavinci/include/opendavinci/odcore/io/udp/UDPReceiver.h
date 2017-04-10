@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,10 +22,10 @@
 
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/io/PacketObserver.h"
+#include "opendavinci/odcore/io/PacketPipeline.h"
 #include "opendavinci/odcore/io/StringObserver.h"
-#include "opendavinci/odcore/io/StringPipeline.h"
+#include "opendavinci/generated/odcore/data/Packet.h"
 
-namespace odcore { namespace io { class Packet; } }
 namespace odcore { namespace io { class PacketListener; } }
 namespace odcore { namespace io { class StringListener; } }
 
@@ -121,6 +121,14 @@ namespace odcore {
                     virtual void setPacketListener(PacketListener *pl);
 
                     /**
+                     * This method sets a synchronous PacketListener to be used
+                     * instead of decoupled PacketPipeline.
+                     *
+                     * @param pl Synchronous PacketListener to use..
+                     */
+                    void setSynchronousPacketListener(PacketListener *pl);
+
+                    /**
                      * This method sets the port to be ignored to receive from
                      * to avoid circular data sending and receiving from the
                      * same process.
@@ -134,13 +142,14 @@ namespace odcore {
                      * This method is called from deriving classes to
                      * pass newly arrived packets.
                      */
-                    void nextPacket(const Packet &p);
+                    void nextPacket(const odcore::data::Packet &p);
 
                 private:
-                    StringPipeline m_stringPipeline;
+                    odcore::base::Mutex m_listenerMutex;
+                    StringListener *m_stringListener;
+                    PacketListener *m_synchronousPacketListener;
 
-                    odcore::base::Mutex m_packetListenerMutex;
-                    PacketListener *m_packetListener;
+                    PacketPipeline m_packetPipeline;
             };
 
         }

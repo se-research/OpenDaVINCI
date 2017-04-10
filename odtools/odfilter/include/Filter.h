@@ -96,6 +96,7 @@ namespace odfilter {
             vector<uint32_t> m_drop;
             map<int32_t, uint32_t> m_downsampling;
             map<int32_t, uint32_t> m_downsamplingCounter;
+            int64_t m_sampleTimeStampToSentTimeStampDifference;
     };
 
 } // odfilter

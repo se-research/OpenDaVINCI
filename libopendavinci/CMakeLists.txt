@@ -145,6 +145,19 @@ IF(LIBRT_FOUND)
     SET(LIBRARIES ${LIBRARIES} ${LIBRT_LIBRARIES})
 ENDIF()
 
+###########################################################################
+# Find dl and stdc++.
+IF(UNIX)
+    FIND_PACKAGE (DL)
+    FIND_PACKAGE (CPPexperimental)
+    IF(DL_FOUND AND CPPEXPERIMENTAL_FOUND)
+        SET (LIBRARIES ${LIBRARIES}
+                       ${DL_LIBRARIES} ${CPPEXPERIMENTAL_LIBRARIES})
+        INCLUDE_DIRECTORIES (${DL_INCLUDE_DIRS})
+        SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_DL=YES")
+    ENDIF()
+ENDIF()
+
 # Add CoreFoundation and IOKit on Mac OS X.
 IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
     FIND_LIBRARY(COREFOUNDATION_FRAMEWORK CoreFoundation)

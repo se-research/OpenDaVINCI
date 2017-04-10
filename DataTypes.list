@@ -11,7 +11,7 @@ ID;TYPE;legacy OR message;library;comment
 7;odcore.data.dmcp.ModuleExitCodeMessage;legacy;OpenDaVINCI.odvd;internal use;
 8;odcore.data.dmcp.ModuleStatistics;legacy;OpenDaVINCI.odvd;internal use;
 9;odcore.data.dmcp.RuntimeStatistic;legacy;OpenDaVINCI.odvd;internal use;
-10;odcore.data.player.PlayerCommand;legacy;OpenDaVINCI.odvd;internal use;
+10;odcore.data.player.PlayerStatus;legacy;OpenDaVINCI.odvd;internal use;
 11;odcore.data.recorder.RecorderCommand;legacy;OpenDaVINCI.odvd;internal use;
 12;TIMESTAMP;legacy;libopendavinci;don't use;
 13;odcore.data.SharedData;legacy;OpenDaVINCI.odvd;internal use;
@@ -68,9 +68,10 @@ ID;TYPE;legacy OR message;library;comment
 112;odcore.data.dmcp.ServerInformation;legacy;OpenDaVINCI.odvd;internal use;
 113;odcore.data.dmcp.ModuleDescriptor;legacy;OpenDaVINCI.odvd;internal use;
 114;odcore.data.dmcp.ModuleStatistic;legacy;OpenDaVINCI.odvd;internal use;
-120;coredata.pcap.GlobalHeader;;CoreData.odvd;;
-121;coredata.pcap.PacketHeader;;CoreData.odvd;;
-122;coredata.pcap.Packet;;CoreData.odvd;;
+120;coredata.pcap.GlobalHeader;;OpenDaVINCI.odvd;;
+121;coredata.pcap.PacketHeader;;OpenDaVINCI.odvd;;
+122;coredata.pcap.Packet;;OpenDaVINCI.odvd;;
+123;coredata.Packet;;OpenDaVINCI;;
 150;OPENDLV_GCDC_MSG00;Revere/GCDC;Revere.odvd;;
 151;OPENDLV_GCDC_MSG01;Revere/GCDC;Revere.odvd;;
 152;OPENDLV_GCDC_MSG02;Revere/GCDC;Revere.odvd;;
