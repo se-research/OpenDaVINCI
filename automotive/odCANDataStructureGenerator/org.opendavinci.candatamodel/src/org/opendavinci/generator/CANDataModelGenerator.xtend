@@ -742,9 +742,9 @@ namespace canmapping {
                 ::automotive::odcantools::Signedness sign=::automotive::odcantools::Signedness::SIGNED;
                 «ENDIF»
                 «IF CurrentCANSignal.m_endian.toLowerCase().compareTo("big")==0» 
-                ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
-                «ELSE»
                 ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::BIG;
+                «ELSE»
+                ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
                 «ENDIF»
 			    ::automotive::odcantools::CANSignal signal_«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,sign,endian,«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
                 «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,signal_«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
@@ -870,9 +870,9 @@ namespace canmapping {
                 ::automotive::odcantools::Signedness sign=::automotive::odcantools::Signedness::SIGNED;
                 «ENDIF»
                 «IF CurrentCANSignal.m_endian.toLowerCase().compareTo("big")==0» 
-                ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
-                «ELSE»
                 ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::BIG;
+                «ELSE»
+                ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
                 «ENDIF»
 				::automotive::odcantools::CANSignal «currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,sign,endian,«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
                 «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
