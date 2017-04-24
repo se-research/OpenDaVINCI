@@ -15,10 +15,12 @@
 # Run this script as: cat <MyDBCFile.dbc> | gawk -f dbc2can.awk -v ODVD=<Name of the .odvd file>
 
 BEGIN {
+    CANMESSAGESDEFINITION = ""
+    CANMAPPINGSDEFINITION = ""
+    
     MessageHeader = "CAN Message"
     firstLine = 1
-
-    CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("using AutomotiveData; # This using directive is required to get GenericCANMessage definitions into the generated C++ files.\n")
+    mappingID = 0
 
     # Add "using" directive to point to .odvd file.
     if (ODVD != "") {
@@ -27,8 +29,6 @@ BEGIN {
     else {
         CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("#using <Specify your .odvd file>;\n\n")
     }
-    CANMAPPINGSDEFINITION = ""
-    mappingID = 0
 }
 
 # Match "BO_" CAN frames and transform them to the .can format.
