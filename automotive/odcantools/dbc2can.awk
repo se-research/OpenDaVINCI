@@ -24,10 +24,10 @@ BEGIN {
 
     # Add "using" directive to point to .odvd file.
     if (ODVD != "") {
-        CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("using %s; # This using directive points to the related .odvd file for the high-level message specifications.\n\n", gensub(/\.odvd/, "", "g", ODVD))
+        CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("using %s; // This using directive points to the related .odvd file for the high-level message specifications.\n\n", gensub(/\.odvd/, "", "g", ODVD))
     }
     else {
-        CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("#using <Specify your .odvd file>;\n\n")
+        CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("//using <Specify your .odvd file>;\n\n")
     }
 }
 
@@ -42,12 +42,12 @@ BEGIN {
     }
     else {
         CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("}\n\n")
-        CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("#}\n\n")
+        CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("//}\n\n")
         mappingID = 0
     }
     
     CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("%s 0x%x %s is %d bytes {\n", MessageHeader, CANID, tolower(NAME), BYTES)
-    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION "#unordered mapping <full qualified message name from your .odvd file> { # Mapping for CAN message '" NAME "'; example namespace.subnamespace.Message \n"
+    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION "//unordered mapping <full qualified message name from your .odvd file> { // Mapping for CAN message '" NAME "'; example namespace.subnamespace.Message \n"
 }
 
 # Match "SG_" signals and transform them to the .can format.
@@ -97,13 +97,13 @@ BEGIN {
     ++mappingID
 
     CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("    %s at bit %s for %s bit is %s %s endian multiply by %s add %s with range [%s, %s];\n", tolower(SIGNAL[2]), SIGNAL[3], SIGNAL[4], SIGN, ENDIANNESS, SIGNAL[6], SIGNAL[7], SIGNAL[8], SIGNAL[9])
-    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("#    %s.%s : %d; # The value following ':' must correspond to the field with the index '%d' in the respective high-level message defined in your .odvd file; otherwise, the mapping at runtime will fail.\n", tolower(NAME), tolower(SIGNAL[2]), mappingID, mappingID)
+    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("//    %s.%s : %d; // The value following ':' must correspond to the field with the index '%d' in the respective high-level message defined in your .odvd file; otherwise, the mapping at runtime will fail.\n", tolower(NAME), tolower(SIGNAL[2]), mappingID, mappingID)
 }
 
 END {
     # Close the last message/mapping.
     CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("}\n")
-    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("#}\n\n")
+    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("//}\n\n")
     
     # Print the resulting output.
     printf("%s \n%s", CANMESSAGESDEFINITION, CANMAPPINGSDEFINITION)
