@@ -34,8 +34,8 @@ BEGIN {
 # Match "BO_" CAN frames and transform them to the .can format.
 /^BO_/ {
     CANID = $2
-    BYTES = gensub(/\:/, "", "g", $4)
     NAME = gensub(/\:/, "", "g", $3)
+    BYTES = gensub(/\:/, "", "g", $4)
     
     if (1 == firstLine) {
         firstLine = 0
@@ -65,18 +65,18 @@ BEGIN {
     
     # Capture endianness.
     if (SIGNAL[5] == "0+" || SIGNAL[5] == "0-") {
-        ENDIAN = "big"
+        ENDIANNESS = "big"
     }
     else {
-        ENDIAN = "little"
+        ENDIANNESS = "little"
     }
 
     # Capture signedness.
     if (SIGNAL[5] == "0+" || SIGNAL[5] == "1+") {
-        SIGNED = "unsigned"
+        SIGN = "unsigned"
     }
     else {
-        SIGNED = "signed"
+        SIGN = "signed"
     }
     
     # Convert scientific notation to decimal.
@@ -96,8 +96,8 @@ BEGIN {
     # Increment the mapping ID.
     ++mappingID
 
-    CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("\t%s at bit %s for %s bit is %s %s endian multiply by %s add %s with range [%s, %s];\n", tolower(SIGNAL[2]), SIGNAL[3], SIGNAL[4], SIGNED, ENDIAN, SIGNAL[6], SIGNAL[7], SIGNAL[8], SIGNAL[9])
-    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("#\t%s.%s : %d; # The value following ':' must correspond to the field with the index '%d' in the respective high-level message defined in your .odvd file; otherwise, the mapping at runtime will fail.\n", tolower(NAME), tolower(SIGNAL[2]), mappingID, mappingID)
+    CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("    %s at bit %s for %s bit is %s %s endian multiply by %s add %s with range [%s, %s];\n", tolower(SIGNAL[2]), SIGNAL[3], SIGNAL[4], SIGN, ENDIANNESS, SIGNAL[6], SIGNAL[7], SIGNAL[8], SIGNAL[9])
+    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("#    %s.%s : %d; # The value following ':' must correspond to the field with the index '%d' in the respective high-level message defined in your .odvd file; otherwise, the mapping at runtime will fail.\n", tolower(NAME), tolower(SIGNAL[2]), mappingID, mappingID)
 }
 
 END {
