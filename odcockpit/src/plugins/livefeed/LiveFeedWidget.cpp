@@ -31,6 +31,8 @@
 #include "opendavinci/odcore/reflection/Message.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
 
+#include "opendavinci/generated/odcockpit/SimplePlot.h"
+
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
@@ -170,10 +172,28 @@ namespace cockpit {
                     {
                         Lock l(m_containerTypeResolvingMutex);
                         if (m_containerTypeResolving[entryName]) {
-                            msg = m_messageResolver->resolve(container, successfullyMapped);
-                            if (successfullyMapped) {
-                                MessageToTupleVisitor mttv(entries);
-                                msg.accept(mttv);
+                            if (container.getDataType() == odcockpit::SimplePlot::ID() ) {
+                                odcockpit::SimplePlot sp = container.getData<odcockpit::SimplePlot>();
+                                std::pair<std::map<std::string, double>::iterator, std::map<std::string, double>::iterator> 
+                                    beginEndIterators = sp.iteratorPair_MapOfValues();
+                                auto beginIterator = beginEndIterators.first;
+                                auto endIterator = beginEndIterators.second;
+                                while (beginIterator != endIterator) {
+                                    const string name = beginIterator->first;
+                                    const double value = beginIterator->second;
+                                    stringstream sstrValue;
+                                    sstrValue << value;
+                                    const string strValue = sstrValue.str();
+                                    entries.push_back(make_pair(name, strValue));
+                                    beginIterator++;
+                                }
+                            }
+                            else {
+                                msg = m_messageResolver->resolve(container, successfullyMapped);
+                                if (successfullyMapped) {
+                                    MessageToTupleVisitor mttv(entries);
+                                    msg.accept(mttv);
+                                }
                             }
                         }
                     }
