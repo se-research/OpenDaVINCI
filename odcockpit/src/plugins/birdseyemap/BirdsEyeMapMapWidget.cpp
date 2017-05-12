@@ -89,6 +89,7 @@ namespace cockpit {
                 m_measurements(new SceneNode()),
                 m_scaleFactor(9.99995),
                 m_centerOfMap(),
+                m_centerOfMapUser(),
                 m_mouseOld(-1, -1, 0),
                 m_numberOfReceivedEgoStates(0),
                 m_egoState(),
@@ -224,6 +225,16 @@ namespace cockpit {
             void BirdsEyeMapMapWidget::assignCameraTo(const SceneNodeDescriptor &snd) {
                 Lock l(m_rootMutex);
                 m_cameraAssignedNodeDescriptor = snd;
+
+                if (snd.getName() != "EgoCar") {
+                    // Restore old position.
+                    m_centerOfMap = m_centerOfMapUser;
+                }
+
+                if (snd.getName() == "EgoCar") {
+                    // Save old position.
+                    m_centerOfMapUser = m_centerOfMap;
+                }
             }
 
             void BirdsEyeMapMapWidget::mouseReleaseEvent(QMouseEvent */*evnt*/) {
@@ -277,19 +288,20 @@ namespace cockpit {
                 // Define cartesian coordinates: +Y = 12am, -Y = 6am, -X = 9am, +X = 3am, (0, 0) = image center, scaling = 1px=1mm=0.001m
                 QTransform cartesianCoordinates;
 
+                // Center to where we are; works at 50% scaling only.
+                // -74, -65 --> 772,-668
                 if (m_cameraAssignedNodeDescriptor.getName() == "EgoCar") {
-                    // This applies map translation wrt. vehicle-fixed orientation.
-                    cartesianCoordinates.translate((evt->rect().width() / 2) + m_egoState.getPosition().getX()*10, (evt->rect().height() / 2) + m_egoState.getPosition().getY()*10);
-                    cartesianCoordinates.rotateRadians(m_egoState.getRotation().getAngleXY()+(-90*cartesian::Constants::DEG2RAD));
+                    if (fabs(m_scaleFactor - 9.99995) < 1e-4) {
+                        m_centerOfMap = Point3(m_egoState.getPosition().getX()*-10.0, m_egoState.getPosition().getY()*10.0, 0);
+                    }
+                    else {
+                        cout << "EgoCar following requires zoom level 50%." << endl;
+                    }
                 }
-                else {
-                    // Fixed translation to center of window.
-//                    cartesianCoordinates.translate(evt->rect().width() / 2, evt->rect().height() / 2);
 
-                    // This applies map translation based on user configuration.
-                    cartesianCoordinates.rotate(0);
-                    cartesianCoordinates.translate((evt->rect().width() / 2) + m_centerOfMap.getX(), (evt->rect().height() / 2) + m_centerOfMap.getY());
-                }
+                // This applies map translation based on user configuration.
+                cartesianCoordinates.rotate(0);
+                cartesianCoordinates.translate((evt->rect().width() / 2) + m_centerOfMap.getX(), (evt->rect().height() / 2) + m_centerOfMap.getY());
 
                 // Ensure pixelsPerMeter.
                 cartesianCoordinates.scale(0.001, -0.001);
@@ -301,6 +313,7 @@ namespace cockpit {
                 // This transformation scales the cartesian coordinate system.
                 QTransform scaledCartesianCoordinates;
                 scaledCartesianCoordinates = magnify * cartesianCoordinates;
+
 
                 {
                     // Update position of ego car and renderer it.
