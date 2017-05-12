@@ -288,15 +288,9 @@ namespace cockpit {
                 // Define cartesian coordinates: +Y = 12am, -Y = 6am, -X = 9am, +X = 3am, (0, 0) = image center, scaling = 1px=1mm=0.001m
                 QTransform cartesianCoordinates;
 
-                // Center to where we are; works at 50% scaling only.
-                // -74, -65 --> 772,-668
+                // Center to where we are (either EgoCar or where the user moved the map to).
                 if (m_cameraAssignedNodeDescriptor.getName() == "EgoCar") {
-                    if (fabs(m_scaleFactor - 9.99995) < 1e-4) {
-                        m_centerOfMap = Point3(m_egoState.getPosition().getX()*-10.0, m_egoState.getPosition().getY()*10.0, 0);
-                    }
-                    else {
-                        cout << "EgoCar following requires zoom level 50%." << endl;
-                    }
+                    m_centerOfMap = Point3(m_egoState.getPosition().getX() * (-1.0) * m_scaleFactor, m_egoState.getPosition().getY()*m_scaleFactor, 0);
                 }
 
                 // This applies map translation based on user configuration.
@@ -313,7 +307,6 @@ namespace cockpit {
                 // This transformation scales the cartesian coordinate system.
                 QTransform scaledCartesianCoordinates;
                 scaledCartesianCoordinates = magnify * cartesianCoordinates;
-
 
                 {
                     // Update position of ego car and renderer it.
