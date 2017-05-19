@@ -332,6 +332,16 @@ message odcore.data.CompactPointCloud [id = 49] {
     
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+// This message is used to display values.
+// This is a highly inefficient data structure and should be used only
+// for debug purposes!
+message odcockpit.SimplePlot [id = 42] {
+    map<string, double> values [id = 1];
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // PCAP recordings (de-facto standard for raw packet dumps, created for
 // instance with WireShark).

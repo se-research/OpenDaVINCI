@@ -15,9 +15,12 @@
 # Run this script as: cat <MyDBCFile.dbc> | gawk -f dbc2can.awk -v ODVD=<Name of the .odvd file>
 
 BEGIN {
+    CANMESSAGESDEFINITION = ""
+    CANMAPPINGSDEFINITION = ""
+    
     MessageHeader = "CAN Message"
     firstLine = 1
-
+    mappingID = 0
     CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("using AutomotiveData; // This using directive is required to get GenericCANMessage definitions into the generated C++ files.\n")
 
     # Add "using" directive to point to .odvd file.
@@ -27,22 +30,20 @@ BEGIN {
     else {
         CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("//using <Specify your .odvd file>;\n\n")
     }
-    CANMAPPINGSDEFINITION = ""
-    mappingID = 0
 }
 
 # Match "BO_" CAN frames and transform them to the .can format.
 /^BO_/ {
     CANID = $2
-    BYTES = gensub(/\:/, "", "g", $4)
     NAME = gensub(/\:/, "", "g", $3)
+    BYTES = gensub(/\:/, "", "g", $4)
     
     if (1 == firstLine) {
         firstLine = 0
     }
     else {
         CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("}\n\n")
-        CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("#}\n\n")
+        CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("//}\n\n")
         mappingID = 0
     }
     
@@ -65,18 +66,18 @@ BEGIN {
     
     # Capture endianness.
     if (SIGNAL[5] == "0+" || SIGNAL[5] == "0-") {
-        ENDIAN = "big"
+        ENDIANNESS = "big"
     }
     else {
-        ENDIAN = "little"
+        ENDIANNESS = "little"
     }
 
     # Capture signedness.
     if (SIGNAL[5] == "0+" || SIGNAL[5] == "1+") {
-        SIGNED = "unsigned"
+        SIGN = "unsigned"
     }
     else {
-        SIGNED = "signed"
+        SIGN = "signed"
     }
     
     # Convert scientific notation to decimal.
@@ -96,8 +97,8 @@ BEGIN {
     # Increment the mapping ID.
     ++mappingID
 
-    CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("\t%s at bit %s for %s bit is %s %s endian multiply by %s add %s with range [%s, %s];\n", tolower(SIGNAL[2]), SIGNAL[3], SIGNAL[4], SIGNED, ENDIAN, SIGNAL[6], SIGNAL[7], SIGNAL[8], SIGNAL[9])
-    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("//\t%s.%s : %d; // The value following ':' must correspond to the field with the index '%d' in the respective high-level message defined in your .odvd file; otherwise, the mapping at runtime will fail.\n", tolower(NAME), tolower(SIGNAL[2]), mappingID, mappingID)
+    CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("    %s at bit %s for %s bit is %s %s endian multiply by %s add %s with range [%s, %s];\n", tolower(SIGNAL[2]), SIGNAL[3], SIGNAL[4], SIGN, ENDIANNESS, SIGNAL[6], SIGNAL[7], SIGNAL[8], SIGNAL[9])
+    CANMAPPINGSDEFINITION = CANMAPPINGSDEFINITION sprintf("//    %s.%s : %d; // The value following ':' must correspond to the field with the index '%d' in the respective high-level message defined in your .odvd file; otherwise, the mapping at runtime will fail.\n", tolower(NAME), tolower(SIGNAL[2]), mappingID, mappingID)
 }
 
 END {

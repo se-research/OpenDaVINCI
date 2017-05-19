@@ -138,6 +138,9 @@ class SelectableNodeDescriptor;
                     odcore::base::Mutex m_selectableNodeDescriptorTreeMutex;
                     odcore::base::TreeNode<SelectableNodeDescriptor> *m_selectableNodeDescriptorTree;
 
+                    odcore::base::Mutex m_egoPositionMutex;
+                    QLabel *m_egoPosition;
+
                     /**
                      * This method updates the tree of SelectableNodeDescriptors.
                      *
