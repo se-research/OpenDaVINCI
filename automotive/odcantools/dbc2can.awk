@@ -21,7 +21,6 @@ BEGIN {
     MessageHeader = "CAN Message"
     firstLine = 1
     mappingID = 0
-    CANMESSAGESDEFINITION = CANMESSAGESDEFINITION sprintf("using AutomotiveData; // This using directive is required to get GenericCANMessage definitions into the generated C++ files.\n")
 
     # Add "using" directive to point to .odvd file.
     if (ODVD != "") {
