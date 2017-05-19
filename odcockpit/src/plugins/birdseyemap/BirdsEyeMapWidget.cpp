@@ -23,12 +23,13 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/base/TreeNode.h"
+#include "opendavinci/odcore/data/Container.h"
+#include "opendlv/data/environment/EgoState.h"
 #include "plugins/birdseyemap/BirdsEyeMapMapWidget.h"
 #include "plugins/birdseyemap/BirdsEyeMapWidget.h"
 #include "plugins/birdseyemap/SelectableNodeDescriptor.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace odcore { namespace data { class Container; } }
 
 namespace cockpit {
     namespace plugins {
@@ -50,18 +51,20 @@ namespace cockpit {
                 m_textualSceneGraphRootUpdateMutex(),
                 m_textualSceneGraphRootUpdate(false),
                 m_selectableNodeDescriptorTreeMutex(),
-                m_selectableNodeDescriptorTree(NULL) {
+                m_selectableNodeDescriptorTree(NULL),
+                m_egoPositionMutex(),
+                m_egoPosition() {
 
                 QGridLayout *environmentGrid = new QGridLayout(this);
 
                 // Setup selectable scene graph elements.
                 m_textualSceneGraph = new QTreeWidget(this);
-                m_textualSceneGraph->setMaximumWidth(160);
+                m_textualSceneGraph->setMaximumWidth(200);
                 m_textualSceneGraph->setColumnCount(1);
 
                 QStringList headerLabel;
                 headerLabel << tr("SceneGraph");
-                m_textualSceneGraph->setColumnWidth(0, 180);
+                m_textualSceneGraph->setColumnWidth(0, 200);
                 m_textualSceneGraph->setHeaderLabels(headerLabel);
 
                 connect(m_textualSceneGraph, SIGNAL(itemChanged(QTreeWidgetItem *, int)), this, SLOT(itemChanged(QTreeWidgetItem *, int)));
@@ -86,6 +89,8 @@ namespace cockpit {
                 QPushButton *btn = new QPushButton(tr("Reset ego trace"));
                 connect(btn, SIGNAL(released()), this, SLOT(resetTrace()));
 
+                m_egoPosition = new QLabel(tr("Ego: "));
+
                 QWidget *sideBar = new QWidget(this);
                 QGridLayout *sideBarLayout = new QGridLayout(this);
                 sideBarLayout->addWidget(lblZoomLevel, 0, 0);
@@ -93,8 +98,9 @@ namespace cockpit {
                 sideBarLayout->addWidget(lblCamera, 2, 0);
                 sideBarLayout->addWidget(m_cameraSelector, 3, 0);
                 sideBarLayout->addWidget(btn, 4, 0);
+                sideBarLayout->addWidget(m_egoPosition, 5, 0);
 
-                sideBarLayout->addWidget(m_textualSceneGraph, 5, 0);
+                sideBarLayout->addWidget(m_textualSceneGraph, 6, 0);
                 sideBar->setLayout(sideBarLayout);
 
                 // Setup 2D viewer.
@@ -268,6 +274,16 @@ namespace cockpit {
             }
 
             void BirdsEyeMapWidget::nextContainer(Container &c) {
+                if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {
+                    Lock l(m_egoPositionMutex);
+                    opendlv::data::environment::EgoState es = c.getData<opendlv::data::environment::EgoState>();
+
+                    stringstream sstr;
+                    sstr << "Ego: " << es.getPosition().toString();
+
+                    const string str = sstr.str();
+                    m_egoPosition->setText(str.c_str());
+                }
                 m_birdsEyeMapMapWidget->nextContainer(c);
             }
         }
