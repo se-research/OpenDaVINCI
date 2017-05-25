@@ -92,6 +92,9 @@ class SelectableNodeDescriptor;
 
                     virtual void updateListOfCameraAssignableNodes(const vector<opendlv::scenegraph::SceneNodeDescriptor> &list);
 
+                signals:
+                    void updatePositionLabel(QString s);
+
                 private slots:
                     /**
                      * This method is called whenever an item in the list changes

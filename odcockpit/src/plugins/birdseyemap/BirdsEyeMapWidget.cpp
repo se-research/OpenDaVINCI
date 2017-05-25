@@ -90,6 +90,7 @@ namespace cockpit {
                 connect(btn, SIGNAL(released()), this, SLOT(resetTrace()));
 
                 m_egoPosition = new QLabel(tr("Ego: "));
+                connect(this, SIGNAL(updatePositionLabel(QString)), m_egoPosition, SLOT(setText(QString)));
 
                 QWidget *sideBar = new QWidget(this);
                 QGridLayout *sideBarLayout = new QGridLayout(this);
@@ -275,14 +276,14 @@ namespace cockpit {
 
             void BirdsEyeMapWidget::nextContainer(Container &c) {
                 if (c.getDataType() == opendlv::data::environment::EgoState::ID()) {
-                    Lock l(m_egoPositionMutex);
                     opendlv::data::environment::EgoState es = c.getData<opendlv::data::environment::EgoState>();
 
                     stringstream sstr;
                     sstr << "Ego: " << es.getPosition().toString();
 
                     const string str = sstr.str();
-                    m_egoPosition->setText(str.c_str());
+                    QString qs(str.c_str());
+                    emit updatePositionLabel(qs);
                 }
                 m_birdsEyeMapMapWidget->nextContainer(c);
             }
