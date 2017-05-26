@@ -35,6 +35,7 @@ In odcockpit, open plugins Player, LiveFeed, and SharedImageViewer. In Player, l
 
 In a new terminal, go to OpenDaVINCI/tutorials/Python_ShowImage. Make sure that the camera name in the field odcore.data.image.SharedImage/0 in LiveFeed of odcockpit is the same as the name XX specified in the line listener.registerImageCallback(?XX", onImage) in the Python script ShowImage.py. If they are different, change XX in ShowImage.py accordingly. Then generate the Protobuf data structures and execute the Python script::
 
-    $ make clean all
+    $ make clean all
+
 The script will activate a pop-up window showing the same video that is played in SharedImageViewer of odcockpit.
 
