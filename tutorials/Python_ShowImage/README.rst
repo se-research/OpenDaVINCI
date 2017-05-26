@@ -17,11 +17,11 @@ Install Python related package::
    
 Next, pull the latest OpenDaVINCI Docker image::
     
-    $ docker pull seresearch/opendavinci-ubuntu-16.04-complete
+    $ docker pull seresearch/opendavinci-on-base:latest
 
 Assume that there is a recording file in .rec format along with an associated .H264 video file in ~/recordings. Go to OpenDaVINCI/odsupercomponent, and run the OpenDaVINCI software component lifecycle management module odsupercomponent::
 
-    $ docker run -ti --rm --net=host -v `pwd`:/opt/example -w /opt/example seresearch/opendavinci-ubuntu-16.04-complete:latest /opt/od4/bin/odsupercomponent --cid=189 --configuration=/opt/example/configuration
+    $ docker run -ti --rm --net=host -v `pwd`:/opt/example -w /opt/example seresearch/opendavinci-on-base:latest /opt/od4/bin/odsupercomponent --cid=189 --configuration=/opt/example/configuration
 
 In a new terminal, grant Docker access to X11 server::
 
@@ -29,7 +29,7 @@ In a new terminal, grant Docker access to X11 server::
     
 Run the visualization module odcockpit::
 
-    $ docker run -ti --rm --net=host --ipc=host --user=odv -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v ~/recordings:/opt/recordings -v seresearch/opendavinci-ubuntu-16.04-complete:latest /opt/od4/bin/odcockpit --cid=189
+    $ docker run -ti --rm --net=host --ipc=host --user=odv -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v ~/recordings:/opt/recordings -v seresearch/opendavinci-on-base:latest /opt/od4/bin/odcockpit --cid=189
 
 In odcockpit, open plugins Player, LiveFeed, and SharedImageViewer. In Player, load the .rec recording file from /opt/recordings and tick the checkbox "Relay Containers to Conference".
 
