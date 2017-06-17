@@ -173,11 +173,11 @@ Using our Docker images
 You also find pre-built Docker images for x86_64 and armhf. These images will be automatically
 updated whenever new features or patches are released.
 
-For Ubuntu/x86_64 (https://registry.hub.docker.com/u/seresearch/opendavinci-ubuntu-amd64/)::
+For Ubuntu/x86_64 (https://registry.hub.docker.com/u/seresearch/opendavinci-ubuntu-16.04-complete/)::
 
-    $ docker pull seresearch/opendavinci-ubuntu-amd64 
+    $ docker pull seresearch/opendavinci-ubuntu-16.04-complete 
 
-For Ubuntu/armhf (https://registry.hub.docker.com/u/seresearch/opendavinci-ubuntu-armhf/)::
+For Ubuntu/armhf (https://registry.hub.docker.com/u/seresearch/opendavinci-ubuntu-16.04-armhf-complete/)::
 
     $ docker pull seresearch/opendavinci-ubuntu-armhf
 

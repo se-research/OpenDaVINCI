@@ -1,6 +1,6 @@
 /**
  * OpenDaVINCI - Portable middleware for distributed components.
- * Copyright (C) 2008 - 2015 Christian Berger, Bernhard Rumpe
+ * Copyright (C) 2017 Christian Berger
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,30 +20,57 @@
 #ifndef OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
 #define OPENDAVINCI_TOOLS_PLAYER_PLAYER_H_
 
-#include <iosfwd>
+#include <deque>
+#include <fstream>
 #include <map>
 #include <memory>
-#include <string>
+#include <thread>
 
-#include "opendavinci/odcore/opendavinci.h"
-#include "opendavinci/odcore/base/Mutex.h"
-#include "opendavinci/odcore/data/Container.h"
-#include "opendavinci/odcore/io/URL.h"
-#include "opendavinci/odcore/wrapper/SharedMemory.h"
+#include <opendavinci/odcore/opendavinci.h>
+#include <opendavinci/odcore/base/Mutex.h>
+#include <opendavinci/odcore/data/Container.h>
+#include <opendavinci/odcore/data/TimeStamp.h>
+#include <opendavinci/odcore/io/URL.h>
+#include <opendavinci/odcore/exceptions/Exceptions.h>
+
+#include <opendavinci/odtools/player/PlayerListener.h>
 
 namespace odtools {
     namespace player {
 
-        class PlayerCache;
         class PlayerDelegate;
+        class RecMemIndex;
 
         using namespace std;
 
+        class IndexEntry {
+            public:
+                IndexEntry();
+                IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition);
+                IndexEntry(const int64_t &sampleTimeStamp, const uint64_t &filePosition, const string &nameOfSharedMemorySegment, const uint32_t &sizeOfSharedMemorySegment);
+
+            public:
+                int64_t m_sampleTimeStamp;
+                uint64_t m_filePosition;
+                string m_nameOfSharedMemorySegment;
+                uint32_t m_sizeOfSharedMemorySegment;
+                bool m_available;
+        };
+
         /**
-         * This class can be used to replay previously recorded
-         * data using a conference for distribution.
+         * This class can be used to replay previously recorded data and return
+         * the contained containers to be relayed into a ContainerConference.
          */
-        class Player {
+        class OPENDAVINCI_API Player {
+            private:
+                enum {
+                    ONE_MILLISECOND_IN_MICROSECONDS = 1000,
+                    ONE_SECOND_IN_MICROSECONDS = 1000 * ONE_MILLISECOND_IN_MICROSECONDS,
+                    MAX_DELAY_IN_MICROSECONDS = 5 * ONE_SECOND_IN_MICROSECONDS,
+                    LOOK_AHEAD_IN_S = 30,
+                    MIN_ENTRIES_FOR_LOOK_AHEAD = 5000,
+                };
+
             private:
                 /**
                  * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -52,7 +79,7 @@ namespace odtools {
                  *
                  * @param obj Reference to an object of this class.
                  */
-                Player(const Player &/*obj*/);
+                Player(const Player &/*obj*/) = delete;
 
                 /**
                  * "Forbidden" assignment operator. Goal: The compiler should warn
@@ -62,7 +89,7 @@ namespace odtools {
                  * @param obj Reference to an object of this class.
                  * @return Reference to this instance.
                  */
-                Player& operator=(const Player &/*obj*/);
+                Player& operator=(const Player &/*obj*/) = delete;
 
             public:
                 /**
@@ -72,7 +99,7 @@ namespace odtools {
                  * @param autoRewind True if the file should be rewind at EOF.
                  * @param memorySegmentSize Size of the memory segment to be used for buffering.
                  * @param numberOfMemorySegments Number of memory segments to be used for buffering.
-                 * @param threading If set to true, player will load new containers from the file in background.
+                 * @param threading If set to true, player will load new containers from the files in background.
                  */
                 Player(const odcore::io::URL &url, const bool &autoRewind, const uint32_t &memorySegmentSize, const uint32_t &numberOfMemorySegments, const bool &threading);
 
@@ -83,28 +110,23 @@ namespace odtools {
                  *
                  * @return Next container to be replayed.
                  */
-                odcore::data::Container getNextContainerToBeSent();
+                odcore::data::Container getNextContainerToBeSent() throw (odcore::exceptions::ArrayIndexOutOfBoundsException);
 
                 /**
-                 * This method registers a PlayerDelegate to process a specific
-                 * Container differently.
-                 *
-                 * @param containerID Container ID to listen for.
-                 * @param p PlayerDelegate.
-                 */
-                void registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate* p);
-
-                /**
-                 * This method returns the delay to be waited before the next container should be delivered.
+                 * This method returns the real delay to be waited before the next container should be delivered.
                  *
                  * @return delay to the next container in real time microseconds (us).
                  */
                 uint32_t getDelay() const;
 
                 /**
-                 * This method restarts the player.
+                 * This method returns the delay to be waited before the next
+                 * container should be delivered correct by the internal
+                 * processing time.
+                 *
+                 * @return delay to the next container in real time microseconds (us).
                  */
-                void rewind();
+                uint32_t getCorrectedDelay() const;
 
                 /**
                  * This method returns true if there is more data to replay.
@@ -113,37 +135,162 @@ namespace odtools {
                  */
                 bool hasMoreData() const;
 
+                /**
+                 * This method rewinds the iterators.
+                 */
+                void rewind();
+
+                /**
+                 * This method returns the total amount of containers in the .rec file.
+                 *
+                 * @return Total amount of containers in .rec file.
+                 */
+                uint32_t getTotalNumberOfContainersInRecFile() const;
+
             private:
+                // Internal methods without Lock.
+                bool hasMoreDataFromRecFile() const;
+                bool hasMoreDataFromRecMemFile() const;
+
+                /**
+                 * This method initializes the global index where the sample
+                 * time stamps are sorted chronocally and mapped to the 
+                 * corresponding entries (like containers) in the corresponding
+                 * recording files.
+                 */
+                void initializeIndex();
+
+                /**
+                 * This method computes the initially required amount of
+                 * containers in the cache and fill the cache accordingly.
+                 */
+                void computeInitialCacheLevelAndFillCache();
+
+                /**
+                 * This method clears all caches.
+                 */
+                void resetCaches();
+
+                /**
+                 * This method resets the iterators.
+                 */
+                inline void resetIterators();
+
+                /**
+                 * This method actually fills the cache by trying to read up
+                 * to maxNumberOfEntriesToReadFromFile from the rec file.
+                 *
+                 * @param maxNumberOfEntriesToReadFromFile Maximum number of entries to be read from file.
+                 * @return Number of entries read from file.
+                 */
+                uint32_t fillContainerCache(const uint32_t &maxNumberOfEntriesToReadFromFile);
+
+                /**
+                 * This method checks the availability of the next container
+                 * to be replayed from the cache.
+                 */
+                inline void checkAvailabilityOfNextContainerToBeReplayed();
+
+            private:
+                /**
+                 * This method checks if the Player has reached the end of the
+                 * index (to throw an exception) or if the the Player starts
+                 * over (using auto rewind).
+                 *
+                 * @throws odcore::exceptions::ArrayIndexOutOfBoundsException
+                 */
+                inline void checkForEndOfIndexAndThrowExceptionOrAutoRewind() throw (odcore::exceptions::ArrayIndexOutOfBoundsException);
+
+            private: // Data for the Player.
                 bool m_threading;
+
+                odcore::io::URL m_url;
+
+                // Handle to .rec file.
+                fstream m_recFile;
+                bool m_recFileValid;
+
+            private: // Player states.
                 bool m_autoRewind;
 
-                std::shared_ptr<istream> m_inFile;
-                std::shared_ptr<istream> m_inSharedMemoryFile;
+            private: // Index and cache management.
+                // Global index: Mapping SampleTimeStamp --> cache entry (holding the actual content from .rec, .rec.mem, or .h264 file)
+                mutable odcore::base::Mutex m_indexMutex;
+                multimap<int64_t, IndexEntry> m_index;
 
-                unique_ptr<PlayerCache> m_playerCache;
+                // Pointers to the current container to be replayed and the
+                // container that has be replayed from the global index.
+                multimap<int64_t, IndexEntry>::iterator m_previousPreviousContainerAlreadyReplayed;
+                multimap<int64_t, IndexEntry>::iterator m_previousContainerAlreadyReplayed;
+                multimap<int64_t, IndexEntry>::iterator m_currentContainerToReplay;
 
-                // The "actual" container contains the data to be sent, ...
-                odcore::data::Container m_actual;
-                // ... whereas the "successor" container contains the data that follows the actual one.
-                odcore::data::Container m_successor;
+                // Information about the index.
+                multimap<int64_t, IndexEntry>::iterator m_nextEntryToReadFromRecFile;
 
-                // This flag indicates if new data has to be read from the stream.
-                bool m_successorProcessed;
+                uint32_t m_desiredInitialLevel;
 
-                // This flag indicates, that we have to seek to the beginning of the stream and read the "actual" container.
-                bool m_seekToTheBeginning;
-
-                // This flag indicates that there is no more data to cache.
-                bool m_noMoreData;
+                // Fields to compute replay throughput for cache management.
+                odcore::data::TimeStamp m_firstTimePointReturningAContainer;
+                uint64_t m_numberOfReturnedContainersInTotal;
 
                 uint32_t m_delay;
+                uint32_t m_correctedDelay;
 
-                // Map used to store shared memory segments for restored from compressed images.
-                map<string, std::shared_ptr<odcore::wrapper::SharedMemory> > m_mapOfSharedMemoriesForCompressedImages;
+            private:
+                /**
+                 * This method sets the state of the containerCacheFilling thread.
+                 *
+                 * @param running False if the thread to fill the container cache shall be joined.
+                 */
+                void setContainerCacheFillingRunning(const bool &running);
+                bool isContainerCacheFillingRunning() const;
 
+                /**
+                 * This method manages the cache.
+                 */
+                void manageCache();
+
+                /**
+                 * This method checks whether the cache needs to be refilled.
+                 *
+                 * @param numberOfEntries Number of entries in cache.
+                 * @param refillMultiplicator Multiplicator to modify the amount of containers to be refilled.
+                 * @return Modified refillMultiplicator recommedned to be used next time 
+                 */
+                float checkRefillingCache(const uint32_t &numberOfEntries, float refillMultiplicator);
+
+            private:
+                mutable odcore::base::Mutex m_containerCacheFillingThreadIsRunningMutex;
+                bool m_containerCacheFillingThreadIsRunning;
+                std::thread m_containerCacheFillingThread;
+
+                // Mapping of pos_type (within .rec file) --> Container (read from .rec file).
+                map<uint64_t, odcore::data::Container> m_containerCache;
+
+            private:
+                unique_ptr<RecMemIndex> m_recMemIndex;
+
+            public:
+                /**
+                 * This method (un)registers a PlayerDelegate to process a
+                 * specific Container differently.
+                 *
+                 * @param containerID Container ID to listen for.
+                 * @param p PlayerDelegate or NULL to unregister.
+                 */
+                void registerPlayerDelegate(const uint32_t &containerID, PlayerDelegate* p);
+
+            private:
                 // Map to handle PlayerDelegates.
                 odcore::base::Mutex m_mapOfPlayerDelegatesMutex;
                 map<int32_t, PlayerDelegate*> m_mapOfPlayerDelegates;
+
+            public:
+                void setPlayerListener(PlayerListener *l);
+
+            private:
+                odcore::base::Mutex m_playerListenerMutex;
+                PlayerListener *m_playerListener;
         };
 
     } // player

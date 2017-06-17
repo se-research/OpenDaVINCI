@@ -27,7 +27,7 @@
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
 #include "CANBridge.h"
-#include "CANDevice.h"
+#include "SocketCANDevice.h"
 
 namespace automotive {
     namespace odcantools {
@@ -60,9 +60,9 @@ namespace automotive {
             m_deviceNodeB = getKeyValueConfiguration().getValue<string>("odcanbridge.devicenodeB");
 
             // Try to open CAN device A and register this instance as receiver for GenericCANMessages.
-            m_deviceA = std::shared_ptr<CANDevice>(new CANDevice(m_deviceNodeA, m_replicatorFromAtoB));
+            m_deviceA = std::shared_ptr<CANDevice>(new SocketCANDevice(m_deviceNodeA, m_replicatorFromAtoB));
             // Try to open CAN device B and register this instance as receiver for GenericCANMessages.
-            m_deviceB = std::shared_ptr<CANDevice>(new CANDevice(m_deviceNodeB, m_replicatorFromBtoA));
+            m_deviceB = std::shared_ptr<CANDevice>(new SocketCANDevice(m_deviceNodeB, m_replicatorFromBtoA));
 
             // If the device could be successfully opened, create a recording file with a dump of the data.
             if (m_deviceA->isOpen() &&
@@ -85,7 +85,7 @@ namespace automotive {
 
                 // URL for storing containers.
                 stringstream recordingURL;
-                recordingURL << "file://" << "odcanbridge_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".rec";
+                recordingURL << "file://" << "odcanbridge_" << TimeStamp().getYYYYMMDD_HHMMSS_noBlankNoColons() << ".rec";
                 // Size of memory segments.
                 const uint32_t MEMORY_SEGMENT_SIZE = 0;
                 // Number of memory segments.

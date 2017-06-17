@@ -1,7 +1,7 @@
 .\" Manpage for odcanbridge
 .\" Author: Christian Berger <christian.berger@gu.se>.
 
-.TH odcanbridge 1 "15 February 2017" "4.7.0" "odcanbridge man page"
+.TH odcanbridge 1 "30 May 2017" "4.12.1" "odcanbridge man page"
 
 .SH NAME
 odcanbridge \- This tool bridges low-level CAN messages between two CAN device nodes and maps the generic CAN messages to high-level C++ data structures.
@@ -23,11 +23,11 @@ The following parameters need to be present in the configuration file supplied b
 odsupercomponent(1) to correctly configure canproxy:
 
 .RS
-.B odcanbridge.devicenodeA = /dev/pcan0
+.B odcanbridge.devicenodeA = can0
 
 .B odcanbridge.devicenodeA.receivesContainers = 1
 
-.B odcanbridge.devicenodeB = /dev/pcan1
+.B odcanbridge.devicenodeB = can1
 
 .B odcanbridge.devicenodeB.receivesContainers = 0
 .RE

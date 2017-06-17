@@ -71,22 +71,8 @@ Check if the device driver has successfully detected the CAN adapter:
     
 Check the correct device number of the CAN adapter:
 
-    $ ls -l /dev/pcan*
+    $ ifconfig -a
 
-For this test, the device number is pcan32. Open the configuration file in /opt/od/bin/. At the last line add this device number:
-
-    $  odcanproxy.devicenode=/dev/pcan32
-    
-Then the CAN adapter will appear in the folder /dev/pcan32 every time it is mounted.
-
-Download the driver of the CAN adapter: http://www.peak-system.com/fileadmin/media/linux/files/peak-linux-driver-7.15.2.tar.gz Unpack the archive, disable the network and make (The network has to be disabled to make the recording work for this driver):
-
-    $ make NET=NO
-    
- Install the driver:
- 
-     $ sudo make install   
-    
 Go to /opt/od/bin and start odsupercomponent:
 
     $ LD_LIBRARY_PATH=/opt/od/lib ./odsupercomponent --cid=111

@@ -27,6 +27,7 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendlv/data/environment/EgoState.h"
 
 #include "plugins/streetmapviewer/StreetMapWidget.h"
@@ -129,18 +130,24 @@ namespace cockpit {
             void StreetMapWidget::nextContainer(Container &c) {
                 const double EPSILON = 1e-4;
                 static WGS84Coordinate old = m_referenceLocation;
-                if (c.getDataType() == opendlv::data::environment::WGS84Coordinate::ID()) {
-                    WGS84Coordinate w = c.getData<WGS84Coordinate>();
-                    const double deltaLat = fabs(old.getLatitude() - w.getLatitude());
-                    const double deltaLon = fabs(old.getLongitude() - w.getLongitude());
+                static int64_t timeStampPrevious = 0;
 
-                    if ( (deltaLat > EPSILON) || (deltaLon > EPSILON) ) {
-                        m_mapWidget->setMapCenter(w);
-                        old = w;
+                // Only listen for WGS84 from ID 0.
+                if ( (c.getDataType() == opendlv::data::environment::WGS84Coordinate::ID()) &&
+                     (0 == c.getSenderStamp()) ) {
+                    int64_t currentTimeStamp = abs(c.getSampleTimeStamp().toMicroseconds());
+                    const int64_t ONE_SECOND_IN_MICROSECONDS = 1 * 1000 * 1000;
+                    if ( (0 == timeStampPrevious) || ( abs(currentTimeStamp - timeStampPrevious) > (ONE_SECOND_IN_MICROSECONDS) ) ) {
+                        timeStampPrevious = currentTimeStamp;
+                        WGS84Coordinate w = c.getData<WGS84Coordinate>();
+                        const double deltaLat = fabs(old.getLatitude() - w.getLatitude());
+                        const double deltaLon = fabs(old.getLongitude() - w.getLongitude());
+
+                        if ( (deltaLat > EPSILON) || (deltaLon > EPSILON) ) {
+                            m_mapWidget->setMapCenter(w);
+                            old = w;
+                        }
                     }
-                }
-                else {
-                    m_mapWidget->nextContainer(c);
                 }
             }
         }

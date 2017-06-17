@@ -20,6 +20,7 @@
 BUILD_AS=$1
 TESTRUNNER_DISABLED=$2
 UID_AS=$3
+PACKAGING_ENABLED=$4
 
 # Adding user for building.
 groupadd $BUILD_AS
@@ -34,7 +35,7 @@ export PATH=/usr/lib/ccache:$PATH
 export CCACHE_DIR=/opt/ccache
 
 cmake -E remove_directory .
-cmake -D TESTRUNNER_DISABLED=$TESTRUNNER_DISABLED -D CMAKE_INSTALL_PREFIX=/opt/od4 /opt/OpenDaVINCI.sources
+cmake -D TESTRUNNER_DISABLED=$TESTRUNNER_DISABLED -D PACKAGING_ENABLED=$PACKAGING_ENABLED -D CMAKE_INSTALL_PREFIX=/opt/od4 /opt/OpenDaVINCI.sources
 
 if [ "$TESTRUNNER_DISABLED" == "YES" ]; then
     make -j4

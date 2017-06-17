@@ -17,9 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
 #include <netinet/in.h>
 #include <sys/select.h>
 #include <sys/socket.h>
+
+// Include headers for more exact time stamping.
+#ifdef __linux__
+    #include <sys/ioctl.h>
+#endif
 
 // Include headers to query IP addresses from local devices.
 #ifdef __linux__
@@ -31,10 +37,11 @@
 #include <cstring>
 #include <sstream>
 
-#include "opendavinci/odcore/io/Packet.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/wrapper/ConcurrencyFactory.h"
 #include "opendavinci/odcore/wrapper/POSIX/POSIXUDPReceiver.h"
 #include "opendavinci/odcore/wrapper/Thread.h"
+#include "opendavinci/generated/odcore/data/Packet.h"
 
 namespace odcore {
     namespace wrapper {
@@ -157,6 +164,9 @@ namespace odcore {
             void POSIXUDPReceiver::run() {
                 fd_set rfds;
                 struct timeval timeout;
+#ifdef __linux__
+                struct timeval socketTimeStamp;
+#endif
                 int32_t nbytes = 0;
 
                 struct sockaddr_storage remote;
@@ -210,6 +220,7 @@ namespace odcore {
                                 // Get sender address.
                                 const uint32_t MAX_ADDR_SIZE = 1024;
                                 char remoteAddr[MAX_ADDR_SIZE];
+
 // Fix -Werror=strict-aliasing (ignoring it is okay for the following call).
 #if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #    pragma GCC diagnostic push
@@ -221,8 +232,20 @@ namespace odcore {
 #if !defined(__OpenBSD__) && !defined(__NetBSD__)
 #    pragma GCC diagnostic pop
 #endif
-                                // -----     -----------------v (remote address)--v (data)
-                                nextPacket(odcore::io::Packet(string(remoteAddr), string(m_buffer, nbytes)));
+
+#ifdef __linux__
+                                if (0 != ioctl(m_fd, SIOCGSTAMP, &socketTimeStamp)) {
+                                    // In case the ioctl failed, use traditional vsariant.
+                                    const odcore::data::TimeStamp now;
+                                    socketTimeStamp.tv_sec = now.getSeconds();
+                                    socketTimeStamp.tv_usec = now.getMicroseconds();
+                                }
+                                odcore::data::TimeStamp now(socketTimeStamp.tv_sec, socketTimeStamp.tv_usec);
+#else
+                                const odcore::data::TimeStamp now;
+#endif
+                                // -----------------------------v (remote address)--v (data)
+                                nextPacket(odcore::data::Packet(string(remoteAddr), string(m_buffer, nbytes), now));
                             }
                         }
                     }

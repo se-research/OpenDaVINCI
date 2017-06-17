@@ -113,20 +113,14 @@ IF(    (UNIX)
    AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
    AND (NOT ("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8")) ) # Do not build Peak driver on i386 systems.
     ###########################################################################
-    # Find popt library.
-    FIND_PACKAGE (popt REQUIRED)
-
-    IF(POPT_FOUND)
-        ###########################################################################
-        # Add subdirectories.
-        ExternalProject_Add (odcantools
-            DEPENDS libcanmessagemapping
-            DOWNLOAD_COMMAND ""
-            UPDATE_COMMAND ""
-            SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcantools"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
-            TEST_BEFORE_INSTALL 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcantools-prefix/src/odcantools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcantools-prefix/src/odcantools-build --target ${MAKE_PACKAGE})
-    ENDIF()
+    # Add subdirectories.
+    ExternalProject_Add (odcantools
+        DEPENDS libcanmessagemapping
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/odcantools"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        TEST_BEFORE_INSTALL 1
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcantools-prefix/src/odcantools-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/odcantools-prefix/src/odcantools-build --target ${MAKE_PACKAGE})
 ENDIF()
 

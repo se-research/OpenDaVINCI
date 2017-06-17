@@ -51,27 +51,18 @@ FIND_PACKAGE (OpenDaVINCI REQUIRED)
 SET(AUTOMOTIVEDATA_DIR "${CMAKE_INSTALL_PREFIX}")
 FIND_PACKAGE (AutomotiveData REQUIRED)
 
-###########################################################################
-# Find pcan-no-kernel-driver.
-SET(LIBPCAN_NO_KERNEL_DRIVER_PATH_DIR "${CMAKE_INSTALL_PREFIX}")
-FIND_PACKAGE (pcan-no-kernel-driver REQUIRED)
-
 ###############################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
-# Set header files from pcan-no-kernel-driver.
-INCLUDE_DIRECTORIES (${pcan-no-kernel-driver_SOURCE_DIR}/lib)
-INCLUDE_DIRECTORIES (${pcan-no-kernel-driver_SOURCE_DIR}/driver)
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 
 ###########################################################################
 # Set linking libraries to successfully link test suites and binaries.
 SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}
-               ${AUTOMOTIVEDATA_LIBRARIES}
-               ${pcan-no-kernel-driver_BINARY_DIR}/libpcan-no-kernel-driver-static.a)
+               ${AUTOMOTIVEDATA_LIBRARIES})
 
 ###############################################################################
 # Build this project.

@@ -82,6 +82,10 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
     MESSAGE(STATUS "Found C++ compiler:         Building automotivedata")
     SET(BUILD_AUTOMOTIVEDATA 1)
 
+    MESSAGE(STATUS "Found C++ compiler:         Building ODVDAutomotiveData")
+    SET(BUILD_ODVDAUTOMOTIVEDATA 1)
+    MESSAGE(STATUS "Found C++ compiler:         Building ODVDCaroloCup")
+    SET(BUILD_ODVDCAROLOCUP 1)
     MESSAGE(STATUS "Found C++ compiler:         Building ODVDCommaAI")
     SET(BUILD_ODVDCOMMAAI 1)
     MESSAGE(STATUS "Found C++ compiler:         Building ODVDOpenDLV")
@@ -112,15 +116,9 @@ IF(     NOT("${CMAKE_C_COMPILER}" STREQUAL "")
         ENDIF()
     ENDIF()
 
-    IF(    (UNIX)
-       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "DragonFly")
-       AND (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-       AND (NOT ("${ARMHF}" STREQUAL "YES"))
-       AND (NOT ("${i686}" STREQUAL "YES")) )
-        IF(POPT_FOUND)
-            MESSAGE(STATUS "Found popt-dev:             Building automotive/odcantools")
+    IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+            MESSAGE(STATUS "Found Linux:             Building automotive/odcantools")
             SET(BUILD_AUTOMOTIVE_ODCANTOOLS 1)
-        ENDIF()
     ENDIF()
 ENDIF()
 
@@ -136,16 +134,17 @@ IF(     (UNIX)
 ENDIF()
 MESSAGE("Test command: \"${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}\"")
 
-# If dpkg and rpmbuild are available, .deb and .rpm packages will be
-# created. Otherwise, the software is simply installed.
+# If dpkg and rpmbuild are available and packaging requested on command line,
+#.deb and .rpm packages will be created.
 IF(     NOT("${DPKG_EXECUTABLE}" STREQUAL "DPKG_EXECUTABLE-NOTFOUND")
-    AND NOT("${RPMBUILD_EXECUTABLE}" STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND") )
+    AND NOT("${RPMBUILD_EXECUTABLE}" STREQUAL "RPMBUILD_EXECUTABLE-NOTFOUND")
+    AND ("${PACKAGING_ENABLED}" STREQUAL "YES") )
     MESSAGE(STATUS "Enabling building .deb and .rpm packages.")
     SET(MAKE_PACKAGE package)
 ELSE()
     # If the platform does not provide dpkg and rpmbuild, make package is
-    # replaced with make install.
-    SET(MAKE_PACKAGE install)
+    # replaced with make help to simply have a no-op.
+    SET(MAKE_PACKAGE help)
 ENDIF()
 
 ###########################################################################
@@ -275,6 +274,62 @@ IF(${BUILD_AUTOMOTIVEDATA})
         INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libautomotivedata-prefix/src/libautomotivedata-build --target ${MAKE_PACKAGE})
 ENDIF()
 
+# Next, the project for the AutomotiveData data structures is built.
+IF(${BUILD_ODVDAUTOMOTIVEDATA})
+    # This "external project" simply deletes the existing libodvdautomotivedata.
+    ExternalProject_Add (libodvdautomotivedata-cleanup
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/libodvdautomotivedata
+        PATCH_COMMAND ""
+        SOURCE_DIR ""
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        TEST_COMMAND ""
+        INSTALL_COMMAND "")
+
+    ExternalProject_Add (libodvdautomotivedata
+        DEPENDS libodvdautomotivedata-cleanup
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/resources/odvd/ODVDAutomotiveData.odvd
+        PATCH_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libodvdautomotivedata"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        CMAKE_ARGS "-DCXXTEST_INCLUDE_DIR=${CXXTEST_INCLUDE_DIR}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdautomotivedata-prefix/src/libodvdautomotivedata-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdautomotivedata-prefix/src/libodvdautomotivedata-build --target ${MAKE_PACKAGE})
+ENDIF()
+
+# Next, the project for the AutomotiveData data structures is built.
+IF(${BUILD_ODVDCAROLOCUP})
+    # This "external project" simply deletes the existing libodvdcarolocup.
+    ExternalProject_Add (libodvdcarolocup-cleanup
+        DEPENDS libopendavinci
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/libodvdcarolocup
+        PATCH_COMMAND ""
+        SOURCE_DIR ""
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        TEST_COMMAND ""
+        INSTALL_COMMAND "")
+
+    ExternalProject_Add (libodvdcarolocup
+        DEPENDS libodvdcarolocup-cleanup
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/resources/odvd/ODVDCaroloCup.odvd
+        PATCH_COMMAND ""
+        SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libodvdcarolocup"
+        CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
+        CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}"
+        CMAKE_ARGS "-DCXXTEST_INCLUDE_DIR=${CXXTEST_INCLUDE_DIR}"
+        TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ${CMAKE_CTEST_COMMAND} ${CTEST_PARAMETERS}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdcarolocup-prefix/src/libodvdcarolocup-build --target install COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/libodvdcarolocup-prefix/src/libodvdcarolocup-build --target ${MAKE_PACKAGE})
+ENDIF()
+
 # Next, the project for the CommaAI data structures is built.
 IF(${BUILD_ODVDCOMMAAI})
     # This "external project" simply deletes the existing libodvdcommaai.
@@ -292,7 +347,7 @@ IF(${BUILD_ODVDCOMMAAI})
     ExternalProject_Add (libodvdcommaai
         DEPENDS libodvdcommaai-cleanup
         DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/ODVDCommaAI.odvd
+        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/resources/odvd/ODVDCommaAI.odvd
         PATCH_COMMAND ""
         SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libodvdcommaai"
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"
@@ -320,7 +375,7 @@ IF(${BUILD_ODVDOPENDLV})
     ExternalProject_Add (libodvdopendlv
         DEPENDS libodvdopendlv-cleanup
         DOWNLOAD_COMMAND ""
-        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/ODVDOpenDLV.odvd
+        UPDATE_COMMAND cd ${CMAKE_CURRENT_BINARY_DIR} && ${Java_JAVA_EXECUTABLE} -jar ${ODDATASTRUCTUREGENERATOR_EXECUTABLE} --withCMake ${CMAKE_CURRENT_SOURCE_DIR}/resources/odvd/ODVDOpenDLV.odvd
         PATCH_COMMAND ""
         SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libodvdopendlv"
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}"

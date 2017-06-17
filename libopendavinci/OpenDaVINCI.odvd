@@ -218,14 +218,11 @@ message odcore.data.buffer.MemorySegment [id = 29] {
 }
 
 // This message is used to remotely control the odplayer component.
-message odcore.data.player.PlayerCommand [id = 10] {
-    enum Command {
-        PLAY=0,
-        PAUSE=1,
-        REWIND=2,
-        STEP_FORWARD=3,
+message odcore.data.player.PlayerStatus [id = 10] {
+    enum Status {
+        NEW_FILE_LOADED=0,
     };
-    Command command [id = 1];
+    Status status [id = 1];
 }
 
 // This message is used to remotely control the odrecorder component.
@@ -335,6 +332,16 @@ message odcore.data.CompactPointCloud [id = 49] {
     
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+// This message is used to display values.
+// This is a highly inefficient data structure and should be used only
+// for debug purposes!
+message odcockpit.SimplePlot [id = 42] {
+    map<string, double> values [id = 1];
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // PCAP recordings (de-facto standard for raw packet dumps, created for
 // instance with WireShark).
@@ -359,5 +366,13 @@ message odcore.data.pcap.PacketHeader [id = 121] {
 message odcore.data.pcap.Packet [id = 122] {
     odcore.data.pcap.PacketHeader header [id = 1];
     string payload [id = 2]; // Raw byte dump.
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// This message is used to share data received from a socket.
+message odcore.data.Packet [id = 123] {
+    string sender [id = 1];
+    string data [id = 2]; // Raw byte dump.
+    odcore.data.TimePoint received [id = 3];
 }
 

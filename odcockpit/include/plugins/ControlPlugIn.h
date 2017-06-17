@@ -23,6 +23,7 @@
 
 #include <string>
 
+#include "FIFOMultiplexer.h"
 #include "plugins/PlugIn.h"
 
 class QWidget;
@@ -61,9 +62,10 @@ namespace cockpit {
                  * @param name Name of this plugin.
                  * @param kvc KeyValueConfiguration for this plugin.
                  * @param conf client conference to send data to.
+                 * @param multiplexer Data sink to forward containers to odcockpit receivers.
                  * @param prnt Pointer to the containing super window.
                  */
-                ControlPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget* prnt);
+                ControlPlugIn(const string &name, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, FIFOMultiplexer &multiplexer, QWidget* prnt);
 
                 virtual ~ControlPlugIn();
 
@@ -74,7 +76,10 @@ namespace cockpit {
                  */
                 odcore::io::conference::ContainerConference& getConference() const;
 
+                FIFOMultiplexer& getFIFOMultiplexer() const;
+
             private:
+                FIFOMultiplexer &m_multiplexer;
                 odcore::io::conference::ContainerConference &m_conference;
         };
 

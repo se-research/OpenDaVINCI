@@ -21,6 +21,12 @@ namespace odcore {
             public:
             Arguments(const std::initializer_list<std::string> & argList);
 
+            Arguments(const Arguments &) = delete;
+            Arguments(Arguments &&) = delete;
+
+            void operator=(const Arguments &) = delete;
+            void operator=(Arguments &&) = delete;
+
             private:
             /**
              * Vector containing the actual, allocated arguments

@@ -21,11 +21,10 @@
 #define OPENDAVINCI_CORE_IO_PACKETLISTENER_H_
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/generated/odcore/data/Packet.h"
 
 namespace odcore {
     namespace io {
-
-class Packet;
 
         /**
          * This class provides an interface for getting informed
@@ -40,7 +39,7 @@ class Packet;
                  *
                  * @param p Packet that has been occurred.
                  */
-                virtual void nextPacket(const Packet &p) = 0;
+                virtual void nextPacket(const odcore::data::Packet &p) = 0;
         };
 
     }

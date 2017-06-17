@@ -248,7 +248,7 @@ namespace odcomparepointcloud {
         odcore::io::URL url("file://" + m_recordingFile);
         unique_ptr< Player > player;
         //player = unique_ptr< Player >(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
-        player = unique_ptr< Player >(new Player(url, 0, 2800000, 20, false));
+        player = unique_ptr< Player >(new Player(url, false, 2800000, 20, false));
         Container c;
         Container cpcFrame;
         Container spcFrame;
