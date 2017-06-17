@@ -1,3 +1,14 @@
+4.12.1 - Fixes for odcockpit
+4.12.0 - Updated odcockpit visualization BirdsEyeMap and Logmessage
+4.11.1 - Fix in odplayerh264 to handle non-existing .h264 files
+4.11.0 - Using different Docker images for building and releasing
+4.10.0 - SocketCAN, fix to avoid decoding Containers from incomplete istreams, fix for odplayer to avoid replaying empty .rec.mem files
+4.9.3 - Changed the automatic naming of recording files to cope with filesystem restrictions.
+4.9.2 - Improved timestamping for UDP packets
+4.9.1 - Compile fix
+4.9.0 - New player with better caching, fixes to odcockpit, odfilter can repair large deltas in sampleTimeStamp
+4.8.1 - odrecinspect can handle sendstamped containers
+4.8.0 - New tool odlivefeed; CANDevice::write returns errorcode; parallelized testsuites in libopendavinci
 4.7.0 - Circular UDP communication disabled and fix for double lock in UDPContainerConference
 4.6.1 - Compilation fix on 32bit systems
 4.6.0 - Restructuring PointCloud encoding

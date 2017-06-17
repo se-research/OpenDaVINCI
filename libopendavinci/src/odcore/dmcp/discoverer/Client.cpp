@@ -24,7 +24,6 @@
 #include "opendavinci/odcore/base/module/AbstractCIDModule.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/dmcp/discoverer/Client.h"
-#include "opendavinci/odcore/io/Packet.h"
 #include "opendavinci/odcore/io/udp/UDPFactory.h"
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/generated/odcore/data/dmcp/Constants.h"
@@ -84,7 +83,7 @@ namespace odcore {
                 m_sender->send(sstr.str());
             }
 
-            void Client::nextPacket(const odcore::io::Packet &p) {
+            void Client::nextPacket(const odcore::data::Packet &p) {
                 Container container;
                 stringstream sstr(p.getData());
                 sstr >> container;
@@ -95,8 +94,8 @@ namespace odcore {
                         Lock l(m_responseCondition);
 
                         if (!m_response) {
-                        	ServerInformation tmp = msg.getServerInformation();
-                        	// Use the IP address from the received UDP packet.
+                            ServerInformation tmp = msg.getServerInformation();
+                            // Use the IP address from the received UDP packet.
                             m_serverInformation = ServerInformation(p.getSender(), tmp.getPort(), tmp.getManagedLevel());
                             m_response = true;
                             onResponse();

@@ -103,19 +103,6 @@ IF(ODPLAYERH264_FOUND)
 ENDIF()
 
 ###########################################################################
-# Find dl and stdc++.
-IF(UNIX)
-    FIND_PACKAGE (DL)
-    FIND_PACKAGE (CPPexperimental)
-    IF(DL_FOUND AND CPPEXPERIMENTAL_FOUND)
-        SET (LIBRARIES ${LIBRARIES}
-                       ${DL_LIBRARIES} ${CPPEXPERIMENTAL_LIBRARIES})
-        INCLUDE_DIRECTORIES (${DL_INCLUDE_DIRS})
-        SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_DL=YES")
-    ENDIF()
-ENDIF()
-
-###########################################################################
 # Set header files from OpenDaVINCI.
 INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.

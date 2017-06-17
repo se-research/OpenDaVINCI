@@ -61,23 +61,50 @@ namespace odcore {
                         m_internalName.resize(MAX_NAME_LENGTH);
                     }
 
+                    // 1. Try to cleanup a potentially uncleanly existing semaphore.
+                    int retVal = sem_unlink(m_internalName.c_str());
+                    if ( (0 != retVal) && (EACCES == errno) ) {
+                        CLOG3 << "[POSIXSharedMemory] Semaphore could not be created, errno: " << errno << "; " << ::strerror(errno) << endl;
+                    }
+
+                    // 2. Create semaphore with the given name.
                     m_mutexSharedMemory = sem_open(m_internalName.c_str(), O_CREAT, S_IRUSR | S_IWUSR, 1);
-                    if (m_mutexSharedMemory == SEM_FAILED) {
+                    if (SEM_FAILED == m_mutexSharedMemory) {
                         CLOG3 << "[POSIXSharedMemory] Semaphore could not be created, errno: " << errno << "; " << ::strerror(errno) << endl;
                         sem_unlink(m_internalName.c_str());
                         m_mutexSharedMemory = NULL;
-                    } else {
-                        // Create the shared memory segment with this name.
+                    }
+                    else {
+                        // Compute the hash for the given name.
                         const uint32_t hash = getCRC32(m_internalName);
-                        m_shmID = shmget(hash, size + sizeof(uint32_t), IPC_CREAT | S_IRUSR | S_IWUSR);
-                        if (m_shmID < 0) {
-                            CLOG3 << "[POSIXSharedMemory] Shared memory could not be requested, errno: " << errno << "; " << ::strerror(errno) << endl;
-                            sem_unlink(m_internalName.c_str());
-                            m_mutexSharedMemory = NULL;
-                        } else {
-                            // Attach to virtual memory and store its size to the beginning of the shared memory.
-                            m_sharedMemory = shmat(m_shmID, NULL, 0);
-                            *static_cast<uint32_t *>(m_sharedMemory) = m_size;
+
+                        // 3. Try to find an uncleanly existing shared memory segment to be removed.
+                        retVal = 0;
+                        m_shmID = shmget(hash, size + sizeof(uint32_t), S_IRUSR | S_IWUSR);
+                        if (!(m_shmID < 0)) {
+                            clog << "[POSIXSharedMemory] Found existing shared memory; trying to remove...";
+                            // Remove shared memory if released by other processes.
+                            if (shmctl(m_shmID, IPC_RMID, 0)) {
+                                clog << "failed, errno: " << errno << "; " << ::strerror(errno) << endl;
+                            }
+                            else {
+                                clog << "done." << endl;
+                            }
+                        }
+
+                        // 4. Create the requested shared memory segment with this name.
+                        if (0 == retVal) {
+                            m_shmID = shmget(hash, size + sizeof(uint32_t), IPC_CREAT | S_IRUSR | S_IWUSR);
+                            if (m_shmID < 0) {
+                                CLOG3 << "[POSIXSharedMemory] Shared memory could not be requested, errno: " << errno << "; " << ::strerror(errno) << endl;
+                                sem_unlink(m_internalName.c_str());
+                                m_mutexSharedMemory = NULL;
+                            }
+                            else {
+                                // Attach to virtual memory and store its size to the beginning of the shared memory.
+                                m_sharedMemory = shmat(m_shmID, NULL, 0);
+                                *static_cast<uint32_t *>(m_sharedMemory) = m_size;
+                            }
                         }
                     }
                 }
@@ -113,7 +140,7 @@ namespace odcore {
                         m_mutexSharedMemory = NULL;
                     }
                     else {
-                        // Create the shared memory segment with this key.
+                        // Try to open the shared memory segment with this key.
                         const uint32_t hash = getCRC32(m_internalName);
                         m_shmID = shmget(hash, sizeof(uint32_t), S_IRUSR | S_IWUSR);
                         if (m_shmID < 0) {
@@ -131,7 +158,7 @@ namespace odcore {
 
                             m_shmID = shmget(hash, m_size + sizeof(uint32_t), S_IRUSR | S_IWUSR);
                             if (m_shmID < 0) {
-                                CLOG3 << "[POSIXSharedMemory] Final shared memory could not be requested, errno: " << errno << "; " << ::strerror(errno) << endl;
+                                CLOG3 << "[POSIXSharedMemory] Shared memory could not be requested, errno: " << errno << "; " << ::strerror(errno) << endl;
                                 sem_close(m_mutexSharedMemory);
                                 m_mutexSharedMemory = NULL;
                             }

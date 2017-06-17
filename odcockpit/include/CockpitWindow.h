@@ -75,6 +75,9 @@ namespace plugins { class PlugInProvider; }
 
             virtual ~CockpitWindow();
 
+            static string getStartupDirectory();
+            static string m_startupDirectory;
+
         public slots:
             void close();
             void maximizeActiveSubWindow();
@@ -84,6 +87,7 @@ namespace plugins { class PlugInProvider; }
 
         private:
             void constructLayout();
+            void loadPlugIn(const string &s);
 
         private:
             odcore::base::KeyValueConfiguration m_kvc;

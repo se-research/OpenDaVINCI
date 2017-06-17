@@ -164,6 +164,17 @@ namespace odcore {
             m_readableMinutes(obj.m_readableMinutes),
             m_readableSeconds(obj.m_readableSeconds) {}
 
+        TimeStamp::TimeStamp(const TimePoint &obj) :
+            TimePoint(obj),
+            m_readableYear(0),
+            m_readableMonth(0),
+            m_readableDayOfMonth(0),
+            m_readableHours(0),
+            m_readableMinutes(0),
+            m_readableSeconds(0) {
+            computeHumanReadableRepresentation();
+        }
+
         TimeStamp::~TimeStamp() {}
 
         TimeStamp& TimeStamp::operator=(const TimeStamp &obj) {
@@ -320,6 +331,21 @@ namespace odcore {
                            << "_" << ( (HOUR < 10) ? "0" : "" ) << HOUR
                            << ":" << ( (MINUTE < 10) ? "0" : "" ) << MINUTE
                            << ":" << ( (SECOND < 10) ? "0" : "" ) << SECOND;
+            return s.str();
+        }
+
+        const string TimeStamp::getYYYYMMDD_HHMMSS_noBlankNoColons() const {
+            const uint32_t MONTH = getMonth();
+            const uint32_t DAY = getDay();
+            const uint32_t HOUR = getHour();
+            const uint32_t MINUTE = getMinute();
+            const uint32_t SECOND = getSecond();
+
+            stringstream s;
+            s << getYear() << "-" << ( (MONTH < 10) ? "0" : "" ) << MONTH << "-" << ( (DAY < 10) ? "0" : "" ) << DAY
+                           << "_" << ( (HOUR < 10) ? "0" : "" ) << HOUR
+                           << "" << ( (MINUTE < 10) ? "0" : "" ) << MINUTE
+                           << "" << ( (SECOND < 10) ? "0" : "" ) << SECOND;
             return s.str();
         }
 

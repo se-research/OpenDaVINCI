@@ -24,7 +24,7 @@
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "automotivedata/generated/automotive/GenericCANMessage.h"
 
-#include "CANDevice.h"
+#include "SocketCANDevice.h"
 #include "CANProxy.h"
 
 namespace automotive {
@@ -50,7 +50,7 @@ namespace automotive {
             m_deviceNode = getKeyValueConfiguration().getValue<string>("odcanproxy.devicenode");
 
             // Try to open CAN device and register this instance as receiver for GenericCANMessages.
-            m_device = shared_ptr<CANDevice>(new CANDevice(m_deviceNode, *this));
+            m_device = shared_ptr<CANDevice>(new SocketCANDevice(m_deviceNode, *this));
 
             // If the device could be successfully opened, create a recording file with a dump of the data.
             if (m_device->isOpen()) {
@@ -59,7 +59,7 @@ namespace automotive {
 
                 // URL for storing containers.
                 stringstream recordingURL;
-                recordingURL << "file://" << "odcanproxy_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".rec";
+                recordingURL << "file://" << "odcanproxy_" << TimeStamp().getYYYYMMDD_HHMMSS_noBlankNoColons() << ".rec";
                 // Size of memory segments.
                 const uint32_t MEMORY_SEGMENT_SIZE = 0;
                 // Number of memory segments.

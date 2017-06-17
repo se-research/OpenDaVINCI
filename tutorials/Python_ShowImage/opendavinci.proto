@@ -1,0 +1,173 @@
+// This is an auto-generated file from a .odvd message specification using OpenDaVINCI's odDataStructureGenerator.
+
+// This line is only needed when using Google Protobuf 3.
+syntax = "proto2";
+
+// Message identifier: 12.
+message odcore_data_TimePoint {
+    optional sint32 seconds = 1;
+    optional sint32 microseconds = 2;
+}
+
+// Message identifier: 0.
+message odcore_data_MessageContainer {
+    optional sint32 dataType = 1;
+    optional bytes serializedData = 2;
+    optional odcore_data_TimePoint sent = 3;
+    optional odcore_data_TimePoint received = 4;
+    optional odcore_data_TimePoint sampleTimeStamp = 5;
+}
+
+// Message identifier: 100.
+message odcore_data_LogMessage {
+    optional string componentName = 1;
+    optional string logMessage = 3;
+}
+
+// Message identifier: 70.
+message odcore_data_reflection_AbstractField {
+    optional uint32 fieldIdentifier = 1;
+    optional string longFieldName = 2;
+    optional string shortFieldName = 3;
+    optional sint32 size = 5 [ default = -1 ];
+}
+
+// Message identifier: 110.
+message odcore_data_dmcp_Constants {
+}
+
+// Message identifier: 112.
+message odcore_data_dmcp_ServerInformation {
+    optional string IP = 1;
+    optional uint32 port = 2;
+}
+
+// Message identifier: 3.
+message odcore_data_dmcp_DiscoverMessage {
+    optional odcore_data_dmcp_ServerInformation serverInformation = 2;
+    optional string moduleName = 3;
+}
+
+// Message identifier: 113.
+message odcore_data_dmcp_ModuleDescriptor {
+    optional string name = 1;
+    optional string identifier = 2;
+    optional string version = 3;
+    optional float frequency = 4;
+}
+
+// Message identifier: 9.
+message odcore_data_dmcp_RuntimeStatistic {
+    optional double sliceConsumption = 1;
+}
+
+// Message identifier: 114.
+message odcore_data_dmcp_ModuleStatistic {
+    optional odcore_data_dmcp_ModuleDescriptor module = 1;
+    optional odcore_data_dmcp_RuntimeStatistic runtimeStatistic = 2;
+}
+
+// Message identifier: 8.
+message odcore_data_dmcp_ModuleStatistics {
+    repeated odcore_data_dmcp_ModuleStatistic moduleStatistics = 1;
+}
+
+// Message identifier: 6.
+message odcore_data_dmcp_ModuleStateMessage {
+}
+
+// Message identifier: 7.
+message odcore_data_dmcp_ModuleExitCodeMessage {
+}
+
+// Message identifier: 101.
+message odcore_data_dmcp_PulseMessage {
+    optional uint32 nominalTimeSlice = 2;
+    optional uint32 cumulatedTimeSlice = 3;
+}
+
+// Message identifier: 102.
+message odcore_data_dmcp_PulseAckMessage {
+}
+
+// Message identifier: 103.
+message odcore_data_dmcp_PulseAckContainersMessage {
+}
+
+// Message identifier: 2.
+message odcore_data_Configuration {
+}
+
+// Message identifier: 29.
+message odcore_data_buffer_MemorySegment {
+    optional uint32 size = 2;
+    optional uint32 consumedSize = 3;
+    optional uint32 identifier = 4;
+}
+
+// Message identifier: 10.
+message odcore_data_player_PlayerCommand {
+}
+
+// Message identifier: 11.
+message odcore_data_recorder_RecorderCommand {
+}
+
+// Message identifier: 13.
+message odcore_data_SharedData {
+    optional string name = 1;
+    optional uint32 size = 2;
+}
+
+// Message identifier: 14.
+message odcore_data_image_SharedImage {
+    optional string name = 1;
+    optional uint32 size = 2;
+    optional uint32 width = 3;
+    optional uint32 height = 4;
+    optional uint32 bytesPerPixel = 5;
+}
+
+// Message identifier: 27.
+message odcore_data_image_H264Frame {
+    optional string h264Filename = 1;
+    optional uint32 frameIdentifier = 2;
+    optional uint32 frameSize = 3;
+    optional odcore_data_image_SharedImage associatedSharedImage = 4;
+}
+
+// Message identifier: 28.
+message odcore_data_SharedPointCloud {
+    optional string name = 1;
+    optional uint32 size = 2;
+    optional uint32 width = 3;
+    optional uint32 height = 4;
+    optional uint32 numberOfComponentsPerPoint = 5;
+    optional uint32 userInfo = 7;
+}
+
+// Message identifier: 120.
+message odcore_data_pcap_GlobalHeader {
+    optional uint32 magic_number = 1;
+    optional uint32 version_major = 2;
+    optional uint32 version_minor = 3;
+    optional sint32 thiszone = 4;
+    optional uint32 sigfigs = 5;
+    optional uint32 snaplen = 6;
+    optional uint32 network = 7;
+}
+
+// Message identifier: 121.
+message odcore_data_pcap_PacketHeader {
+    optional uint32 ts_sec = 1;
+    optional uint32 ts_usec = 2;
+    optional uint32 incl_len = 3;
+    optional uint32 orig_len = 4;
+}
+
+// Message identifier: 122.
+message odcore_data_pcap_Packet {
+    optional odcore_data_pcap_PacketHeader header = 1;
+    optional string payload = 2;
+}
+

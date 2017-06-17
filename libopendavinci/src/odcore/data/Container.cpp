@@ -253,6 +253,7 @@ namespace odcore {
                         // Check validity of the received bytes.
                         if (!( (0x0D == byte0) && (0xA4 == byte1) )) {
                             std::cerr << "[core::base::Container] Failed to decode OpenDaVINCI container header." << std::endl;
+                            return in;
                         }
                     }
                 }
@@ -269,13 +270,13 @@ namespace odcore {
             m_serializedData.str(rawData);
 
             // Read sent time stamp data.
-            d->read(3, m_sent);
+            d->read(3, m_sent); m_sent.computeHumanReadableRepresentation();
 
             // Read received time stamp data.
-            d->read(4, m_received);
+            d->read(4, m_received); m_received.computeHumanReadableRepresentation();
 
             // Read sample time stamp.
-            d->read(5, m_sampleTimeStamp);
+            d->read(5, m_sampleTimeStamp); m_sampleTimeStamp.computeHumanReadableRepresentation();
 
             // Read sender stamp.
             d->read(6, m_senderStamp);

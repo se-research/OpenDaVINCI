@@ -163,11 +163,8 @@ namespace automotive {
             // If AUTO_REWIND is true, the file will be played endlessly.
             const bool AUTO_REWIND = true;
 
-            // We do not want player to run in parallel but we want to process frame by frame sequentially.
-            const bool THREADING = false;
-
             // Construct the player.
-            player = unique_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING));
+            player = unique_ptr<Player>(new Player(url, AUTO_REWIND, MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS));
 */
 
             // Main data processing loop.

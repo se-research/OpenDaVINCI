@@ -20,6 +20,8 @@
 #include <QtCore>
 #include <QtGui>
 
+#include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -44,6 +46,8 @@
 #include "opendlv/scenegraph/primitives/Polygon.h"
 #include "opendlv/scenegraph/renderer/SceneNodeRenderingConfiguration.h"
 #include "opendlv/scenegraph/transformation/SceneGraphFactory.h"
+
+#include "CockpitWindow.h"
 #include "plugins/PlugIn.h"
 #include "plugins/birdseyemap/BirdsEyeMapMapWidget.h"
 #include "plugins/birdseyemap/BirdsEyeMapRenderer.h"
@@ -85,6 +89,7 @@ namespace cockpit {
                 m_measurements(new SceneNode()),
                 m_scaleFactor(9.99995),
                 m_centerOfMap(),
+                m_centerOfMapUser(),
                 m_mouseOld(-1, -1, 0),
                 m_numberOfReceivedEgoStates(0),
                 m_egoState(),
@@ -151,17 +156,32 @@ namespace cockpit {
             }
 
             void BirdsEyeMapMapWidget::createSceneGraph() {
+                // The .scnx and .objx files are provided relative to the location of odcockpit.
+                // Thus, set the correct CWD.
+                QString cwd(CockpitWindow::getStartupDirectory().c_str());
+                QDir::setCurrent(cwd);
+
                 // Setup surroundings.
                 const URL urlOfSCNXFile(m_plugIn.getKeyValueConfiguration().getValue<string>("global.scenario"));
                 if (urlOfSCNXFile.isValid()) {
-                    opendlv::scenario::SCNXArchive &scnxArchive = opendlv::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
+                    bool fileExists = false;
+                    {
+                        ifstream checkIfFileExists(urlOfSCNXFile.getResource());
+                        fileExists = checkIfFileExists.good();
+                    }
+                    if (!fileExists) {
+                        cout << "Error: " << urlOfSCNXFile.toString() << " does not exist." << endl;
+                    }
+                    else {
+                        opendlv::scenario::SCNXArchive &scnxArchive = opendlv::scenario::SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
-                    // Read scnxArchive and transform it into renderable scene graph.
-                    SceneNode *surroundings = opendlv::scenegraph::transformation::SceneGraphFactory::getInstance().transform(scnxArchive);
+                        // Read scnxArchive and transform it into renderable scene graph.
+                        SceneNode *surroundings = opendlv::scenegraph::transformation::SceneGraphFactory::getInstance().transform(scnxArchive);
 
-                    if (surroundings != NULL) {
-                        surroundings->setSceneNodeDescriptor(SceneNodeDescriptor("Surroundings"));
-                        m_stationaryElements->addChild(surroundings);
+                        if (surroundings != NULL) {
+                            surroundings->setSceneNodeDescriptor(SceneNodeDescriptor("Surroundings"));
+                            m_stationaryElements->addChild(surroundings);
+                        }
                     }
                 }
 
@@ -205,6 +225,16 @@ namespace cockpit {
             void BirdsEyeMapMapWidget::assignCameraTo(const SceneNodeDescriptor &snd) {
                 Lock l(m_rootMutex);
                 m_cameraAssignedNodeDescriptor = snd;
+
+                if (snd.getName() != "EgoCar") {
+                    // Restore old position.
+                    m_centerOfMap = m_centerOfMapUser;
+                }
+
+                if (snd.getName() == "EgoCar") {
+                    // Save old position.
+                    m_centerOfMapUser = m_centerOfMap;
+                }
             }
 
             void BirdsEyeMapMapWidget::mouseReleaseEvent(QMouseEvent */*evnt*/) {
@@ -258,19 +288,14 @@ namespace cockpit {
                 // Define cartesian coordinates: +Y = 12am, -Y = 6am, -X = 9am, +X = 3am, (0, 0) = image center, scaling = 1px=1mm=0.001m
                 QTransform cartesianCoordinates;
 
+                // Center to where we are (either EgoCar or where the user moved the map to).
                 if (m_cameraAssignedNodeDescriptor.getName() == "EgoCar") {
-                    // This applies map translation wrt. vehicle-fixed orientation.
-                    cartesianCoordinates.translate((evt->rect().width() / 2) + m_egoState.getPosition().getX()*10, (evt->rect().height() / 2) + m_egoState.getPosition().getY()*10);
-                    cartesianCoordinates.rotateRadians(m_egoState.getRotation().getAngleXY()+(-90*cartesian::Constants::DEG2RAD));
+                    m_centerOfMap = Point3(m_egoState.getPosition().getX() * (-1.0) * m_scaleFactor, m_egoState.getPosition().getY()*m_scaleFactor, 0);
                 }
-                else {
-                    // Fixed translation to center of window.
-//                    cartesianCoordinates.translate(evt->rect().width() / 2, evt->rect().height() / 2);
 
-                    // This applies map translation based on user configuration.
-                    cartesianCoordinates.rotate(0);
-                    cartesianCoordinates.translate((evt->rect().width() / 2) + m_centerOfMap.getX(), (evt->rect().height() / 2) + m_centerOfMap.getY());
-                }
+                // This applies map translation based on user configuration.
+                cartesianCoordinates.rotate(0);
+                cartesianCoordinates.translate((evt->rect().width() / 2) + m_centerOfMap.getX(), (evt->rect().height() / 2) + m_centerOfMap.getY());
 
                 // Ensure pixelsPerMeter.
                 cartesianCoordinates.scale(0.001, -0.001);

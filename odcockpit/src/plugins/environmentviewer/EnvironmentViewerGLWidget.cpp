@@ -61,6 +61,8 @@
 #include "opendlv/threeD/models/Line.h"
 #include "opendlv/threeD/models/Point.h"
 #include "opendlv/threeD/models/XYZAxes.h"
+
+#include "CockpitWindow.h"
 #include "plugins/PlugIn.h"
 #include "plugins/environmentviewer/CameraAssignableNodesListener.h"
 #include "plugins/environmentviewer/EnvironmentViewerGLWidget.h"
@@ -71,6 +73,7 @@
 #include "opendavinci/odcore/wrapper/Eigen.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/odcore/wrapper/SharedMemoryFactory.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "automotivedata/generated/cartesian/Constants.h"
 
 class QWidget;
@@ -126,7 +129,8 @@ namespace cockpit {
                     m_cpc(),
                     m_cpcMutex(),
                     m_SPCReceived(false),
-                    m_CPCReceived(false) {}
+                    m_CPCReceived(false),
+                    m_recordingYear(0) {}
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -134,6 +138,11 @@ namespace cockpit {
             }
 
             void EnvironmentViewerGLWidget::createSceneGraph() {
+                // The .scnx and .objx files are provided relative to the location of odcockpit.
+                // Thus, set the correct CWD.
+                QString cwd(CockpitWindow::getStartupDirectory().c_str());
+                QDir::setCurrent(cwd);
+
                 m_root = new TransformGroup();
                 m_stationaryElements = new TransformGroup();
                 m_dynamicElements = new TransformGroup();
@@ -146,19 +155,32 @@ namespace cockpit {
                 /*******************************************************************/
                 /* Stationary elements.                                            */
                 /*******************************************************************/
-                m_stationaryElements->addChild(new opendlv::threeD::models::XYZAxes(NodeDescriptor("XYZAxes"), 1, 10));
-                m_stationaryElements->addChild(new opendlv::threeD::models::Grid(NodeDescriptor("Grid"), 10, 1));
 
                 // Setup surroundings.
                 const URL urlOfSCNXFile(getPlugIn().getKeyValueConfiguration().getValue<string>("global.scenario"));
                 if (urlOfSCNXFile.isValid()) {
-                    SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
+                    bool fileExists = false;
+                    {
+                        ifstream checkIfFileExists(urlOfSCNXFile.getResource());
+                        fileExists = checkIfFileExists.good();
+                    }
+                    if (!fileExists) {
+                        cout << "Error: " << urlOfSCNXFile.toString() << " does not exist." << endl;
+                        // Use white background in case of no SCNX is present.
+                        setBackgroundColor(opendlv::data::environment::Point3(1, 1, 1));
+                    }
+                    else {
+                        SCNXArchive &scnxArchive = SCNXArchiveFactory::getInstance().getSCNXArchive(urlOfSCNXFile);
 
-                    // Read scnxArchive and decorate it for getting displayed in an OpenGL scene.
-                    Node *surroundings = DecoratorFactory::getInstance().decorate(scnxArchive);
-                    if (surroundings != NULL) {
-                        surroundings->setNodeDescriptor(NodeDescriptor("Surroundings"));
-                        m_stationaryElements->addChild(surroundings);
+                        // Read scnxArchive and decorate it for getting displayed in an OpenGL scene.
+                        Node *surroundings = DecoratorFactory::getInstance().decorate(scnxArchive);
+                        if (surroundings != NULL) {
+                            surroundings->setNodeDescriptor(NodeDescriptor("Surroundings"));
+                            m_stationaryElements->addChild(surroundings);
+                        }
+
+                        m_stationaryElements->addChild(new opendlv::threeD::models::XYZAxes(NodeDescriptor("XYZAxes"), 1, 10));
+                        m_stationaryElements->addChild(new opendlv::threeD::models::Grid(NodeDescriptor("Grid"), 10, 1));
                     }
                 }
 
@@ -167,32 +189,42 @@ namespace cockpit {
                 /*******************************************************************/
                 const URL urlOfCar(getPlugIn().getKeyValueConfiguration().getValue<string>("global.car"));
                 if (urlOfCar.isValid()) {
-                    string objxModel(urlOfCar.getResource());
-                    cout << "Opening file stream to car model " << objxModel << endl;
-                    fstream fin(objxModel.c_str(), ios::in | ios::binary);
-                    if (fin.good()) {
-                        cout << "Loading car model" << endl;
-                        OBJXArchive *objxArchive = OBJXArchiveFactory::getInstance().getOBJXArchive(fin);
+                    bool fileExists = false;
+                    {
+                        ifstream checkIfFileExists(urlOfCar.getResource());
+                        fileExists = checkIfFileExists.good();
+                    }
+                    if (!fileExists) {
+                        cout << "Error: " << urlOfCar.toString() << " does not exist." << endl;
+                    }
+                    else {
+                        string objxModel(urlOfCar.getResource());
+                        cout << "Opening file stream to car model " << objxModel << endl;
+                        fstream fin(objxModel.c_str(), ios::in | ios::binary);
+                        if (fin.good()) {
+                            cout << "Loading car model" << endl;
+                            OBJXArchive *objxArchive = OBJXArchiveFactory::getInstance().getOBJXArchive(fin);
 
-                        fin.close();
-                        if (objxArchive != NULL) {
-                            // Decorate objxArchive for getting displayed in an OpenGL scene.
-                            m_egoStateNodeDescriptor = NodeDescriptor("EgoCar");
-                            m_listOfCameraAssignableNodes.push_back(m_egoStateNodeDescriptor);
-                            m_egoStateNode = objxArchive->createTransformGroup(m_egoStateNodeDescriptor);
-                        }
+                            fin.close();
+                            if (objxArchive != NULL) {
+                                // Decorate objxArchive for getting displayed in an OpenGL scene.
+                                m_egoStateNodeDescriptor = NodeDescriptor("EgoCar");
+                                m_listOfCameraAssignableNodes.push_back(m_egoStateNodeDescriptor);
+                                m_egoStateNode = objxArchive->createTransformGroup(m_egoStateNodeDescriptor);
+                            }
 
-                        if (m_egoStateNode == NULL) {
-                            OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "Could not load car model");
-                        }
-                        else {
-                            m_dynamicElements->addChild(m_egoStateNode);
+                            if (m_egoStateNode == NULL) {
+                                OPENDAVINCI_CORE_THROW_EXCEPTION(InvalidArgumentException, "Could not load car model");
+                            }
+                            else {
+                                m_dynamicElements->addChild(m_egoStateNode);
 
-                            // EgoCar is traceable.
-                            NodeDescriptor traceableNodeDescriptor = NodeDescriptor("EgoCar (Trace)");
-                            TransformGroup *traceableNode = new TransformGroup(traceableNodeDescriptor);
-                            m_mapOfTraceablePositions[traceableNodeDescriptor] = traceableNode;
-                            m_dynamicElements->addChild(traceableNode);
+                                // EgoCar is traceable.
+                                NodeDescriptor traceableNodeDescriptor = NodeDescriptor("EgoCar (Trace)");
+                                TransformGroup *traceableNode = new TransformGroup(traceableNodeDescriptor);
+                                m_mapOfTraceablePositions[traceableNodeDescriptor] = traceableNode;
+                                m_dynamicElements->addChild(traceableNode);
+                            }
                         }
                     }
                 }
@@ -399,7 +431,11 @@ namespace cockpit {
                         float verticalAngle = START_V_ANGLE;
                         for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
                             sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                            distance_integer = ntohs(distance_integer);
+                            //Recordings before 2017 do not call hton() while storing CPC.
+                            //Hence, we only call ntoh() for recordings from 2017.
+                            if (m_recordingYear > 2016) {
+                                distance_integer = ntohs(distance_integer);
+                            }
                             float distance = 0.0;
                             if (numberOfBitsForIntensity == 0) {
                                 switch (distanceEncoding) {
@@ -598,6 +634,8 @@ namespace cockpit {
                 
                 if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
                     m_CPCreceived = true;
+                    TimeStamp ts = c.getSampleTimeStamp();
+                    m_recordingYear = ts.getYear();
                     if (!m_SPCReceived) {
                         Lock lockCPC(m_cpcMutex);
                         m_cpc = c.getData<CompactPointCloud>();  
@@ -611,7 +649,8 @@ namespace cockpit {
                         Lock l(m_rootMutex);
                         EgoState egostate = c.getData<EgoState>();
                         m_egoState = egostate;
-                        Point3 dir(0, 0, egostate.getRotation().getAngleXY() + cartesian::Constants::PI);
+//                        Point3 dir(0, 0, egostate.getRotation().getAngleXY() + cartesian::Constants::PI);
+                        Point3 dir(0, 0, egostate.getRotation().getAngleXY());
                         m_egoStateNode->setRotation(dir);
                         m_egoStateNode->setTranslation(egostate.getPosition());
 

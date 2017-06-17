@@ -1,5 +1,5 @@
 # OpenDaVINCI - Portable middleware for distributed components.
-# Copyright (C) 2008 - 2015  Christian Berger
+# Copyright (C) 2008 - 2017  Christian Berger
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -64,8 +64,4 @@ FIND_PACKAGE (Qt4)
 ###########################################################################
 # Find Qwt5Qt4 (required for odcockpit).
 FIND_PACKAGE (Qwt5Qt4)
-
-###########################################################################
-# Find popt-dev (required for automotive/cantools).
-FIND_PACKAGE (popt)
 

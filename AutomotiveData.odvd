@@ -177,26 +177,3 @@ message automotive.vehicle.LightSystem [id = 76] {
     int8 headlights [id = 1];
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Feature extraction messages.
-message fxe.KeyPoint [id = 791] {
-    cartesian.Point2 pt [id = 1];
-    float size [id = 2];
-}
-
-message fxe.Noise [id = 792] {
-    list<fxe.KeyPoint> noisePerFrame [id =1];
-}
-
-message fxe.Recording [id = 793] {
-    string filename [id = 1];
-    uint32 startFrame [id = 2];
-    uint32 endFrame [id = 3];
-    list<fxe.Noise> noises [id = 4];
-}
-
-message fxe.Correspondence [id = 794] {
-    fxe.Recording simulation [id = 1];
-    list<fxe.Recording> realRecordings [id = 2];
-}
-

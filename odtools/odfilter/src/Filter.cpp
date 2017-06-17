@@ -40,7 +40,8 @@ namespace odfilter {
         m_keep(),
         m_drop(),
         m_downsampling(),
-        m_downsamplingCounter() {}
+        m_downsamplingCounter(),
+        m_sampleTimeStampToSentTimeStampDifference(-1) {}
 
     Filter::~Filter() {}
 
@@ -49,12 +50,14 @@ namespace odfilter {
         cmdParser.addCommandLineArgument("keep");
         cmdParser.addCommandLineArgument("drop");
         cmdParser.addCommandLineArgument("downsample");
+        cmdParser.addCommandLineArgument("replaceSampleTimeWithSentTimeIfGreaterThan");
 
         cmdParser.parse(argc, argv);
 
         CommandLineArgument cmdArgumentKEEP = cmdParser.getCommandLineArgument("keep");
         CommandLineArgument cmdArgumentDROP = cmdParser.getCommandLineArgument("drop");
         CommandLineArgument cmdArgumentDOWNSAMPLE = cmdParser.getCommandLineArgument("downsample");
+        CommandLineArgument cmdArgumentREPLACESAMPLETS = cmdParser.getCommandLineArgument("replaceSampleTimeWithSentTimeIfGreaterThan");
 
         if (cmdArgumentKEEP.isSet()) {
             string toKeep = cmdArgumentKEEP.getValue<string>();
@@ -70,6 +73,10 @@ namespace odfilter {
             string toDownSample = cmdArgumentDOWNSAMPLE.getValue<string>();
             m_downsampling = getMapOfDownSampling(toDownSample);
             m_downsamplingCounter = m_downsampling;
+        }
+
+        if (cmdArgumentREPLACESAMPLETS.isSet()) {
+            m_sampleTimeStampToSentTimeStampDifference = cmdArgumentREPLACESAMPLETS.getValue<int64_t>();
         }
     }
 
@@ -133,7 +140,8 @@ namespace odfilter {
 
     int32_t Filter::run(const int32_t &argc, char **argv) {
         enum RETURN_CODE { CORRECT = 0,
-                           BOTH_KEEP_DROP = 1 };
+                           BOTH_KEEP_DROP = 1,
+                           NONE_GIVEN = 2 };
 
         RETURN_CODE retVal = CORRECT;
 
@@ -144,9 +152,9 @@ namespace odfilter {
             cerr << "[odfilter] Error: You cannot specify --keep and --drop at the same time." << endl;
             retVal = BOTH_KEEP_DROP;
         }
-        else if ( (m_keep.size() == 0) && (m_drop.size() == 0) && (m_downsampling.size() == 0) ) {
-            cerr << "[odfilter] Error: You must specify either --keep, --downsample, or --drop." << endl;
-            retVal = BOTH_KEEP_DROP;
+        else if ( (m_keep.size() == 0) && (m_drop.size() == 0) && (m_downsampling.size() == 0) && (m_sampleTimeStampToSentTimeStampDifference == -1) ) {
+            cerr << "[odfilter] Error: You must specify either --keep, --downsample, --drop, or --replaceSampleTimeWithSentTimeIfGreaterThan." << endl;
+            retVal = NONE_GIVEN;
         }
         else {
             // Please note that reading from stdin does not evaluate sending latencies.
@@ -154,6 +162,14 @@ namespace odfilter {
                 // Read next Container.
                 Container c;
                 cin >> c;
+
+                // Check whether the sampleTimeStamp needs to be fixed.
+                if (m_sampleTimeStampToSentTimeStampDifference > 0) {
+                    int64_t differenceSampleTimeStampVsSentTimeStamp = abs(c.getSentTimeStamp().toMicroseconds() - c.getSampleTimeStamp().toMicroseconds());
+                    if (differenceSampleTimeStampVsSentTimeStamp > m_sampleTimeStampToSentTimeStampDifference) {
+                        c.setSampleTimeStamp(c.getSentTimeStamp());
+                    }
+                }
 
                 uint32_t id = c.getDataType();
 
