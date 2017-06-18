@@ -48,12 +48,26 @@ namespace cockpit {
             RuntimeConfigurationWidget::RuntimeConfigurationWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &/*kvc*/, ContainerConference &conf, QWidget *prnt) :
                 QWidget(prnt),
                 m_conference(conf),
+                m_senderStampSelector(NULL),
                 m_keyValueTable(NULL),
                 m_runtimeConfigurationMutex(),
-                m_runtimeConfiguration() {
+                m_runtimeConfiguration(),
+                m_senderStamp(0) {
 
                 // Set size.
-                setMinimumSize(260, 350);
+                setMinimumSize(260, 380);
+
+                // SenderStamp.
+                QLabel *lblSenderStamp = new QLabel(tr("Container's sender stamp:"));
+                m_senderStampSelector = new QSpinBox(this);
+                m_senderStampSelector->setRange(0, 100);
+                m_senderStampSelector->setSingleStep(1);
+                m_senderStampSelector->setValue(0);
+                connect(m_senderStampSelector, SIGNAL(valueChanged(int)), this, SLOT(changeSenderStamp(int)));
+
+                QHBoxLayout *h_layout = new QHBoxLayout();
+                h_layout->addWidget(lblSenderStamp);
+                h_layout->addWidget(m_senderStampSelector);
 
                 m_keyValueTable = new QTableWidget(this);
                 m_keyValueTable->setRowCount(10);
@@ -67,6 +81,7 @@ namespace cockpit {
 
                 // Combine KeyValue table.
                 QVBoxLayout *v_layout = new QVBoxLayout();
+                v_layout->addLayout(h_layout);
                 v_layout->addWidget(m_keyValueTable);
 
                 setLayout(v_layout);
@@ -78,6 +93,13 @@ namespace cockpit {
             }
 
             RuntimeConfigurationWidget::~RuntimeConfigurationWidget() {}
+
+            void RuntimeConfigurationWidget::changeSenderStamp(int v) {
+                Lock l(m_runtimeConfigurationMutex);
+                if ( (v >= 0) && (v <= 100) ) {
+                    m_senderStamp = static_cast<uint32_t>(v);
+                }
+            }
 
             void RuntimeConfigurationWidget::tableItemChanged(QTableWidgetItem *item) {
                 if (NULL != item) {
@@ -105,6 +127,7 @@ namespace cockpit {
             void RuntimeConfigurationWidget::TimerEvent() {
                 Lock l(m_runtimeConfigurationMutex);
                 Container c(m_runtimeConfiguration);
+                c.setSenderStamp(m_senderStamp);
                 m_conference.send(c);
             }
 

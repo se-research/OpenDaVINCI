@@ -84,14 +84,17 @@ namespace cockpit {
                 public slots:
                     void TimerEvent();
                     void tableItemChanged(QTableWidgetItem * item);
+                    void changeSenderStamp(int v);
 
                 private:
                     odcore::io::conference::ContainerConference &m_conference;
 
+                    QSpinBox *m_senderStampSelector;
                     QTableWidget *m_keyValueTable;
 
                     odcore::base::Mutex m_runtimeConfigurationMutex;
                     odcockpit::RuntimeConfiguration m_runtimeConfiguration;
+                    uint32_t m_senderStamp;
             };
         }
     }
