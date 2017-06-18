@@ -36,7 +36,9 @@
 #endif
 
 
+#include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <memory>
 #include <sstream>
 
@@ -75,6 +77,7 @@ namespace cockpit {
                 m_plot(),
                 m_plotCurve(),
                 m_chartData(),
+                m_dataMutex(),
                 m_data(),
                 m_bufferMax(10000),
                 m_bufferFilling(NULL) {
@@ -110,6 +113,7 @@ namespace cockpit {
 
                 // Buffer control.
                 m_bufferFilling = new QLabel("Ringbuffer: 0 entries received.");
+                connect(this, SIGNAL(updateLabel(QString)), m_bufferFilling, SLOT(setText(QString)));
 
                 QPushButton *saveCSVFileBtn = new QPushButton("Save as .csv", this);
                 QObject::connect(saveCSVFileBtn, SIGNAL(clicked()), this, SLOT(saveCSVFile()));
@@ -138,59 +142,28 @@ namespace cockpit {
 
             void ChartWidget::saveCSVFile() {
                 string fn = QFileDialog::getSaveFileName(this, tr("Save received data as .csv file"), "", tr("CSV files (*.csv)")).toStdString();
-                cout << "Filename = " << fn << endl;
-//                {
-//                    Lock l(m_receivedSensorBoardDataContainersMutex);
+                {
+                    Lock l(m_dataMutex);
 
-//                    if (!fn.empty()) {
-//                        stringstream s;
-//                        s << "file://" << fn;
-//                        odcore::io::URL url(s.str());
+                    if (!fn.empty()) {
+                        fstream fout(fn, ios::out|ios::trunc);
 
-//                        try {
-//                            std::shared_ptr<ostream> out = odcore::io::StreamFactory::getInstance().getOutputStream(url);
+                        // Write header.
+                        fout << "time stamp sample time [microseconds]" << ";" << "value" << endl;
 
-//                            // Write header.
-//                            (*out) << "Time stamp sent long" << ";" << "Time stamp sent short [microseconds]" << ";" << "Time stamp received long" << ";" << "Time stamp received short [microseconds]";
+                        for(auto it = m_data.begin(); it != m_data.end(); it++) {
+                            fout << setprecision(10) << it->first << ";" << setprecision(10) << it->second << endl;
+                        }
 
-//                            map<uint32_t, string>::iterator jt = m_mapOfSensors.begin();
-//                            for(;jt != m_mapOfSensors.end(); jt++) {
-//                                (*out) << ";" << jt->second;
-//                            }
-//                            (*out) << endl;
-
-//                            deque<Container>::iterator it = m_receivedSensorBoardDataContainers.begin();
-//                            for(;it != m_receivedSensorBoardDataContainers.end(); it++) {
-//                                Container c = (*it);
-//                                automotive::miniature::SensorBoardData sbd = c.getData<automotive::miniature::SensorBoardData>();
-
-//                                // Write time stamps.
-//                                (*out) << c.getSentTimeStamp().getYYYYMMDD_HHMMSSms() << ";";
-//                                (*out) << c.getSentTimeStamp().toMicroseconds() << ";";
-//                                (*out) << c.getReceivedTimeStamp().getYYYYMMDD_HHMMSSms() << ";";
-//                                (*out) << c.getReceivedTimeStamp().toMicroseconds();
-
-//                                // Write data.
-//                                map<uint32_t, string>::iterator jt2 = m_mapOfSensors.begin();
-//                                for(;jt2 != m_mapOfSensors.end(); jt2++) {
-//                                    (*out) << ";" << sbd.getValueForKey_MapOfDistances(jt2->first);
-//                                }
-//                                (*out) << endl;
-//                            }
-
-//                            out->flush();
-//                        }
-//                        catch(odcore::exceptions::InvalidArgumentException &iae) {
-//                            cerr << "Error: " << iae.toString() << endl;
-//                        }
-//                    }
-
-//                }
+                        fout.flush();
+                    }
+                }
             }
 
             void ChartWidget::nextContainer(Container &container) {
-                if ( (container.getDataType() == m_dataType) && (container.getSenderStamp() == m_senderStamp) ) {
+                Lock l(m_dataMutex);
 
+                if ( (container.getDataType() == m_dataType) && (container.getSenderStamp() == m_senderStamp) ) {
                     double value = 0;
                     if ( container.getDataType() == odcockpit::SimplePlot::ID() ) {
                         odcockpit::SimplePlot sp = container.getData<odcockpit::SimplePlot>();
@@ -209,7 +182,6 @@ namespace cockpit {
                                     if (f->getFieldDataType() <= odcore::data::reflection::AbstractField::DOUBLE_T) {
                                         found = false; bool extracted = false;
                                         value = msg.getValueFromScalarField<double>(i, found, extracted);
-                                        cout << "    T = " << f->getFieldDataType() << "    V = " << value << endl;
                                         break;
                                     }
                                 }
@@ -217,10 +189,17 @@ namespace cockpit {
                         }
                     }
 
-                    cout << "Value = " << value << endl;
-                    m_data.push_back(value);
-                    if (m_data.size() > 10*15) {
+                    m_data.push_back(make_pair(container.getSampleTimeStamp().toMicroseconds(), value));
+                    if (m_data.size() > m_bufferMax) {
                         m_data.pop_front();
+                    }
+
+                    {
+                        stringstream sstr;
+                        sstr << "Ringbuffer: " << m_data.size() << "/" << m_bufferMax << " entries received.";
+                        const string str = sstr.str();
+                        QString qs(str.c_str());
+                        emit updateLabel(qs);
                     }
                 }
             }

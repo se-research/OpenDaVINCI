@@ -70,7 +70,7 @@ namespace cockpit {
                      * @param data Reference to the deque of received SensorBoardData.
                      * @param dataSelection Select the type of data that is returned.
                      */
-                    ChartData(deque<double> &data);
+                    ChartData(deque<pair<uint64_t, double> > &data);
 
                     virtual ~ChartData();
 
@@ -83,7 +83,7 @@ namespace cockpit {
                     virtual double y(size_t i) const;
 
                 private:
-                    deque<double> &m_data;
+                    deque<pair<uint64_t, double> > &m_data;
             };
 
         }

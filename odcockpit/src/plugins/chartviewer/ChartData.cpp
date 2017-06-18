@@ -27,7 +27,7 @@ namespace cockpit {
 
             using namespace std;
 
-            ChartData::ChartData(deque<double> &data) :
+            ChartData::ChartData(deque<pair<uint64_t, double> > &data) :
                 QwtData(),
                 m_data(data) {}
 
@@ -46,7 +46,7 @@ namespace cockpit {
             }
 
             double ChartData::y(size_t i) const {
-                return static_cast<double>(m_data.at(i));
+                return m_data.at(i).second;
             }
 
         }

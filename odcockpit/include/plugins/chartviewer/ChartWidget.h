@@ -94,6 +94,9 @@ class ChartData;
                     void TimerEvent();
                     void saveCSVFile();
 
+                signals:
+                    void updateLabel(QString s);
+
                 private:
                     unique_ptr<odcore::reflection::MessageResolver> m_messageResolver;
 
@@ -105,7 +108,8 @@ class ChartData;
                     QwtPlotCurve* m_plotCurve;
                     ChartData* m_chartData;
 
-                    deque<double> m_data;
+                    odcore::base::Mutex m_dataMutex;
+                    deque<pair<uint64_t, double> > m_data;
                     uint32_t m_bufferMax;
 
                     QLabel *m_bufferFilling;
