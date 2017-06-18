@@ -70,7 +70,7 @@ namespace cockpit {
                 h_layout->addWidget(m_senderStampSelector);
 
                 m_keyValueTable = new QTableWidget(this);
-                m_keyValueTable->setRowCount(10);
+                m_keyValueTable->setRowCount(50);
                 m_keyValueTable->setColumnCount(2);
 
                 QStringList keyValueTableHeader;
@@ -113,11 +113,15 @@ namespace cockpit {
                                 stringstream valueStr;
                                 valueStr << VALUE;
 
-                                double value = 0;
-                                valueStr >> value;
+                                try {
+                                    double value = 0;
+                                    valueStr >> value;
 
-                                Lock l(m_runtimeConfigurationMutex);
-                                m_runtimeConfiguration.putTo_MapOfParameters(KEY, value);
+                                    Lock l(m_runtimeConfigurationMutex);
+                                    m_runtimeConfiguration.putTo_MapOfParameters(KEY, value);
+                                }
+                                catch (...) {
+                                }
                             }
                         }
                     }
