@@ -43,6 +43,12 @@ namespace cockpit {
 
     string CockpitWindow::m_startupDirectory = ".";
 
+    CockpitWindow *CockpitWindow::m_instance = NULL;
+
+    CockpitWindow& CockpitWindow::getInstance() {
+        return *m_instance;
+    }
+
     CockpitWindow::CockpitWindow(const KeyValueConfiguration &kvc, DataStoreManager &dsm, ContainerConference &conf) :
         m_kvc(kvc),
         m_dataStoreManager(dsm),
@@ -55,6 +61,7 @@ namespace cockpit {
         m_availablePlugInsList(NULL) {
         getStartupDirectory();
         constructLayout();
+        m_instance = this;
     }
 
     CockpitWindow::~CockpitWindow() {

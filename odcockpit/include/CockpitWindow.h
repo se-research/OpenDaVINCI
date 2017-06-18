@@ -78,6 +78,10 @@ namespace plugins { class PlugInProvider; }
             static string getStartupDirectory();
             static string m_startupDirectory;
 
+            static CockpitWindow& getInstance();
+
+            void loadPlugIn(const string &s);
+
         public slots:
             void close();
             void maximizeActiveSubWindow();
@@ -87,9 +91,9 @@ namespace plugins { class PlugInProvider; }
 
         private:
             void constructLayout();
-            void loadPlugIn(const string &s);
 
         private:
+            static CockpitWindow *m_instance;
             odcore::base::KeyValueConfiguration m_kvc;
             odcore::base::DataStoreManager &m_dataStoreManager;
             FIFOMultiplexer *m_multiplexer;
