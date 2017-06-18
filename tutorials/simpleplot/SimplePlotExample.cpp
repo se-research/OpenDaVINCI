@@ -88,11 +88,17 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SimplePlotExample::bod
             odcore::data::Container c = getKeyValueDataStore().get(odcockpit::RuntimeConfiguration::ID());
             odcockpit::RuntimeConfiguration rc = c.getData<odcockpit::RuntimeConfiguration>();
 
+            odcore::base::Lock l(inputMutex);
             if (rc.containsKey_MapOfParameters("input")) {
-                odcore::base::Lock l(inputMutex);
                 input = rc.getValueForKey_MapOfParameters("input");
+            }
+            if (rc.containsKey_MapOfParameters("kP")) {
                 kP = rc.getValueForKey_MapOfParameters("kP");
+            }
+            if (rc.containsKey_MapOfParameters("kI")) {
                 kI = rc.getValueForKey_MapOfParameters("kI");
+            }
+            if (rc.containsKey_MapOfParameters("kD")) {
                 kD = rc.getValueForKey_MapOfParameters("kD");
             }
         }
