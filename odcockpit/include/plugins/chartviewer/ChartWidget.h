@@ -31,6 +31,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
 #include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/reflection/MessageResolver.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
 
 class QLabel;
@@ -94,6 +95,8 @@ class ChartData;
                     void saveCSVFile();
 
                 private:
+                    unique_ptr<odcore::reflection::MessageResolver> m_messageResolver;
+
                     int32_t m_dataType;
                     uint32_t m_senderStamp;
                     string m_fieldName;

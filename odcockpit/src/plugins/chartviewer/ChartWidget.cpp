@@ -43,12 +43,12 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/base/Lock.h"
-#include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/data/Container.h"
-#include "opendavinci/odcore/data/TimeStamp.h"
-#include "opendavinci/odcore/exceptions/Exceptions.h"
-#include "opendavinci/odcore/io/StreamFactory.h"
-#include "opendavinci/odcore/io/URL.h"
+#include "opendavinci/odcore/reflection/Field.h"
+#include "opendavinci/odcore/reflection/Message.h"
+#include "opendavinci/odcore/strings/StringToolbox.h"
+#include "opendavinci/generated/odcockpit/SimplePlot.h"
+#include "opendavinci/generated/odcore/data/reflection/AbstractField.h"
 #include "plugins/chartviewer/ChartData.h"
 #include "plugins/chartviewer/ChartWidget.h"
 
@@ -64,9 +64,11 @@ namespace cockpit {
             using namespace odcore;
             using namespace odcore::base;
             using namespace odcore::data;
+            using namespace odcore::reflection;
 
-            ChartWidget::ChartWidget(const PlugIn &/*plugIn*/, const string &title, const int32_t &dataType, const uint32_t &senderStamp, const string &fieldName, const odcore::base::KeyValueConfiguration &/*kvc*/, QWidget *prnt) :
+            ChartWidget::ChartWidget(const PlugIn &/*plugIn*/, const string &title, const int32_t &dataType, const uint32_t &senderStamp, const string &fieldName, const odcore::base::KeyValueConfiguration &kvc, QWidget *prnt) :
                 QWidget(prnt),
+                m_messageResolver(),
                 m_dataType(dataType),
                 m_senderStamp(senderStamp),
                 m_fieldName(fieldName),
@@ -80,11 +82,15 @@ namespace cockpit {
                 // Set size.
                 setMinimumSize(640, 480);
 
+                const string SEARCH_PATH = kvc.getValue<string>("odcockpit.directoriesForSharedLibaries");
+                cout << "[odcockpit/chartviewer] Trying to find libodvd*.so files in: " << SEARCH_PATH << endl;
+
+                const vector<string> paths = odcore::strings::StringToolbox::split(SEARCH_PATH, ',');
+                m_messageResolver = unique_ptr<MessageResolver>(new MessageResolver(paths, "libodvd", ".so"));
+
                 // Setup plot.
                 {
                     m_plot = new QwtPlot(this);
-                    m_plot->setAxisScale(QwtPlot::yLeft, -2, 10);
-//                    m_plot->axisScaleEngine(QwtPlot::yBottom)->setAttribute(QwtScaleEngine::Floating, true);
                     m_plot->setMinimumSize(350, 300);
                     m_plot->setCanvasBackground(Qt::white);
                     m_plot->setFrameStyle(QFrame::NoFrame);
@@ -184,25 +190,39 @@ namespace cockpit {
 
             void ChartWidget::nextContainer(Container &container) {
                 if ( (container.getDataType() == m_dataType) && (container.getSenderStamp() == m_senderStamp) ) {
-                    cout << "ChartWidget = " << container.getDataType() << endl;
+
+                    double value = 0;
+                    if ( container.getDataType() == odcockpit::SimplePlot::ID() ) {
+                        odcockpit::SimplePlot sp = container.getData<odcockpit::SimplePlot>();
+                        if (sp.containsKey_MapOfValues(m_fieldName)) {
+                            value = sp.getValueForKey_MapOfValues(m_fieldName);
+                        }
+                    }
+                    else {
+                        bool successfullyMapped = false;
+                        odcore::reflection::Message msg = m_messageResolver->resolve(container, successfullyMapped);
+                        if (successfullyMapped) {
+                            for(uint32_t i = 0; i < msg.getNumberOfFields(); i++) {
+                                bool found = false;
+                                std::shared_ptr<odcore::data::reflection::AbstractField> f = msg.getFieldByIdentifier(i, found);
+                                if (f.get() && found && (0 == f->getShortFieldName().find(m_fieldName)) ) {
+                                    if (f->getFieldDataType() <= odcore::data::reflection::AbstractField::DOUBLE_T) {
+                                        found = false; bool extracted = false;
+                                        value = msg.getValueFromScalarField<double>(i, found, extracted);
+                                        cout << "    T = " << f->getFieldDataType() << "    V = " << value << endl;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    cout << "Value = " << value << endl;
+                    m_data.push_back(value);
+                    if (m_data.size() > 10*15) {
+                        m_data.pop_front();
+                    }
                 }
-
-//                if (container.getDataType() == automotive::miniature::SensorBoardData::ID()) {
-//                    automotive::miniature::SensorBoardData sbd = container.getData<automotive::miniature::SensorBoardData>();
-
-//                    m_data.push_back(sbd);
-
-//                    if (m_data.size() > 10*15) {
-//                        m_data.pop_front();
-//                    }
-
-//                    {
-//                        Lock l(m_receivedSensorBoardDataContainersMutex);
-//                        if (m_receivedSensorBoardDataContainers.size() < m_bufferMax) {
-//                            m_receivedSensorBoardDataContainers.push_back(container);
-//                        }
-//                    }
-//                }
             }
 
         }
