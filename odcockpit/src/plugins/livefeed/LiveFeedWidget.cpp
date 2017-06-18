@@ -136,7 +136,7 @@ namespace cockpit {
                        ) {
                         QTreeWidgetItem *parent = twi->parent();
                         if (NULL != parent) {
-                            uint32_t containerDataType = 0;
+                            int32_t containerDataType = 0;
                             uint32_t senderStamp = 0;
                             string fieldName = twi->text(0).toStdString();
 
@@ -163,9 +163,10 @@ namespace cockpit {
                             }
 
                             if (foundContainerDataType && foundSenderStamp) {
-                                cout << "Watch = " << containerDataType << "/" << senderStamp << ", field = " << fieldName << endl;
-
-CockpitWindow::getInstance().loadPlugIn("LogMessage");
+                                stringstream sstr;
+                                sstr << parent->text(0).toStdString() << "." << fieldName;
+                                const string TITLE = sstr.str();
+                                CockpitWindow::getInstance().watchSignalUsingChartPlugIn(TITLE, containerDataType, senderStamp, fieldName);
                             }
                         }
                     }

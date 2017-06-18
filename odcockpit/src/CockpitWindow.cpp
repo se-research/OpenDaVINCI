@@ -26,11 +26,14 @@
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"
+
 #include "CockpitWindow.h"
 #include "FIFOMultiplexer.h"
 #include "MdiPlugIn.h"
+
 #include "plugins/PlugIn.h"
 #include "plugins/PlugInProvider.h"
+#include "plugins/chartviewer/ChartPlugIn.h"
 
 namespace odcore { namespace base { class DataStoreManager; } }
 namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
@@ -75,6 +78,13 @@ namespace cockpit {
             cout << "[odcockpit] Startup directory: '" << CockpitWindow::m_startupDirectory << "'" << endl;
         }
         return CockpitWindow::m_startupDirectory;
+    }
+
+    void CockpitWindow::watchSignalUsingChartPlugIn(const string &title, const int32_t &dataType, const uint32_t &senderStamp, const string &fieldName) {
+        cout << "Watching " << dataType << "/" << senderStamp << ", field = " << fieldName << endl;
+
+        std::shared_ptr<plugins::PlugIn> plugIn = std::shared_ptr<plugins::PlugIn>(new plugins::chartviewer::ChartPlugIn(title, dataType, senderStamp, fieldName, m_kvc, this));
+        setupPlugIn(plugIn);
     }
 
     void CockpitWindow::constructLayout() {
@@ -237,7 +247,10 @@ namespace cockpit {
 
     void CockpitWindow::loadPlugIn(const string &s) {
         std::shared_ptr<plugins::PlugIn> plugIn = m_plugInProvider.getPlugIn(s);
+        setupPlugIn(plugIn);
+    }
 
+    void CockpitWindow::setupPlugIn(std::shared_ptr<plugins::PlugIn> plugIn) {
         if (plugIn.get()) {
             m_listOfPlugIns.push_back(plugIn);
 
@@ -249,9 +262,6 @@ namespace cockpit {
 
             // Show plugin within an MDI window.
             if (plugIn->getQWidget() != NULL) {
-//                plugIn->getQWidget()->setMinimumWidth(400);
-//                plugIn->getQWidget()->setMinimumHeight(100);
-
                 MdiPlugIn* subWindow = new MdiPlugIn(*plugIn, m_cockpitArea);
                 subWindow->setAttribute(Qt::WA_DeleteOnClose);
                 subWindow->setObjectName(plugIn->getName().c_str());

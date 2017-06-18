@@ -78,9 +78,9 @@ namespace plugins { class PlugInProvider; }
             static string getStartupDirectory();
             static string m_startupDirectory;
 
+        public:
             static CockpitWindow& getInstance();
-
-            void loadPlugIn(const string &s);
+            void watchSignalUsingChartPlugIn(const string &title, const int32_t &dataType, const uint32_t &senderStamp, const string &fieldName);
 
         public slots:
             void close();
@@ -91,6 +91,9 @@ namespace plugins { class PlugInProvider; }
 
         private:
             void constructLayout();
+            void loadPlugIn(const string &s);
+
+            void setupPlugIn(std::shared_ptr<plugins::PlugIn> plugIn);
 
         private:
             static CockpitWindow *m_instance;
