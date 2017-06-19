@@ -69,5 +69,5 @@ field. A new window will open and plot the values of that field over time.
 The last 10,000 entries will be kept in a ring-buffer; in addition, the buffered
 values can be saved as .csv file for later processing.
 
-![Plot](https://github.com/se-research/OpenDaVINCI/blob/2017Q2.feature.odcockpit.simpleplot/tutorials/simpleplot/Plot.png)
+![Screenshot](https://github.com/se-research/OpenDaVINCI/blob/2017Q2.feature.odcockpit.simpleplot/tutorials/simpleplot/Plot.png)
 
