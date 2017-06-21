@@ -134,8 +134,8 @@ namespace cockpit {
                           && (!twi->text(0).startsWith("received"))
                           && (!twi->text(0).startsWith("sample time"))
                        ) {
-                        QTreeWidgetItem *parent = twi->parent();
-                        if (NULL != parent) {
+                        QTreeWidgetItem *prnt = twi->parent();
+                        if (NULL != prnt) {
                             int32_t containerDataType = 0;
                             uint32_t senderStamp = 0;
                             string fieldName = twi->text(0).toStdString();
@@ -143,8 +143,8 @@ namespace cockpit {
                             bool foundContainerDataType = false;
                             bool foundSenderStamp = false;
 
-                            for(int i = 0; i < parent->childCount(); i++) {
-                                QTreeWidgetItem *child = parent->child(i);
+                            for(int i = 0; i < prnt->childCount(); i++) {
+                                QTreeWidgetItem *child = prnt->child(i);
                                 if ( (NULL != child) && (child->text(0).startsWith("type")) ) {
                                     stringstream sstr;
                                     sstr << child->text(1).toStdString();
@@ -164,7 +164,7 @@ namespace cockpit {
 
                             if (foundContainerDataType && foundSenderStamp) {
                                 stringstream sstr;
-                                sstr << parent->text(0).toStdString() << "." << fieldName;
+                                sstr << prnt->text(0).toStdString() << "." << fieldName;
                                 const string TITLE = sstr.str();
                                 CockpitWindow::getInstance().watchSignalUsingChartPlugIn(TITLE, containerDataType, senderStamp, fieldName);
                             }
