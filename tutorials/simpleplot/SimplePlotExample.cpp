@@ -91,6 +91,16 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SimplePlotExample::bod
             if (c.getSenderStamp() == getIdentifier()) {
                 odcockpit::RuntimeConfiguration rc = c.getData<odcockpit::RuntimeConfiguration>();
 
+                // Simply print content of this RuntimeConfiguration message.
+                {
+                    auto pairOfIterators = rc.iteratorPair_MapOfParameters();
+                    auto it = pairOfIterators.first;
+                    while (it != pairOfIterators.second) {
+                        cout << it->first << " = " << it->second << endl;
+                        it++;
+                    }
+                }
+
                 odcore::base::Lock l(inputMutex);
                 if (rc.containsKey_MapOfParameters("input")) {
                     input = rc.getValueForKey_MapOfParameters("input");

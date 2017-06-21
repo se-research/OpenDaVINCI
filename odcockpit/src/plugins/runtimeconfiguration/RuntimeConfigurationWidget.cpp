@@ -26,6 +26,7 @@
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Lock.h"
 #include "opendavinci/odcore/data/Container.h"
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "plugins/runtimeconfiguration/RuntimeConfigurationWidget.h"
 #include "odvdopendlv/generated/opendlv/proxy/ControlState.h"
@@ -45,7 +46,7 @@ namespace cockpit {
             using namespace odcore::io::conference;
             using namespace odcore::data;
 
-            RuntimeConfigurationWidget::RuntimeConfigurationWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &/*kvc*/, ContainerConference &conf, QWidget *prnt) :
+            RuntimeConfigurationWidget::RuntimeConfigurationWidget(const PlugIn &/*plugIn*/, const odcore::base::KeyValueConfiguration &kvc, ContainerConference &conf, QWidget *prnt) :
                 QWidget(prnt),
                 m_conference(conf),
                 m_senderStampSelector(NULL),
@@ -77,6 +78,36 @@ namespace cockpit {
                 keyValueTableHeader << "Key" << "Value";
 
                 m_keyValueTable->setHorizontalHeaderLabels(keyValueTableHeader);
+
+                {
+                    // Try to prefill values from configuration.
+                    KeyValueConfiguration subset = kvc.getSubsetForSection("odcockpit.runtimeconfiguration");
+                    vector<string> keys = subset.getListOfKeys();
+                    uint32_t row = 0;
+                    for(auto it = keys.begin(); it != keys.end(); it++) {
+                        try {
+                            const string KEY = (*it).substr(string("odcockpit.runtimeconfiguration").size()+1);
+                            const string VALUE = subset.getValue<string>(*it);
+                            {
+                                stringstream sstr;
+                                sstr << VALUE;
+
+                                double value = 0;
+                                sstr >> value;
+                                m_runtimeConfiguration.putTo_MapOfParameters(KEY, value);
+
+                                QTableWidgetItem *itemKey = new QTableWidgetItem(KEY.c_str());
+                                m_keyValueTable->setItem(row, 0, itemKey);
+
+                                QTableWidgetItem *itemValue = new QTableWidgetItem(VALUE.c_str());
+                                m_keyValueTable->setItem(row, 1, itemValue);
+                                row++;
+                            }
+                        }
+                        catch (...) {}
+                    }
+                }
+
                 connect(m_keyValueTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(tableItemChanged(QTableWidgetItem*)));
 
                 // Combine KeyValue table.
