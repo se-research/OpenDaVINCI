@@ -39,6 +39,15 @@ messages to several software components by starting the plugin several times
 and using different values for ``senderStamp`` (cf. the example in the source
 code in this folder).
 
+The values for the ``odcockpit::RuntimeConfiguration`` object can be optionally
+supplied by adding key/value pairs as follows in the ``configuration`` file:
+
+.. code-block::
+
+    odcockpit.runtimeconfiguration.key1 = 0.1
+    odcockpit.runtimeconfiguration.key2 = 2.1
+    odcockpit.runtimeconfiguration.key3 = 3.1
+
 
 How to monitor values from a software component at runtime
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
