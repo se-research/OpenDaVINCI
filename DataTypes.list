@@ -43,6 +43,8 @@ ID;TYPE;legacy OR message;library;comment
 39;automotive.VehicleData;CaroloCup/simulation;AutomotiveData.odvd;;
 40;DRAW_LINE;legacy;libodsimulation;don't use;
 41;automotive.VehicleControl;CaroloCup/simulation;AutomotiveData.odvd;;
+42;odcockpit.SimplePlot;Display values in odcockpit for debug purposes;OpenDaVINCI.odvd;;
+43;odcockpit.RuntimeConfiguration;Send values from odcockpit to running software for runtime configuration purposes;OpenDaVINCI.odvd;;
 49;odcore.data.image.CompactPointCloud;legacy;OpenDaVINCI.odvd;internal use;
 50;cartesian.Constants;simulation;AutomotiveData.odvd;;
 51;cartesian.Point2;simulation;AutomotiveData.odvd;;

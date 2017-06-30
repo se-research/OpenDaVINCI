@@ -119,7 +119,7 @@ namespace cockpit {
                     {
                         QTreeWidgetItem *logMessageEntry = new QTreeWidgetItem();
                         stringstream sstr2;
-                        sstr2 << container.getSentTimeStamp().toString();
+                        sstr2 << container.getSentTimeStamp().getYYYYMMDD_HHMMSSms();
                         const string s2 = sstr2.str();
 
                         logMessageEntry->setText(0, s2.c_str());

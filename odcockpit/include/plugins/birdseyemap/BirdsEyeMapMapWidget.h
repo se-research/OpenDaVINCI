@@ -140,6 +140,7 @@ class SelectableNodeDescriptor;
 
                     double m_scaleFactor;
                     opendlv::data::environment::Point3 m_centerOfMap;
+                    opendlv::data::environment::Point3 m_centerOfMapUser;
                     opendlv::data::environment::Point3 m_mouseOld;
 
                     uint32_t m_numberOfReceivedEgoStates;

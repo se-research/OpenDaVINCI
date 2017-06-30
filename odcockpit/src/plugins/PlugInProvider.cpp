@@ -43,6 +43,7 @@
 #endif
 #include "plugins/objxviewer/OBJXViewerPlugIn.h"
 #include "plugins/player/PlayerPlugIn.h"
+#include "plugins/runtimeconfiguration/RuntimeConfigurationPlugIn.h"
 #include "plugins/scnxviewer/SCNXViewerPlugIn.h"
 #include "plugins/sessionviewer/SessionViewerPlugIn.h"
 #include "plugins/sharedimageviewer/SharedImageViewerPlugIn.h"
@@ -114,6 +115,8 @@ class PlugIn;
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("objxviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("OBJXViewer");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("player") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("RuntimeConfiguration");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("runtimeconfiguration") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("Player");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("scnxviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("SCNXViewer");
@@ -144,6 +147,7 @@ class PlugIn;
             m_listOfDescriptions["LiveFeed"] = tr("This plugin displays all distributed visitable messages.").toStdString();
             m_listOfDescriptions["LogMessage"] = tr("This plugin displays log messages from components.").toStdString();
             m_listOfDescriptions["Player"] = tr("This plugin replays previously recorded files.").toStdString();
+            m_listOfDescriptions["RuntimeConfiguration"] = tr("This plugin allows to interactively provide configuration parameters to the running software modules.").toStdString();
             m_listOfDescriptions["SessionViewer"] = tr("This plugin displays currently running modules.").toStdString();
             m_listOfDescriptions["SharedImageViewer"] = tr("This plugin displays shared images.").toStdString();
             m_listOfDescriptions["StartStop"] = tr("This plugin allows to activate/deactivate autonomous control of the vehicle.").toStdString();
@@ -186,6 +190,9 @@ class PlugIn;
             } else if (name == "StartStop") {
                 cerr << "[odcockpit] Creating plugin: StartStop" << endl;
                 plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new startstop::StartStopPlugIn("StartStop", m_kvc, m_conference, m_multiplexer, m_parent)));
+            } else if (name == "RuntimeConfiguration") {
+                cerr << "[odcockpit] Creating plugin: RuntimeConfiguration" << endl;
+                plugIn = std::shared_ptr<PlugIn>((PlugIn*)(new runtimeconfiguration::RuntimeConfigurationPlugIn("RuntimeConfiguration", m_kvc, m_conference, m_multiplexer, m_parent)));
             }
             else if (name == "BirdsEyeMap") {
                 cerr << "[odcockpit] Creating plugin: BirdsEyeMap" << endl;
