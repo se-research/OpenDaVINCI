@@ -1,6 +1,6 @@
 /**
  * cockpit - Visualization environment
- * Copyright (C) 2012 - 2015 Christian Berger
+ * Copyright (C) 2017 Christian Berger
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,42 +17,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef COCKPIT_PLUGINS_LIVEFEEDWIDGET_H_
-#define COCKPIT_PLUGINS_LIVEFEEDWIDGET_H_
+#ifndef RUNTIMECONFIGURATIONWIDGET_H_
+#define RUNTIMECONFIGURATIONWIDGET_H_
 
 #include <QtCore>
 #include <QtGui>
 
-#include <map>
-#include <memory>
-#include <string>
-#include <vector>
-
+#include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/io/conference/ContainerListener.h"
-#include "opendavinci/odcore/reflection/MessageResolver.h"
+#include "automotivedata/generated/automotive/VehicleControl.h"
+#include "automotivedata/generated/automotive/miniature/UserButtonData.h"
 
-class QTreeWidget;
-class QTreeWidgetItem;
+#include <opendavinci/generated/odcockpit/RuntimeConfiguration.h>
+
+class QTableWidget;
 namespace cockpit { namespace plugins { class PlugIn; } }
-namespace odcore { namespace base { class Visitable; } }
+namespace odcore { namespace base { class KeyValueConfiguration; } }
 namespace odcore { namespace data { class Container; } }
+namespace odcore { namespace io { namespace conference { class ContainerConference; } } }
 
 namespace cockpit {
 
     namespace plugins {
 
-        namespace livefeed {
+      namespace runtimeconfiguration {
 
-            using namespace std;
-            using namespace odcore::data;
+          using namespace std;
 
             /**
-             * This class is the container for the livefeed widget.
+             * This class is the container for the runtimeconfiguration widget.
              */
-            class LiveFeedWidget : public QWidget, public odcore::io::conference::ContainerListener {
+            class RuntimeConfigurationWidget : public QWidget {
 
-                    Q_OBJECT
+                Q_OBJECT
 
                 private:
                     /**
@@ -60,50 +59,46 @@ namespace cockpit {
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the copy constructor.
                      */
-                    LiveFeedWidget(const LiveFeedWidget &/*obj*/);
+                    RuntimeConfigurationWidget(const RuntimeConfigurationWidget &/*obj*/);
 
                     /**
                      * "Forbidden" assignment operator. Goal: The compiler should warn
                      * already at compile time for unwanted bugs caused by any misuse
                      * of the assignment operator.
                      */
-                    LiveFeedWidget& operator=(const LiveFeedWidget &/*obj*/);
+                    RuntimeConfigurationWidget& operator=(const RuntimeConfigurationWidget &/*obj*/);
 
                 public:
                     /**
                      * Constructor.
                      *
-                     * @param kvc KeyValueConfiguration for this widget.
                      * @param plugIn Reference to the plugin to which this widget belongs.
+                     * @param kvc KeyValueConfiguration for this based widget.
+                     * @param conf Client conference to send data to.
                      * @param prnt Pointer to the parental widget.
                      */
-                    LiveFeedWidget(const odcore::base::KeyValueConfiguration &kvc, const PlugIn &plugIn, QWidget *prnt);
+                    RuntimeConfigurationWidget(const PlugIn &plugIn, const odcore::base::KeyValueConfiguration &kvc, odcore::io::conference::ContainerConference &conf, QWidget *prnt);
 
-                    virtual ~LiveFeedWidget();
-
-                    virtual void nextContainer(Container &c);
+                    virtual ~RuntimeConfigurationWidget();
 
                 public slots:
-                    void treeItemChanged(QTreeWidgetItem*, int);
-                    void treeItemDoubleClick(QTreeWidgetItem*, int);
+                    void TimerEvent();
+                    void tableItemChanged(QTableWidgetItem * item);
+                    void changeSenderStamp(int v);
 
                 private:
-                    void transformContainerToTree(Container &container);
+                    odcore::io::conference::ContainerConference &m_conference;
 
-                private:
-                    unique_ptr<odcore::reflection::MessageResolver> m_messageResolver;
-                    odcore::base::Mutex m_dataViewMutex;
-                    QLabel *m_lastContainerSampleTime;
-                    QTreeWidget* m_dataView;
-                    map<string, QTreeWidgetItem* > m_dataToType;
-                    map<int32_t, string> m_containerTypeToName;
+                    QSpinBox *m_senderStampSelector;
+                    QTableWidget *m_keyValueTable;
 
-                    odcore::base::Mutex m_containerTypeResolvingMutex;
-                    map<string, bool> m_containerTypeResolving;
+                    odcore::base::Mutex m_runtimeConfigurationMutex;
+                    odcockpit::RuntimeConfiguration m_runtimeConfiguration;
+                    uint32_t m_senderStamp;
             };
-
         }
     }
 }
 
-#endif /* COCKPIT_PLUGINS_LIVEFEEDWIDGET_H_ */
+#endif /*RUNTIMECONFIGURATIONWIDGET_H_*/
+

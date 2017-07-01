@@ -30,7 +30,7 @@ using namespace odcore::data;
 
 DataTriggeredReceiver::DataTriggeredReceiver(const int32_t &argc, char **argv) :
     DataTriggeredConferenceClientModule(argc, argv, "DataTriggeredReceiver")
-	{}
+    {}
 
 DataTriggeredReceiver::~DataTriggeredReceiver() {}
 

@@ -1,3 +1,5 @@
+4.13.1 - Provide feature to prefill RuntimeConfiguration in odcockpit
+4.13.0 - Dynamic configuration for software modules at runtime and plotting of values in odcockpit
 4.12.1 - Fixes for odcockpit
 4.12.0 - Updated odcockpit visualization BirdsEyeMap and Logmessage
 4.11.1 - Fix in odplayerh264 to handle non-existing .h264 files
