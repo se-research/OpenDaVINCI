@@ -50,7 +50,7 @@ CANMessageMapping:
     (unordered='unordered')?
     'mapping' mappingName = ValidIdentifier
     '{'
-    	mappings += CANSignalMapping*
+    	signalMappings += CANSignalMapping*
     '}';
 
 CANSignalMapping:
