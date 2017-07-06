@@ -114,9 +114,9 @@ class PlugIn;
 #endif
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("objxviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("OBJXViewer");
-            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("player") != string::npos) )
-                m_listOfAvailablePlugIns.push_back("RuntimeConfiguration");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("runtimeconfiguration") != string::npos) )
+                m_listOfAvailablePlugIns.push_back("RuntimeConfiguration");
+            if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("player") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("Player");
             if ( (listOfPlugins.size() == 0) || (listOfPlugins.find("scnxviewer") != string::npos) )
                 m_listOfAvailablePlugIns.push_back("SCNXViewer");
