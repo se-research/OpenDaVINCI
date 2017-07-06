@@ -72,8 +72,8 @@ class CANDataModelGenerator implements IGenerator {
 		
 		// needed for the "super" header and source files
 		var ArrayList<String> includedClasses=new ArrayList<String>
-		for (e : resource.allContents.toIterable.filter(typeof(CANMessageMapping))) {
-			includedClasses.add(e.mappingName.toString().replaceAll("\\.", "/"))
+		for (messageMapping : resource.allContents.toIterable.filter(typeof(CANMessageMapping))) {
+			includedClasses.add(messageMapping.mappingName.toString().replaceAll("\\.", "/"))
 		}
 		
 		fsa.generateFile("include/GeneratedHeaders_" + generatedHeadersFile + ".h", generateSuperHeaderFileContent(generatedHeadersFile, includedClasses, odvdIncludedFiles))
@@ -82,13 +82,13 @@ class CANDataModelGenerator implements IGenerator {
 		var ArrayList<CANMessageTesting> tests=new ArrayList<CANMessageTesting>(resource.allContents.toIterable.filter(typeof(CANMessageTesting)).toList);
 		
 		// Next, generate the code for the actual mapping.
-		for (e : resource.allContents.toIterable.filter(typeof(CANMessageMapping))) {
-			fsa.generateFile("include/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".h", 
-			    generateHeaderFileContent(generatedHeadersFile, odvdIncludedFiles, e))
-			fsa.generateFile("src/generated/" + e.mappingName.toString().replaceAll("\\.", "/") + ".cpp", 
-				generateImplementationFileContent(e, "generated", mapOfDefinedCANMessages))
-			fsa.generateFile("testsuites/" + e.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", 
-			    generateTestSuiteContent(generatedHeadersFile, odvdIncludedFiles, e, tests, mapOfDefinedCANMessages))
+		for (messageMapping : resource.allContents.toIterable.filter(typeof(CANMessageMapping))) {
+			fsa.generateFile("include/generated/" + messageMapping.mappingName.toString().replaceAll("\\.", "/") + ".h", 
+			    generateHeaderFileContent(generatedHeadersFile, odvdIncludedFiles, messageMapping))
+			fsa.generateFile("src/generated/" + messageMapping.mappingName.toString().replaceAll("\\.", "/") + ".cpp", 
+				generateImplementationFileContent(messageMapping, "generated", mapOfDefinedCANMessages))
+			fsa.generateFile("testsuites/" + messageMapping.mappingName.toString().replaceAll("\\.", "_") + "TestSuite.h", 
+			    generateTestSuiteContent(generatedHeadersFile, odvdIncludedFiles, messageMapping, tests, mapOfDefinedCANMessages))
 		}
 	}
 
@@ -323,9 +323,9 @@ namespace canmapping {
         public:
             «className»();
 
-		«IF mapping.mappings.size>0»
+		«IF mapping.signalMappings.size>0»
 		«var ArrayList<String> parameters=new ArrayList<String>»
-		«var Iterator<CANSignalMapping> iter = mapping.mappings.iterator»
+		«var Iterator<CANSignalMapping> iter = mapping.signalMappings.iterator»
 		«{ // contructor parameter
 			while (iter.hasNext()){
 				iter.next();
@@ -347,7 +347,7 @@ namespace canmapping {
 «{ // fields names
 			var String[] chunks
 			var String capitalizedName
-			for(currentMapping : mapping.mappings){
+			for(currentMapping : mapping.signalMappings){
 				chunks=currentMapping.cansignalname.split('\\.');
 				capitalizedName=""
 				for(chunk:chunks){ // add type information
@@ -494,7 +494,7 @@ namespace canmapping {
 «{
 		var String[] chunks
 		var String capitalizedName
-		for(currentMapping : mapping.mappings){
+		for(currentMapping : mapping.signalMappings){
 			chunks=currentMapping.cansignalname.split('\\.');
 			capitalizedName=""
 			for(chunk:chunks){
@@ -521,10 +521,10 @@ namespace canmapping {
         «ENDFOR»
 	}
 	
-	«IF mapping.mappings.size>0»
+	«IF mapping.signalMappings.size>0»
 	«var ArrayList<String> parameters=new ArrayList<String>»
 	«var ArrayList<String> initializations=new ArrayList<String>»
-	«var Iterator<CANSignalMapping> iter = mapping.mappings.iterator»
+	«var Iterator<CANSignalMapping> iter = mapping.signalMappings.iterator»
 	«{ // constructor parameters
 		var int i=0;
 		while (iter.hasNext()){
@@ -534,7 +534,7 @@ namespace canmapping {
 		parameters.add(temp);
 		}
 		i=0;
-		for(currentMapping : mapping.mappings){
+		for(currentMapping : mapping.signalMappings){
 			var String[] chunks=currentMapping.cansignalname.split('\\.');
 			var String capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
@@ -560,16 +560,16 @@ namespace canmapping {
 	«className»::~«className»() {}
 	
     	«var String result="\"Class : "+className+"\"<<endl"+'\n'»
-    	«var int fieldsNum=mapping.mappings.size»
+    	«var int fieldsNum=mapping.signalMappings.size»
     	«IF fieldsNum>0»
-		«var Iterator<CANSignalMapping> iter = mapping.mappings.iterator»
+		«var Iterator<CANSignalMapping> iter = mapping.signalMappings.iterator»
 		«{var int i=0;
 			while (iter.hasNext()){
 			iter.next();
-			var String[] chunks=mapping.mappings.get(i).cansignalname.split('\\.');
+			var String[] chunks=mapping.signalMappings.get(i).cansignalname.split('\\.');
 			var String capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
-			result+='\t'+'\t'+"<<\" "+mapping.mappings.get(i).cansignalname.toString+" : \"<< +m_"+capitalizedName.toFirstLower+" << endl";
+			result+='\t'+'\t'+"<<\" "+mapping.signalMappings.get(i).cansignalname.toString+" : \"<< +m_"+capitalizedName.toFirstLower+" << endl";
 			i++;
 			if(iter.hasNext())result+='\n';
     	}}»
@@ -594,15 +594,15 @@ namespace canmapping {
 		odcore::serialization::SerializationFactory& sf = odcore::serialization::SerializationFactory::getInstance();
 		std::shared_ptr<odcore::serialization::Serializer> s = sf.getSerializer(out);
 
-		«IF mapping.mappings.size>0»
+		«IF mapping.signalMappings.size>0»
 		«var ArrayList<String> opOutBody=new ArrayList<String>»
-		«for(var int i=0;i<mapping.mappings.size;i++){
+		«for(var int i=0;i<mapping.signalMappings.size;i++){
 			var String capitalizedName
-			var String[] chunks=mapping.mappings.get(i).cansignalname.split('\\.');
+			var String[] chunks=mapping.signalMappings.get(i).cansignalname.split('\\.');
 			capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			
-			opOutBody+="s->write(static_cast<uint32_t>("+mapping.mappings.get(i).signalIdentifier+"), m_"+capitalizedName.toFirstLower+");"
+			opOutBody+="s->write(static_cast<uint32_t>("+mapping.signalMappings.get(i).signalIdentifier+"), m_"+capitalizedName.toFirstLower+");"
 		}»
 		«FOR line:opOutBody»
 		«line»
@@ -615,16 +615,16 @@ namespace canmapping {
 		odcore::serialization::SerializationFactory& sf = odcore::serialization::SerializationFactory::getInstance();
 		std::shared_ptr<odcore::serialization::Deserializer> s = sf.getDeserializer(in);
 		
-		«IF mapping.mappings.size>0»
+		«IF mapping.signalMappings.size>0»
 		uint32_t id;
 		«var ArrayList<String> opInBody=new ArrayList<String>»
-		«for(var int i=0;i<mapping.mappings.size;i++){
+		«for(var int i=0;i<mapping.signalMappings.size;i++){
 			var String capitalizedName
-			var String[] chunks=mapping.mappings.get(i).cansignalname.split('\\.');
+			var String[] chunks=mapping.signalMappings.get(i).cansignalname.split('\\.');
 			capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			
-			opInBody+="id="+mapping.mappings.get(i).signalIdentifier+";"
+			opInBody+="id="+mapping.signalMappings.get(i).signalIdentifier+";"
 			opInBody+="s->read(static_cast<uint32_t>(id), m_"+capitalizedName.toFirstLower+");"
 		}»
 		«FOR line:opInBody»
@@ -660,18 +660,18 @@ namespace canmapping {
 
 	void «className»::accept(odcore::base::Visitor &v) {
 	v.beginVisit(ID(), ShortName(), LongName());
-	«IF mapping.mappings.size==0»
+	«IF mapping.signalMappings.size==0»
 	(void)v;
 	«ELSE»
 	«var ArrayList<String> acceptBody=new ArrayList<String>»
-	«for(var int i=0;i<mapping.mappings.size;i++){
+	«for(var int i=0;i<mapping.signalMappings.size;i++){
 			var String capitalizedName
-			var String[] chunks=mapping.mappings.get(i).cansignalname.split('\\.');
+			var String[] chunks=mapping.signalMappings.get(i).cansignalname.split('\\.');
 			capitalizedName=""
 			for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 			
-			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.mappings.get(i).signalIdentifier+"), \""
-						+mapping.mappings.get(i).cansignalname+"\", \""
+			acceptBody+="v.visit(static_cast<uint32_t>("+mapping.signalMappings.get(i).signalIdentifier+"), \""
+						+mapping.signalMappings.get(i).cansignalname+"\", \""
 						+chunks.get(chunks.size-1)+"\", m_"
 						+capitalizedName.toFirstLower+");"
 		}»
@@ -726,7 +726,7 @@ namespace canmapping {
 		odcore::reflection::Message msg=mfvv.getMessage();
 
     	«var String varName»
-		«FOR currentSignalInMapping : mapping.mappings»
+		«FOR currentSignalInMapping : mapping.signalMappings»
 			«var CANSignalDescription CurrentCANSignal=findSignal(canMessages,currentSignalInMapping.cansignalname)»
 			«{varName=currentSignalInMapping.cansignalname.replace('.','_').toFirstUpper;""}»
 			
@@ -742,9 +742,9 @@ namespace canmapping {
                 ::automotive::odcantools::Signedness sign=::automotive::odcantools::Signedness::SIGNED;
                 «ENDIF»
                 «IF CurrentCANSignal.m_endian.toLowerCase().compareTo("big")==0» 
-                ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
-                «ELSE»
                 ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::BIG;
+                «ELSE»
+                ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
                 «ENDIF»
 			    ::automotive::odcantools::CANSignal signal_«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,sign,endian,«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
                 «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,signal_«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
@@ -754,8 +754,8 @@ namespace canmapping {
 				abort=true; // set to true and never reset to false to keep track of failures
 			}
 			«ELSE /* This else branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/»
-				«System.err.println("\n\nWarning: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file. \n\n")»
-				cerr<<endl<<endl<<"Warning: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. Check your .can file."<<endl<<endl<<endl;
+				«System.err.println("\n\nError: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file. \n\n")»
+				cerr<<endl<<endl<<"Error: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. Check your .can file."<<endl<<endl<<endl;
 				«throwSignalNotFoundException(className+'.'+currentSignalInMapping.cansignalname)»
 				«System.exit(-1)»
 			«ENDIF»
@@ -849,7 +849,7 @@ namespace canmapping {
         ::automotive::odcantools::CANMessage «cmNamePrefix+id»(«id»,m_lengths[«id»],m_payloads[«id»]);
         «ENDFOR»
 
-		«FOR currentSignalInMapping : mapping.mappings»
+		«FOR currentSignalInMapping : mapping.signalMappings»
 			«var CANSignalDescription CurrentCANSignal=findSignal(canMessages,currentSignalInMapping.cansignalname)»
 			«IF CurrentCANSignal!=null /*if the signal exists*/»
 
@@ -870,9 +870,9 @@ namespace canmapping {
                 ::automotive::odcantools::Signedness sign=::automotive::odcantools::Signedness::SIGNED;
                 «ENDIF»
                 «IF CurrentCANSignal.m_endian.toLowerCase().compareTo("big")==0» 
-                ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
-                «ELSE»
                 ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::BIG;
+                «ELSE»
+                ::automotive::odcantools::Endianness endian=::automotive::odcantools::Endianness::LITTLE;
                 «ENDIF»
 				::automotive::odcantools::CANSignal «currentSignalInMapping.cansignalname.replaceAll("\\.","_")»(«CurrentCANSignal.m_startBit»,«CurrentCANSignal.m_length»,sign,endian,«CurrentCANSignal.m_multiplyBy»,«CurrentCANSignal.m_add»,«CurrentCANSignal.m_rangeStart»,«CurrentCANSignal.m_rangeEnd»);
                 «cmNamePrefix+CurrentCANSignal.m_CANID».addSignal(«currentSignalInMapping.signalIdentifier»,«currentSignalInMapping.cansignalname.replaceAll("\\.","_")»);
@@ -891,8 +891,8 @@ namespace canmapping {
 			}
 			«ELSE /* This else branch should be unreachable since the generator is supposed to fail when a signal is misspelled or not found*/»
 				// Signal "«currentSignalInMapping.cansignalname»" could not be found. 
-				«System.err.println("\n\nWarning: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file. \n\n")»
-				cerr<<endl<<endl<<"Warning: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. Check your .can file."<<endl<<endl<<endl;
+				«System.err.println("\n\nError: Signal "+className+"."+currentSignalInMapping.cansignalname+" could not be found. Check your .can file. \n\n")»
+				cerr<<endl<<endl<<"Error: Signal '«className».«currentSignalInMapping.cansignalname»' could not be found. Check your .can file."<<endl<<endl<<endl;
 				«throwSignalNotFoundException(className+'.'+currentSignalInMapping.cansignalname)»
 				«System.exit(-1)»
 			«ENDIF»
@@ -921,7 +921,7 @@ namespace canmapping {
 	
 	def throwSignalNotFoundException(String signalLongName) {
 		//either IllegalStateException or UnsupportedOperationException
-		throw new IllegalStateException("\n\nWarning: Signal "+signalLongName+" could not be found. Check your .can file. \n\n");
+		throw new IllegalStateException("\n\nError: Signal "+signalLongName+" could not be found. Check your .can file. \n\n");
 		//System.exit(-1); // doesn't work here
 	}
 	
@@ -935,9 +935,9 @@ namespace canmapping {
 // Source file for: «mapping.mappingName.toString»
 
 «var ArrayList<String> canIDs=new ArrayList<String>»
-«FOR currentMapping : mapping.mappings»
+«FOR currentMapping : mapping.signalMappings»
 «var String signalName=currentMapping.cansignalname»
-«var CANSignalDescription canSignal=findSignal(canMessages,signalName) /*canSignals.get(signalName)maybe preserve the global signal collection with reference to parent can message?*/»
+«var CANSignalDescription canSignal=findSignal(canMessages,signalName) /*canSignals.get(signalName) maybe preserve the global signal collection with reference to parent can message?*/»
 «{ // make sure we don't add 2 times the same CAN id
 	if(canSignal!=null)
 	{
@@ -951,7 +951,7 @@ namespace canmapping {
 	""
 }»
 «IF canSignal==null»
-«System.err.println("\n\nWarning: Signal "+signalName+" could not be found. Check your .can file. \n\n") /*first one to show up in console*/»
+«System.err.println("\n\nError: Signal "+signalName+" could not be found. Check your .can file. \n\n") /*first one to show up in console*/»
 «throwSignalNotFoundException(signalName)»
 «System.exit(-1)»
 «ENDIF»
@@ -990,7 +990,7 @@ namespace canmapping {
  */
 // Test suite file for: «mapping.mappingName.toString»
 «var ArrayList<String> canIDs=new ArrayList<String>»
-«FOR currentMapping : mapping.mappings»
+«FOR currentMapping : mapping.signalMappings»
 «var String signalName=currentMapping.cansignalname»
 «var CANSignalDescription canSignal=findSignal(canMessages,signalName)»
 «{ // make sure we don't add 2 times the same CAN id
@@ -1006,7 +1006,7 @@ namespace canmapping {
 	""
 }»
 «IF canSignal==null»
-«System.err.println("\n\nWarning: Signal "+signalName+" could not be found. Check your .can file. \n\n")»
+«System.err.println("\n\nError: Signal "+signalName+" could not be found. Check your .can file. \n\n")»
 «throwSignalNotFoundException(signalName)»
 «System.exit(-1)»
 «ENDIF»
@@ -1041,9 +1041,9 @@ class CANBridgeTest : public CxxTest::TestSuite {
         void testSer_Deser() {
             
             «var String init=""»
-            «var int fieldsNum=mapping.mappings.size»
+            «var int fieldsNum=mapping.signalMappings.size»
             «IF fieldsNum>0»
-            «var Iterator<CANSignalMapping> iter = mapping.mappings.iterator»
+            «var Iterator<CANSignalMapping> iter = mapping.signalMappings.iterator»
             «{
             //(1,1234.56,3.1415,0.00000001)
                 var Random r = new Random();
@@ -1102,12 +1102,12 @@ class CANBridgeTest : public CxxTest::TestSuite {
                     
                     «var ArrayList<String> asserts=new ArrayList<String>»
                     «{
-                        for(var int index=0;index<mapping.mappings.size;index++){
+                        for(var int index=0;index<mapping.signalMappings.size;index++){
                             var String capitalizedName=""
-                            var String[] chunks=mapping.mappings.get(index).cansignalname.split('\\.')
+                            var String[] chunks=mapping.signalMappings.get(index).cansignalname.split('\\.')
                             for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
                             for(result:test.results)
-                                if(result.signalIdentifier.compareToIgnoreCase(mapping.mappings.get(index).signalIdentifier)==0)
+                                if(result.signalIdentifier.compareToIgnoreCase(mapping.signalMappings.get(index).signalIdentifier)==0)
                                     asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-4);"+'\n'
                         }
                     }»
@@ -1139,11 +1139,11 @@ class CANBridgeTest : public CxxTest::TestSuite {
     
                 «var ArrayList<String> assignments=new ArrayList<String>»
                 «{
-                    for(var int index=0;index<mapping.mappings.size;index++){
+                    for(var int index=0;index<mapping.signalMappings.size;index++){
                         var int fIndex=0;
                         for(result:test.results){
                             fIndex++
-                            if(result.signalIdentifier.compareToIgnoreCase(mapping.mappings.get(index).signalIdentifier)==0){
+                            if(result.signalIdentifier.compareToIgnoreCase(mapping.signalMappings.get(index).signalIdentifier)==0){
                                 assignments+="odcore::reflection::Field<double> *f_"+fIndex+" = new odcore::reflection::Field<double>("+result.expectedResult+");"+'\n'+
                                                 "f_"+fIndex+"->setFieldIdentifier("+result.signalIdentifier+");"+'\n'+
                                                 "f_"+fIndex+"->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);"+'\n'+
