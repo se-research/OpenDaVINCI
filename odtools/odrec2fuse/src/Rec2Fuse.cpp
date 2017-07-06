@@ -65,9 +65,10 @@ $ sudo systemctl daemon-reload
 $ sudo systemctl restart docker
 */
 
-std::map<int32_t, std::string> mapOfFilenames;
-std::map<int32_t, std::string> mapOfEntries;
-std::map<int32_t, uint32_t> mapOfEntrySizes;
+// Maps of container-ID & sender-stamp.
+std::map<std::string, std::string> mapOfFilenames;
+std::map<std::string, std::string> mapOfEntries;
+std::map<std::string, uint32_t> mapOfEntrySizes;
 
 static int getattr_callback(const char *path, struct stat *stbuf) {
     memset(stbuf, 0, sizeof(struct stat));
@@ -198,9 +199,6 @@ namespace odrec2fuse {
                             oldPercentage = (int32_t)percentage;
                         }
 
-// For debugging:
-//if (percentage > 5) break;
-
                         bool successfullyMapped = false;
 
                         // First, try to decode a regular OpenDaVINCI message.
@@ -249,15 +247,23 @@ namespace odrec2fuse {
 
                             mappedContainers++;
 
-                            stringstream sstr;
-                            const bool ADD_HEADER = (mapOfEntries.count(c.getDataType()) == 0);
+                            stringstream sstrKey;
+                            sstrKey << c.getDataType() << "/" << c.getSenderStamp();
+                            const string KEY = sstrKey.str();
+
+                            stringstream sstrCSVData;
+                            const bool ADD_HEADER = (mapOfEntries.count(KEY) == 0);
                             const char DELIMITER = ';';
-                            CSVFromVisitableVisitor csv(sstr, ADD_HEADER, DELIMITER);
+                            CSVFromVisitableVisitor csv(sstrCSVData, ADD_HEADER, DELIMITER);
                             msg.accept(csv);
 
-                            mapOfFilenames[c.getDataType()] = msg.getLongName();
-                            mapOfEntries[c.getDataType()] +=  sstr.str();
-                            mapOfEntrySizes[c.getDataType()] = mapOfEntries[c.getDataType()].size();
+                            stringstream sstrFilename;
+                            sstrFilename << msg.getLongName() << "-" << c.getSenderStamp();
+                            const string _FILENAME = sstrFilename.str();
+
+                            mapOfFilenames[KEY] = _FILENAME;
+                            mapOfEntries[KEY] +=  sstrCSVData.str();
+                            mapOfEntrySizes[KEY] = mapOfEntries[KEY].size();
                         }
 
                     }
