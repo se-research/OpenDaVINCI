@@ -44,13 +44,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
-Docker call:
-docker run --rm -ti -v ~/input:/opt/input -v ~/output:/opt/output:shared --cap-add SYS_ADMIN --cap-add MKNOD --device=/dev/fuse --security-opt apparmor:unconfined seresearch/opendavinci-ubuntu-16.04-complete:latest /bin/bash
+Docker call (example): Make sure that the output directory on the host is existing.
+
+docker run --rm -ti -v ~/HOST/COPPLAR.Recordings/2017-05-04_Umea:/opt/input -v ~/fuse:/opt/output:shared --cap-add SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --device=/dev/fuse -u `id -u $USER` seresearch/opendavinci-on-base-with-fuse:latest /opt/od4/bin/odrec2fuse /opt/input/CID-189-odrecorderh264_2017-05-04_120016.rec -f /opt/output
 
 Binary call in the image:
 /opt/od4/bin/odrec2fuse /opt/input/CID-251-odrecorderh264_2016-11-08_10\:27\:05.rec -f /opt/output
 
-Required configuration changes:
+Required configuration changes (not necessary with Docker 17.06+ ??):
 http://unix.stackexchange.com/questions/292999/mounting-a-nfs-directory-into-host-volume-that-is-shared-with-docker
 
 If Docker was installed through a package manager or install script for systemd, you may need to adjust the MountFlags daemon argument. To do that, locate the docker.service file:
