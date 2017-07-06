@@ -353,6 +353,17 @@ public class CANDataStructureGenerator {
         sb.append("# Set header files from AutomotiveData."); sb.append("\r\n");
         sb.append("INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})"); sb.append("\r\n");
 
+        sb.append("###########################################################################"); sb.append("\r\n");
+        sb.append("# Find odcantools."); sb.append("\r\n");
+        sb.append("IF(\"${OPENDAVINCI_DIR}\" STREQUAL \"\")"); sb.append("\r\n");
+        sb.append("    SET(ODCANTOOLS_DIR \"${CMAKE_INSTALL_PREFIX}\")"); sb.append("\r\n");
+        sb.append("ELSE()"); sb.append("\r\n");
+        sb.append("    SET(ODCANTOOLS_DIR \"${OPENDAVINCI_DIR}\")"); sb.append("\r\n");
+        sb.append("ENDIF()"); sb.append("\r\n");
+        sb.append("FIND_PACKAGE (odcantools REQUIRED)"); sb.append("\r\n");
+        sb.append("# Set header files from odcantools."); sb.append("\r\n");
+        sb.append("INCLUDE_DIRECTORIES (${ODCANTOOLS_INCLUDE_DIRS})"); sb.append("\r\n"); sb.append("\r\n");
+
         // Generate dependencies to data structures.
         for(String s : listOfUsingODVDFiles) {
             if (!s.equalsIgnoreCase("automotivedata")) {
@@ -366,6 +377,7 @@ public class CANDataStructureGenerator {
         }
         sb.append("SET (LIBRARIES ${OPENDAVINCI_LIBRARIES}"); sb.append("\r\n");
         sb.append("               ${AUTOMOTIVEDATA_LIBRARIES}"); sb.append("\r\n");
+        sb.append("               ${ODCANTOOLS_LIBRARIES}"); sb.append("\r\n");
         for(String s : listOfUsingODVDFiles) {
             if (!s.equalsIgnoreCase("automotivedata")) {
                 sb.append("               ${" + s.toUpperCase() + "_LIBRARIES}"); sb.append("\r\n");
