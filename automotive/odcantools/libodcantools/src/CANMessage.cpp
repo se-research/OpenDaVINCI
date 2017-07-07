@@ -205,19 +205,19 @@ namespace automotive {
             // set the new payload
             setData(payload);
             // find the new payload length
-            if(payload <= 0xFF)
+            if(payload <= 0xFF) // 1 byte
                 length=1;
-            else if(payload <= 0xFFFF)
+            else if(payload <= 0xFFFF) // 2 bytes
                 length=2;
-            else if(payload <= 0xFFFFFF)
+            else if(payload <= 0xFFFFFF) // 3 bytes
                 length=3;
-            else if(payload <= 0xFFFFFFFF)
+            else if(payload <= 0xFFFFFFFF) // 4 bytes
                 length=4;
-            else if(payload <= 0xFFFFFFFFFF)
+            else if(payload <= 0xFFFFFFFFFFULL) // 5 bytes
                 length=5;
-            else if(payload <= 0xFFFFFFFFFFFF)
+            else if(payload <= 0xFFFFFFFFFFFFULL) // 6 bytes
                 length=6;
-            else if(payload <= 0xFFFFFFFFFFFFFF)
+            else if(payload <= 0xFFFFFFFFFFFFFFULL) // 7 bytes
                 length=7;
             else // (implicit) if(payload <= 0xFFFFFFFFFFFFFFFF)
                 length=8;
