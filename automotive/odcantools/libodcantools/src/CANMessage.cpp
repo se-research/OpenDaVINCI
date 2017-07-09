@@ -213,11 +213,11 @@ namespace automotive {
                 length=3;
             else if(payload <= 0xFFFFFFFF) // 4 bytes
                 length=4;
-            else if(payload <= 0xFFFFFFFFFFULL) // 5 bytes
+            else if(payload <= 0xFFFFFFFFFF) // 5 bytes
                 length=5;
-            else if(payload <= 0xFFFFFFFFFFFFULL) // 6 bytes
+            else if(payload <= 0xFFFFFFFFFFFF) // 6 bytes
                 length=6;
-            else if(payload <= 0xFFFFFFFFFFFFFFULL) // 7 bytes
+            else if(payload <= 0xFFFFFFFFFFFFFF) // 7 bytes
                 length=7;
             else // (implicit) if(payload <= 0xFFFFFFFFFFFFFFFF)
                 length=8;
