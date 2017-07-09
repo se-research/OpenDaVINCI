@@ -205,19 +205,19 @@ namespace automotive {
             // set the new payload
             setData(payload);
             // find the new payload length
-            if(payload <= (std::numerical_limits<uint64_t>::max()>>(8 * (8-1))) ) // 1 byte
+            if(payload <= (std::numeric_limits<uint64_t>::max()>>(8 * (8-1))) ) // 1 byte
                 length=1;
-            else if(payload <= (std::numerical_limits<uint64_t>::max()>>(8 * (8-2))) ) // 2 bytes
+            else if(payload <= (std::numeric_limits<uint64_t>::max()>>(8 * (8-2))) ) // 2 bytes
                 length=2;
-            else if(payload <= (std::numerical_limits<uint64_t>::max()>>(8 * (8-3))) ) // 3 bytes
+            else if(payload <= (std::numeric_limits<uint64_t>::max()>>(8 * (8-3))) ) // 3 bytes
                 length=3;
-            else if(payload <= (std::numerical_limits<uint64_t>::max()>>(8 * (8-4))) ) // 4 bytes
+            else if(payload <= (std::numeric_limits<uint64_t>::max()>>(8 * (8-4))) ) // 4 bytes
                 length=4;
-            else if(payload <= (std::numerical_limits<uint64_t>::max()>>(8 * (8-5))) ) // 5 bytes
+            else if(payload <= (std::numeric_limits<uint64_t>::max()>>(8 * (8-5))) ) // 5 bytes
                 length=5;
-            else if(payload <= (std::numerical_limits<uint64_t>::max()>>(8 * (8-6))) ) // 6 bytes
+            else if(payload <= (std::numeric_limits<uint64_t>::max()>>(8 * (8-6))) ) // 6 bytes
                 length=6;
-            else if(payload <= (std::numerical_limits<uint64_t>::max()>>(8 * (8-7))) ) // 7 bytes
+            else if(payload <= (std::numeric_limits<uint64_t>::max()>>(8 * (8-7))) ) // 7 bytes
                 length=7;
             else // (implicit) if(payload <= 0xFFFFFFFFFFFFFFFF)
                 length=8;
