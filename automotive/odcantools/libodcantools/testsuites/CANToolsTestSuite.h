@@ -58,7 +58,7 @@ using namespace automotive::odcantools;
                 , m_rearLeft(0)
                 , m_rearRight(0)
             {}
-            
+
             WheelSpeedHL(const WheelSpeedHL &obj) :
                 SerializableData()
                 , Visitable()
@@ -67,8 +67,8 @@ using namespace automotive::odcantools;
                 , m_rearLeft(obj.m_rearLeft)
                 , m_rearRight(obj.m_rearRight)
             {}
-            
-            ~WheelSpeedHL() {}
+
+            virtual ~WheelSpeedHL() {}
 
             WheelSpeedHL& operator=(const WheelSpeedHL &obj) {
                 m_frontLeft = obj.m_frontLeft;
@@ -255,27 +255,27 @@ class WheelSpeed : public odcore::data::SerializableData, public odcore::base::V
             bool reset=false;
             switch(gcm.getIdentifier())
             {
-                case 0x123 : 
-
-                // since the order matters:
-                if(m_neededCanMessages.at(m_index) == 0x123) // if we got the expected message
+                case 0x123 :
                 {
-                    // Store the payload in a map for future use replacing the current content
-                    m_payloads[0x123] = gcm.getData();
-                    // modularly increase the internal index
-                    (m_index==m_neededCanMessages.size()-1) ? m_index=0 : ++m_index;
+                    // since the order matters:
+                    if(m_neededCanMessages.at(m_index) == 0x123) // if we got the expected message
+                    {
+                        // Store the payload in a map for future use replacing the current content
+                        m_payloads[0x123] = gcm.getData();
+                        // modularly increase the internal index
+                        (m_index==m_neededCanMessages.size()-1) ? m_index=0 : ++m_index;
+                    }
+                    else // otherwise reset
+                    {
+                        reset=true;
+                    }
+                    break;
                 }
-                else // otherwise reset
-                {
-                    reset=true;
-                }
-                
-                break;
                 default : return c; // valid id not found
             }
 
             if(reset)
-            {		
+            {
                 // reset the payloads and lengths map
                 while(! m_payloads.empty())
                 {
