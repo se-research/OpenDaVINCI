@@ -490,7 +490,7 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
         ::automotive::GenericCANMessage gcm_1;
         gcm_1.setIdentifier(0x123);
         gcm_1.setLength(8);
-        const uint64_t payload = 0x3C2217220D220722;
+        const uint64_t payload = 0x3C2217220D220722ULL;
         gcm_1.setData(payload);
 
         WheelSpeed test_0;
@@ -540,7 +540,7 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
         // Testing the length of the resulting CAN message
         TS_ASSERT_EQUALS(GCM.getLength(),8);
         // Testing the payload of the resulting CAN message
-        const uint64_t expected_payload = 0x3C2217220D220722;
+        const uint64_t expected_payload = 0x3C2217220D220722ULL;
         TS_ASSERT_EQUALS(GCM.getData(), expected_payload);
     }
 };
