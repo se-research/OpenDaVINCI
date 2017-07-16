@@ -46,10 +46,10 @@
 /*
 Docker call (example): Make sure that the output directory on the host is existing.
 
-docker run --rm -ti -v ~/HOST/COPPLAR.Recordings/2017-05-04_Umea:/opt/input -v ~/fuse:/opt/output:shared --cap-add SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --device=/dev/fuse -u `id -u $USER` seresearch/opendavinci-on-base-with-fuse:latest /opt/od4/bin/odrec2fuse /opt/input/CID-189-odrecorderh264_2017-05-04_120016.rec -f /opt/output
+docker run --rm -ti -v ~/recording.rec:/opt/input.rec -v ~/fuse:/opt/output:shared --cap-add SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --device=/dev/fuse -u `id -u $USER` seresearch/opendavinci-on-base:latest /opt/od4/bin/odrec2fuse /opt/input.rec -f /opt/output
 
 Binary call in the image:
-/opt/od4/bin/odrec2fuse /opt/input/CID-251-odrecorderh264_2016-11-08_10\:27\:05.rec -f /opt/output
+/opt/od4/bin/odrec2fuse recording.rec -f /opt/output
 
 Required configuration changes (not necessary with Docker 17.06+ ??):
 http://unix.stackexchange.com/questions/292999/mounting-a-nfs-directory-into-host-volume-that-is-shared-with-docker
