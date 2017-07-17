@@ -45,9 +45,17 @@ IF(CURSES_FOUND)
 ENDIF()
 
 ###########################################################################
+# Find FUSE.
+IF(UNIX)
+    FIND_PACKAGE (FUSE REQUIRED)
+ENDIF()
+
+###########################################################################
 # Add subdirectories.
 ADD_SUBDIRECTORY (odfilter)
-ADD_SUBDIRECTORY (odrec2fuse)
+IF(FUSE_FOUND)
+    ADD_SUBDIRECTORY (odrec2fuse)
+ENDIF()
 ADD_SUBDIRECTORY (odplayer)
 ADD_SUBDIRECTORY (odrecinspect)
 ADD_SUBDIRECTORY (odrecorder)
