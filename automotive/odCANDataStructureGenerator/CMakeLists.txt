@@ -54,7 +54,7 @@ IF($ENV{DOWNLOAD_ODCANDATASTRUCTUREGENERATOR})
         MESSAGE("Trying to download odCANDataStructureGenerator, version ${OPENDAVINCI_VERSION}")
 
         ExternalProject_Add (odCANDataStructureGenerator
-            DOWNLOAD_COMMAND wget http://opendavinci.cse.chalmers.se/ubuntu/pool/main/o/opendavinci-odcandatastructuregenerator/opendavinci_${OPENDAVINCI_VERSION}_x86_64-odCANDataStructureGenerator.deb -O ${CMAKE_BINARY_DIR}/odCANDataStructureGenerator.deb
+            DOWNLOAD_COMMAND curl http://opendavinci.cse.chalmers.se/ubuntu/pool/main/o/opendavinci-odcandatastructuregenerator/opendavinci_${OPENDAVINCI_VERSION}_x86_64-odCANDataStructureGenerator.deb > ${CMAKE_BINARY_DIR}/odCANDataStructureGenerator.deb
             UPDATE_COMMAND ar p ${CMAKE_BINARY_DIR}/odCANDataStructureGenerator.deb data.tar.gz | tar xvz -C ${CMAKE_BINARY_DIR}
             PATCH_COMMAND ""
             CONFIGURE_COMMAND ""
