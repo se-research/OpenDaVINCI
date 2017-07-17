@@ -48,20 +48,35 @@ MESSAGE("")
 ###########################################################################
 # As this project uses ant to build the binary, we simply delegate
 # the actual compilation, test, and packaging to ant.
-ExternalProject_Add (odCANDataStructureGenerator
-    DOWNLOAD_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.candatamodel ${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel
-    UPDATE_COMMAND ""
-    PATCH_COMMAND ""
-    SOURCE_DIR "${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel"
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml compile-java
-    BUILD_IN_SOURCE 1
-#    TEST_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml test-java
-#    TEST_BEFORE_INSTALL 1
-    TEST_COMMAND ""
-    INSTALL_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml create-runnable-jar
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel/odCANDataStructureGenerator-latest.jar ${CMAKE_BINARY_DIR})
+IF($ENV{DOWNLOAD_ODCANDATASTRUCTUREGENERATOR})
+    IF(UNIX)
+        FILE(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION" OPENDAVINCI_VERSION)
+        MESSAGE("Trying to download odCANDataStructureGenerator, version ${OPENDAVINCI_VERSION}")
 
+        ExternalProject_Add (odCANDataStructureGenerator
+            DOWNLOAD_COMMAND wget http://opendavinci.cse.chalmers.se/ubuntu/pool/main/o/opendavinci-odcandatastructuregenerator/opendavinci_${OPENDAVINCI_VERSION}_x86_64-odCANDataStructureGenerator.deb -O ${CMAKE_BINARY_DIR}/odCANDataStructureGenerator.deb
+            UPDATE_COMMAND ar p ${CMAKE_BINARY_DIR}/odCANDataStructureGenerator.deb data.tar.gz | tar xvz -C ${CMAKE_BINARY_DIR}
+            PATCH_COMMAND ""
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND ""
+            TEST_COMMAND ""
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/usr/bin/odCANDataStructureGenerator-latest.jar ${CMAKE_BINARY_DIR})
+    ENDIF()
+ELSE()
+    ExternalProject_Add (odCANDataStructureGenerator
+        DOWNLOAD_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.candatamodel ${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel
+        UPDATE_COMMAND ""
+        PATCH_COMMAND ""
+        SOURCE_DIR "${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel"
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml compile-java
+        BUILD_IN_SOURCE 1
+    #    TEST_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml test-java
+    #    TEST_BEFORE_INSTALL 1
+        TEST_COMMAND ""
+        INSTALL_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml create-runnable-jar
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/org.opendavinci.candatamodel/odCANDataStructureGenerator-latest.jar ${CMAKE_BINARY_DIR})
+ENDIF()
 # Install odCANDataStructureGenerator.
 INSTALL(FILES "${CMAKE_BINARY_DIR}/odCANDataStructureGenerator-latest.jar" DESTINATION bin COMPONENT odCANDataStructureGenerator)
 
