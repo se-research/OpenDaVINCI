@@ -490,7 +490,11 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
         ::automotive::GenericCANMessage gcm_1;
         gcm_1.setIdentifier(0x123);
         gcm_1.setLength(8);
+        TS_ASSERT_EQUALS(gcm_1.getLength(), 8);
 
+        // Allow the next test only on 64bit environments.
+#if __GNUC__
+#if __x86_64__
         __extension__ const uint64_t payload = 0x3C2217220D220722;
         gcm_1.setData(payload);
 
@@ -501,6 +505,8 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
         TS_ASSERT_DELTA(test_0.getWheelspeedFrontright() , 87.27, 1e-4);
         TS_ASSERT_DELTA(test_0.getWheelspeedRearleft() , 87.17, 1e-4);
         TS_ASSERT_DELTA(test_0.getWheelspeedRearright() , 87.11, 1e-4);
+#endif
+#endif
     }
 
     void testEncode()
@@ -542,8 +548,13 @@ class CANToolsTest : public CxxTest::TestSuite, public GenericCANMessageListener
         TS_ASSERT_EQUALS(GCM.getLength(),8);
         // Testing the payload of the resulting CAN message
 
+        // Allow the next test only on 64bit environments.
+#if __GNUC__
+#if __x86_64__
         __extension__ const uint64_t expected_payload = 0x3C2217220D220722;
         TS_ASSERT_EQUALS(GCM.getData(), expected_payload);
+#endif
+#endif
     }
 };
 
