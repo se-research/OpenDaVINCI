@@ -20,7 +20,7 @@
 #ifndef LIVEFEED_H_
 #define LIVEFEED_H_
 
-#include <curses.h>
+#include <ncurses/curses.h>
 
 #include <map>
 #include <string>
