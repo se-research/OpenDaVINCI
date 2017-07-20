@@ -20,6 +20,8 @@
 #ifndef SOCKETCANDEVICE_H_
 #define SOCKETCANDEVICE_H_
 
+#include <linux/can.h>
+
 #ifdef __linux__
     #include <linux/can.h>
 #endif
