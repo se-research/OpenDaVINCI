@@ -55,7 +55,11 @@ FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
 # Find OpenCV.
-SET(OPENCV_ROOT_DIR "/usr")
+IF( (EXISTS "/usr/pkg/include/opencv") OR (EXISTS "/usr/pkg/include/opencv2") )
+    SET(OPENCV_ROOT_DIR "/usr/pkg")
+ELSE()
+    SET(OPENCV_ROOT_DIR "/usr")
+ENDIF()
 IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
     SET(OPENCV_ROOT_DIR "/usr/local")
 ENDIF()
@@ -102,13 +106,13 @@ INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
 # Set header files from OpenCV.
 INCLUDE_DIRECTORIES (SYSTEM ${OPENCV_INCLUDE_DIRS})
 # Set header files from Boost.
-INCLUDE_DIRECTORIES(SYSTEM ${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES (SYSTEM ${Boost_INCLUDE_DIRS})
 # Set header files from OpenGL.
-INCLUDE_DIRECTORIES(SYSTEM ${OPENGL_INCLUDE_DIR})
+INCLUDE_DIRECTORIES (SYSTEM ${OPENGL_INCLUDE_DIR})
 # Set header files from GLUT.
-INCLUDE_DIRECTORIES(SYSTEM ${GLUT_INCLUDE_DIR})
+INCLUDE_DIRECTORIES (SYSTEM ${GLUT_INCLUDE_DIR})
 # Set include directory.
-INCLUDE_DIRECTORIES(include)
+INCLUDE_DIRECTORIES (include)
 
 ###############################################################################
 # Collect all source files.

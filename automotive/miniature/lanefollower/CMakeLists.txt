@@ -53,7 +53,11 @@ FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
 # Find OpenCV.
-SET(OPENCV_ROOT_DIR "/usr")
+IF( (EXISTS "/usr/pkg/include/opencv") OR (EXISTS "/usr/pkg/include/opencv2") )
+    SET(OPENCV_ROOT_DIR "/usr/pkg")
+ELSE()
+    SET(OPENCV_ROOT_DIR "/usr")
+ENDIF()
 FIND_PACKAGE (OpenCV REQUIRED)
 
 ###########################################################################
