@@ -20,6 +20,7 @@ IF(NOT QWT5QT4_FOUND)
         PATHS ${LIBQWT5QT4_PATH}/include
               /usr/local/qwt-5.2.3/include/
               /usr/local/include/
+              /usr/pkg/include/
               /usr/include/
         PATH_SUFFIXES qwt qwt5 qwt-qt4 qwt5-qt4 ENV PATH
     )
@@ -34,6 +35,7 @@ IF(NOT QWT5QT4_FOUND)
               /usr/local/qwt-5.2.3/lib/
               /usr/local/lib64/
               /usr/local/lib/
+              /usr/pkg/lib/
               /usr/lib/i386-linux-gnu/
               /usr/lib/x86_64-linux-gnu/
               /usr/lib64/
