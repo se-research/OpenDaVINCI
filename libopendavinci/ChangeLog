@@ -1,3 +1,4 @@
+4.15.2 - Compile fixes for pkgsrc
 4.15.1 - Compile fix
 4.15.0 - odrec2fuse to mount .rec files and map contained messages as .csv files into virtual folder provided by fuse
 4.14.0 - New CANDataStructureGenerator
