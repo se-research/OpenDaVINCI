@@ -125,12 +125,52 @@ namespace cockpit {
                     m_velodyneSharedMemory(NULL),
                     m_hasAttachedToSharedImageMemory(false),
                     m_velodyneFrame(),
-                    m_CPCreceived(false),
+		            m_12_startingSensorID_32(0),
+		            m_11_startingSensorID_32(2),
+		            m_9_startingSensorID_32(5),
+		            m_12_cpcDistance_32(""),
+                    m_11_cpcDistance_32(""),
+                    m_9_cpcDistance_32(""),
+                    m_previousCPC32TimeStamp(0),
+                    m_cpcMask_32(0),
                     m_cpc(),
                     m_cpcMutex(),
                     m_SPCReceived(false),
                     m_CPCReceived(false),
-                    m_recordingYear(0) {}
+                    m_recordingYear(0) {
+		float sensorIDs_32[32];
+		bool use32IncrementA = true;
+		sensorIDs_32[0] = START_V_ANGLE_32;
+                //Derive the 32 vertical angles for HDL-32E based on the starting angle and the two increments
+		for (uint8_t counter = 1; counter < 31; counter++) {
+		    if (use32IncrementA) {
+		        sensorIDs_32[counter] += V_INCREMENT_32_A;
+		    } else {
+		        sensorIDs_32[counter] += V_INCREMENT_32_B;
+		    }
+		}
+		//Derive the 12 vertical angles associated with the first part of CPC for HDL-32E
+		m_12_verticalAngles[0] = sensorIDs_32[m_12_startingSensorID_32];
+		uint8_t currentSensorID = m_12_startingSensorID_32 + 1;
+		m_12_verticalAngles[1] = sensorIDs_32[currentSensorID];
+		for (uint8_t counter = 2; counter < 11; counter++) {
+		    m_12_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
+		}
+//Derive the 11 vertical angles associated with the second part of CPC for HDL-32E
+		m_11_verticalAngles[0] = sensorIDs_32[m_11_startingSensorID_32];
+		currentSensorID = m_11_startingSensorID_32 + 1;
+		m_11_verticalAngles[1] = sensorIDs_32[currentSensorID];
+		for (uint8_t counter = 2; counter < 10; counter++) {
+		    m_11_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
+		}
+	//Derive the 9 vertical angles associated with the third part of CPC for HDL-32E
+		m_9_verticalAngles[0] = sensorIDs_32[m_9_startingSensorID_32];
+		currentSensorID = m_9_startingSensorID_32 + 1;
+		m_9_verticalAngles[1] = sensorIDs_32[currentSensorID];
+		for (uint8_t counter = 2; counter < 8; counter++) {
+		    m_9_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
+		}
+            }
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
@@ -303,6 +343,76 @@ namespace cockpit {
                 glLightfv(GL_LIGHT0, GL_DIFFUSE, light0Diffuse);
                 glLightfv(GL_LIGHT0, GL_SPECULAR, light0Specular);
             }
+            
+            void EnvironmentViewerGLWidget::drawOneCPCPointNoIntensity(const uint16_t &distance_integer, const float &azimuth, const float &verticalAngle, const uint8_t &distanceEncoding) {
+                //Recordings before 2017 do not call hton() while storing CPC.
+                //Hence, we only call ntoh() for recordings from 2017.
+                uint16_t distanceCPCPoint = distance_integer;
+                if (m_recordingYear > 2016) {
+                    distanceCPCPoint = ntohs(distanceCPCPoint);
+                }
+                float distance = 0.0;
+                switch (distanceEncoding) {
+                    case CompactPointCloud::CM : distance = static_cast<float>(distanceCPCPoint / 100.0f); //convert to meter from resolution 1 cm
+                                                 break;
+                    case CompactPointCloud::MM : distance = static_cast<float>(distanceCPCPoint / 500.0f); //convert to meter from resolution 2mm
+                                                 break;
+                }
+                if (distance > 1.0f) {//Only viualize the point when the distance is larger than 1m
+                    // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
+                    float xyDistance = distance * cos(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
+                    float xData = xyDistance * sin(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                    float yData = xyDistance * cos(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                    float zData = distance * sin(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
+                    glVertex3f(xData, yData, zData);//Plot the point 
+                }
+            }
+
+            void EnvironmentViewerGLWidget::drawOneCPCPointWithIntensity(const uint16_t &distance_integer, const float &azimuth, const float &verticalAngle, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &mask, const float &intensityMaxValue) {
+                //Recordings before 2017 do not call hton() while storing CPC.
+                //Hence, we only call ntoh() for recordings from 2017.
+                uint16_t distanceCPCPoint = distance_integer;
+                if (m_recordingYear > 2016) {
+                    distanceCPCPoint = ntohs(distanceCPCPoint);
+                }
+                float distance = 0.0;
+                uint8_t intensity = 0;
+                uint16_t cappedDistance = distanceCPCPoint & mask;
+                if (intensityPlacement == 0) {//higher bits for intensity
+                    intensity = distanceCPCPoint >> (16 - numberOfBitsForIntensity);
+                } else {//lower bits for intensity
+                    intensity = distanceCPCPoint - cappedDistance;
+                }
+                
+                switch (distanceEncoding) {
+                    case CompactPointCloud::CM : distance = static_cast<float>(cappedDistance / 100.0f); //convert to meter from resolution 1 cm
+                                                 break;
+                    case CompactPointCloud::MM : distance = static_cast<float>(cappedDistance / 500.0f); //convert to meter from resolution 2mm
+                                                 break;
+                }
+                if (distance > 1.0f) {//Only viualize the point when the distance is larger than 1m
+                    // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
+                    float xyDistance = distance * cos(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
+                    float xData = xyDistance * sin(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                    float yData = xyDistance * cos(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
+                    float zData = distance * sin(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
+                    if(numberOfBitsForIntensity != 0) {
+                        //The number of intensity levels depends on number of bits for intensity. There are 2^n intensity levels for n bits
+                        float intensityLevel = intensity / intensityMaxValue;
+                        //Four color levels: blue, green, yellow, red from low intensity to high intensity
+                        if (intensityLevel < 0.25f + 1e-7) {
+                            glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
+                        } else if (intensityLevel > 0.25f && intensityLevel < 0.5f + 1e-7) {
+                            glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
+                        } else if (intensityLevel > 0.5f && intensityLevel < 0.75f + 1e-7) {
+                            glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
+                        } else {
+                            glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
+                        } 
+                    }
+                    glVertex3f(xData, yData, zData);//Plot the point 
+                }
+            }
 
             void EnvironmentViewerGLWidget::drawSceneInternal() {
                 m_root->render(m_renderingConfiguration);
@@ -380,16 +490,17 @@ namespace cockpit {
                     }
                 }
 
-                // Visualize compact point cloud, where points are sorted by increasing azimuth (increment the azimuth after every 16 points) and 
-                // vertical angle (from -15 to 15 with increment 2 for each 16 points).
-                // A compact point cloud contains: (1) the starting azimuth, (2) the ending azimuth, (3) number of points per azimuth, 
-                // and (4) a string with the distance values of all points in the container
-                if (m_CPCreceived && !m_SPCReceived) {
+                /** Visualize compact point cloud, where points are sorted by increasing azimuth
+                 and vertical angle (VLP-16: from -15 to 15 with increment 2 for each 16 points;
+                 HDL-32E: from -30.67 to 10.67 degrees, with alternating increment 1.33 and 1.34).
+                 A compact point cloud contains: (1) the starting azimuth, (2) the ending azimuth,
+                 (3) number of points per azimuth, and (4) a string with the distance values of all
+                 points in the container*/
+                if (m_CPCReceived && !m_SPCReceived) {
                     Lock lockCPC(m_cpcMutex);
                     const float startAzimuth = m_cpc.getStartAzimuth();
                     const float endAzimuth = m_cpc.getEndAzimuth();
                     const uint8_t entriesPerAzimuth = m_cpc.getEntriesPerAzimuth();
-                    const string distances = m_cpc.getDistances();
                     const uint8_t numberOfBitsForIntensity = m_cpc.getNumberOfBitsForIntensity();
                     const uint8_t intensityPlacement = m_cpc.getIntensityPlacement();
                     uint16_t tmpMask = 0xFFFF;
@@ -403,10 +514,6 @@ namespace cockpit {
                         intensityMaxValue = pow(2.0f, static_cast<float>(numberOfBitsForIntensity)) - 1.0f;
                     }
                     const uint8_t distanceEncoding = m_cpc.getDistanceEncoding();
-                    const uint32_t numberOfPoints = distances.size() / 2;
-                    const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
-                    const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
-                    stringstream sstr(distances);
                     
                     glPushMatrix();
                     // Translate the model.
@@ -421,70 +528,85 @@ namespace cockpit {
                     glPointSize(1.0f); //set point size to 1 pixel
 
                     glBegin(GL_POINTS); //starts drawing of points
-                    glColor3f(1.0f,1.0f,0.0);//Yellow color
+                    glColor3f(1.0f, 1.0f, 0.0);//Yellow color
 
                     uint16_t distance_integer = 0;
-                    float xyDistance = 0.0f, xData = 0.0f, yData = 0.0f, zData = 0.0f;
-                    uint8_t intensity = 0;
-                    float azimuth = startAzimuth;
-                    for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
-                        float verticalAngle = START_V_ANGLE;
-                        for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
-                            sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                            //Recordings before 2017 do not call hton() while storing CPC.
-                            //Hence, we only call ntoh() for recordings from 2017.
-                            if (m_recordingYear > 2016) {
-                                distance_integer = ntohs(distance_integer);
-                            }
-                            float distance = 0.0;
-                            if (numberOfBitsForIntensity == 0) {
-                                switch (distanceEncoding) {
-                                    case CompactPointCloud::CM : distance = static_cast<float>(distance_integer / 100.0f); //convert to meter from resolution 1 cm
-                                                                 break;
-                                    case CompactPointCloud::MM : distance = static_cast<float>(distance_integer / 500.0f); //convert to meter from resolution 2mm
-                                                                 break;
-                                }       
-                            } else {
-                                uint16_t cappedDistance = distance_integer & tmpMask;
-                                if (intensityPlacement == 0) {//higher bits for intensity
-                                    intensity = distance_integer >> (16 - numberOfBitsForIntensity);
-                                } else {//lower bits for intensity
-                                    intensity = distance_integer - cappedDistance;
+                    if (entriesPerAzimuth == 16) {
+                        float azimuth = startAzimuth;
+                        const string distances = m_cpc.getDistances();
+                        const uint32_t numberOfPoints = distances.size() / 2;
+                        const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
+                        const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
+                        stringstream sstr(distances);
+                        
+                        for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                            float verticalAngle = START_V_ANGLE;
+                            for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
+                                sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
+                                if (numberOfBitsForIntensity == 0) {
+                                    drawOneCPCPointNoIntensity(distance_integer, azimuth, verticalAngle, distanceEncoding);
+                                } else {
+                                    drawOneCPCPointWithIntensity(distance_integer, azimuth, verticalAngle, distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
                                 }
-                                
-                                switch (distanceEncoding) {
-                                    case CompactPointCloud::CM : distance = static_cast<float>(cappedDistance / 100.0f); //convert to meter from resolution 1 cm
-                                                                 break;
-                                    case CompactPointCloud::MM : distance = static_cast<float>(cappedDistance / 500.0f); //convert to meter from resolution 2mm
-                                                                 break;
-                                } 
-                            }
-                           
-                            if (distance > 1.0f) {//Only viualize the point when the distance is larger than 1m
-                                // Compute x, y, z coordinate based on distance, azimuth, and vertical angle
-                                xyDistance = distance * cos(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
-                                xData = xyDistance * sin(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
-                                yData = xyDistance * cos(azimuth * static_cast<float>(cartesian::Constants::DEG2RAD));
-                                zData = distance * sin(verticalAngle * static_cast<float>(cartesian::Constants::DEG2RAD));
-                                if(numberOfBitsForIntensity != 0) {
-                                    //The number of intensity levels depends on number of bits for intensity. There are 2^n intensity levels for n bits
-                                    float intensityLevel = intensity / intensityMaxValue;
-                                    //Four color levels: blue, green, yellow, red from low intensity to high intensity
-                                    if (intensityLevel < 0.25f + 1e-7) {
-                                        glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 1.0f);
-                                    } else if (intensityLevel > 0.25f && intensityLevel < 0.5f + 1e-7) {
-                                        glColor3f(0.0f, 0.5f + intensityLevel * 2.0f, 0.5f);
-                                    } else if (intensityLevel > 0.5f && intensityLevel < 0.75f + 1e-7) {
-                                        glColor3f(1.0f, 0.75f + intensityLevel, 0.0f);
-                                    } else {
-                                        glColor3f(0.55f + intensityLevel, 0.0f, 0.0f);
-                                    } 
-                                }
-                                glVertex3f(xData, yData, zData);//Plot the point 
                                 verticalAngle += V_INCREMENT;
                             }
+                            azimuth += azimuthIncrement;
                         }
-                        azimuth += azimuthIncrement;
+                    } else {
+                        if ((m_cpcMask_32 & 0x04) > 0) {
+                            float azimuth = startAzimuth;
+                            const uint32_t numberOfPoints = m_12_cpcDistance_32.size() / 2;
+                            const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
+                            const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
+                            stringstream sstr(m_12_cpcDistance_32);
+                            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                                for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
+                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
+                                    if (numberOfBitsForIntensity == 0) {
+                                        drawOneCPCPointNoIntensity(distance_integer, azimuth, m_12_verticalAngles[sensorIndex], distanceEncoding);
+                                    } else {
+                                        drawOneCPCPointWithIntensity(distance_integer, azimuth, m_12_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
+                                    }
+                                }
+                                azimuth += azimuthIncrement;
+                            }
+                        }
+                        if ((m_cpcMask_32 & 0x02) > 0) {
+                            float azimuth = startAzimuth;
+                            const uint32_t numberOfPoints = m_11_cpcDistance_32.size() / 2;
+                            const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
+                            const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
+                            stringstream sstr(m_11_cpcDistance_32);
+                            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                                for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
+                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
+                                    if (numberOfBitsForIntensity == 0) {
+                                        drawOneCPCPointNoIntensity(distance_integer, azimuth, m_11_verticalAngles[sensorIndex], distanceEncoding);
+                                    } else {
+                                        drawOneCPCPointWithIntensity(distance_integer, azimuth, m_11_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
+                                    }
+                                }
+                                azimuth += azimuthIncrement;
+                            }
+                        }
+                        if ((m_cpcMask_32 & 0x01) > 0) {
+                            float azimuth = startAzimuth;
+                            const uint32_t numberOfPoints = m_9_cpcDistance_32.size() / 2;
+                            const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
+                            const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
+                            stringstream sstr(m_9_cpcDistance_32);
+                            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                                for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
+                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
+                                    if (numberOfBitsForIntensity == 0) {
+                                        drawOneCPCPointNoIntensity(distance_integer, azimuth, m_9_verticalAngles[sensorIndex], distanceEncoding);
+                                    } else {
+                                        drawOneCPCPointWithIntensity(distance_integer, azimuth, m_9_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
+                                    }
+                                }
+                                azimuth += azimuthIncrement;
+                            }
+                        }
                     }
 
                     glEnd(); //end drawing of points
@@ -633,12 +755,34 @@ namespace cockpit {
                 }
                 
                 if(c.getDataType() == odcore::data::CompactPointCloud::ID()){
-                    m_CPCreceived = true;
+                    m_CPCReceived = true;
                     TimeStamp ts = c.getSampleTimeStamp();
                     m_recordingYear = ts.getYear();
                     if (!m_SPCReceived) {
                         Lock lockCPC(m_cpcMutex);
                         m_cpc = c.getData<CompactPointCloud>();  
+                        uint8_t numberOfLayers = m_cpc.getEntriesPerAzimuth();
+                        if (numberOfLayers != 16) {
+                            uint64_t currentTime = ts.toMicroseconds();
+                            //Check if this HDL-32E CPC comes from a new scan, the interval between two scans is roughly 100ms. It is safe to assume that a new CPC comes from a new scan if the interval is longer than 50ms
+                            if (currentTime - m_previousCPC32TimeStamp > 50000) {
+                                //m_cpcString_32 = m_cpc.getDistances();
+                                m_cpcMask_32 = 0;
+                            }
+                            m_previousCPC32TimeStamp = currentTime;
+                            if (numberOfLayers == 12) {
+                                m_cpcMask_32 = m_cpcMask_32 | 0x04;
+                                m_12_cpcDistance_32 = m_cpc.getDistances();
+                            }
+                            if (numberOfLayers == 11) {
+                                m_cpcMask_32 = m_cpcMask_32 | 0x02;
+                                m_11_cpcDistance_32 = m_cpc.getDistances();
+                            }
+                            if (numberOfLayers == 9) {
+                                m_cpcMask_32 = m_cpcMask_32 | 0x01;
+                                m_9_cpcDistance_32 = m_cpc.getDistances();
+                            }
+                        }
                     }
                 }
                 
