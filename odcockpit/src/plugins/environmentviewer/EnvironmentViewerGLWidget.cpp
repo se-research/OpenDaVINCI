@@ -125,10 +125,10 @@ namespace cockpit {
                     m_velodyneSharedMemory(NULL),
                     m_hasAttachedToSharedImageMemory(false),
                     m_velodyneFrame(),
-		            m_12_startingSensorID_32(0),
-		            m_11_startingSensorID_32(2),
-		            m_9_startingSensorID_32(5),
-		            m_12_cpcDistance_32(""),
+                    m_12_startingSensorID_32(0),
+                    m_11_startingSensorID_32(2),
+                    m_9_startingSensorID_32(5),
+                    m_12_cpcDistance_32(""),
                     m_11_cpcDistance_32(""),
                     m_9_cpcDistance_32(""),
                     m_previousCPC32TimeStamp(0),
@@ -138,38 +138,39 @@ namespace cockpit {
                     m_SPCReceived(false),
                     m_CPCReceived(false),
                     m_recordingYear(0) {
-		float sensorIDs_32[32];
-		bool use32IncrementA = true;
-		sensorIDs_32[0] = START_V_ANGLE_32;
+        float sensorIDs_32[32];
+        bool use32IncrementA = true;
+        sensorIDs_32[0] = START_V_ANGLE_32;
                 //Derive the 32 vertical angles for HDL-32E based on the starting angle and the two increments
-		for (uint8_t counter = 1; counter < 31; counter++) {
-		    if (use32IncrementA) {
-		        sensorIDs_32[counter] += V_INCREMENT_32_A;
-		    } else {
-		        sensorIDs_32[counter] += V_INCREMENT_32_B;
-		    }
-		}
-		//Derive the 12 vertical angles associated with the first part of CPC for HDL-32E
-		m_12_verticalAngles[0] = sensorIDs_32[m_12_startingSensorID_32];
-		uint8_t currentSensorID = m_12_startingSensorID_32 + 1;
-		m_12_verticalAngles[1] = sensorIDs_32[currentSensorID];
-		for (uint8_t counter = 2; counter < 11; counter++) {
-		    m_12_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
-		}
+        for (uint8_t counter = 1; counter < 31; counter++) {
+            if (use32IncrementA) {
+                sensorIDs_32[counter] += V_INCREMENT_32_A;
+            } else {
+                sensorIDs_32[counter] += V_INCREMENT_32_B;
+            }
+            use32IncrementA = !use32IncrementA;
+        }
+        //Derive the 12 vertical angles associated with the first part of CPC for HDL-32E
+        m_12_verticalAngles[0] = sensorIDs_32[m_12_startingSensorID_32];
+        uint8_t currentSensorID = m_12_startingSensorID_32 + 1;
+        m_12_verticalAngles[1] = sensorIDs_32[currentSensorID];
+        for (uint8_t counter = 2; counter < 11; counter++) {
+            m_12_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
+        }
 //Derive the 11 vertical angles associated with the second part of CPC for HDL-32E
-		m_11_verticalAngles[0] = sensorIDs_32[m_11_startingSensorID_32];
-		currentSensorID = m_11_startingSensorID_32 + 1;
-		m_11_verticalAngles[1] = sensorIDs_32[currentSensorID];
-		for (uint8_t counter = 2; counter < 10; counter++) {
-		    m_11_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
-		}
-	//Derive the 9 vertical angles associated with the third part of CPC for HDL-32E
-		m_9_verticalAngles[0] = sensorIDs_32[m_9_startingSensorID_32];
-		currentSensorID = m_9_startingSensorID_32 + 1;
-		m_9_verticalAngles[1] = sensorIDs_32[currentSensorID];
-		for (uint8_t counter = 2; counter < 8; counter++) {
-		    m_9_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
-		}
+        m_11_verticalAngles[0] = sensorIDs_32[m_11_startingSensorID_32];
+        currentSensorID = m_11_startingSensorID_32 + 1;
+        m_11_verticalAngles[1] = sensorIDs_32[currentSensorID];
+        for (uint8_t counter = 2; counter < 10; counter++) {
+            m_11_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
+        }
+    //Derive the 9 vertical angles associated with the third part of CPC for HDL-32E
+        m_9_verticalAngles[0] = sensorIDs_32[m_9_startingSensorID_32];
+        currentSensorID = m_9_startingSensorID_32 + 1;
+        m_9_verticalAngles[1] = sensorIDs_32[currentSensorID];
+        for (uint8_t counter = 2; counter < 8; counter++) {
+            m_9_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
+        }
             }
 
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
