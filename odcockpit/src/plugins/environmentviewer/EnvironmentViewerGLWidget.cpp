@@ -125,9 +125,9 @@ namespace cockpit {
                     m_velodyneSharedMemory(NULL),
                     m_hasAttachedToSharedImageMemory(false),
                     m_velodyneFrame(),
-                    m_12_startingSensorID_32(0),
-                    m_11_startingSensorID_32(2),
-                    m_9_startingSensorID_32(5),
+                    m_12_startingSensorID_32(0),//The first HDL-32E CPC starts from Layer 0
+                    m_11_startingSensorID_32(2),//The second HDL-32E CPC starts from Layer 2
+                    m_9_startingSensorID_32(5),//The third HDL-32E CPC starts from Layer 5
                     m_12_cpcDistance_32(""),
                     m_11_cpcDistance_32(""),
                     m_9_cpcDistance_32(""),
@@ -138,41 +138,42 @@ namespace cockpit {
                     m_SPCReceived(false),
                     m_CPCReceived(false),
                     m_recordingYear(0) {
-        float sensorIDs_32[32];
-        bool use32IncrementA = true;
-        sensorIDs_32[0] = START_V_ANGLE_32;
+                    
+                float sensorIDs_32[32];
+                bool use32IncrementA = true;
+                sensorIDs_32[0] = START_V_ANGLE_32;
                 //Derive the 32 vertical angles for HDL-32E based on the starting angle and the two increments
-        for (uint8_t counter = 1; counter < 31; counter++) {
-            if (use32IncrementA) {
-                sensorIDs_32[counter] += V_INCREMENT_32_A;
-            } else {
-                sensorIDs_32[counter] += V_INCREMENT_32_B;
+                for (uint8_t counter = 1; counter < 31; counter++) {
+                    if (use32IncrementA) {
+                        sensorIDs_32[counter] += V_INCREMENT_32_A;
+                    } else {
+                        sensorIDs_32[counter] += V_INCREMENT_32_B;
+                    }
+                    use32IncrementA = !use32IncrementA;
+                }
+                //Derive the 12 vertical angles associated with the first part of CPC for HDL-32E
+                m_12_verticalAngles[0] = sensorIDs_32[m_12_startingSensorID_32];
+                uint8_t currentSensorID = m_12_startingSensorID_32 + 1;
+                m_12_verticalAngles[1] = sensorIDs_32[currentSensorID];
+                for (uint8_t counter = 2; counter < 11; counter++) {
+                    m_12_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
+                }
+                //Derive the 11 vertical angles associated with the second part of CPC for HDL-32E
+                m_11_verticalAngles[0] = sensorIDs_32[m_11_startingSensorID_32];
+                currentSensorID = m_11_startingSensorID_32 + 1;
+                m_11_verticalAngles[1] = sensorIDs_32[currentSensorID];
+                for (uint8_t counter = 2; counter < 10; counter++) {
+                    m_11_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
+                }
+                //Derive the 9 vertical angles associated with the third part of CPC for HDL-32E
+                m_9_verticalAngles[0] = sensorIDs_32[m_9_startingSensorID_32];
+                currentSensorID = m_9_startingSensorID_32 + 1;
+                m_9_verticalAngles[1] = sensorIDs_32[currentSensorID];
+                for (uint8_t counter = 2; counter < 8; counter++) {
+                    m_9_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
+                }
             }
-            use32IncrementA = !use32IncrementA;
-        }
-        //Derive the 12 vertical angles associated with the first part of CPC for HDL-32E
-        m_12_verticalAngles[0] = sensorIDs_32[m_12_startingSensorID_32];
-        uint8_t currentSensorID = m_12_startingSensorID_32 + 1;
-        m_12_verticalAngles[1] = sensorIDs_32[currentSensorID];
-        for (uint8_t counter = 2; counter < 11; counter++) {
-            m_12_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
-        }
-//Derive the 11 vertical angles associated with the second part of CPC for HDL-32E
-        m_11_verticalAngles[0] = sensorIDs_32[m_11_startingSensorID_32];
-        currentSensorID = m_11_startingSensorID_32 + 1;
-        m_11_verticalAngles[1] = sensorIDs_32[currentSensorID];
-        for (uint8_t counter = 2; counter < 10; counter++) {
-            m_11_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
-        }
-    //Derive the 9 vertical angles associated with the third part of CPC for HDL-32E
-        m_9_verticalAngles[0] = sensorIDs_32[m_9_startingSensorID_32];
-        currentSensorID = m_9_startingSensorID_32 + 1;
-        m_9_verticalAngles[1] = sensorIDs_32[currentSensorID];
-        for (uint8_t counter = 2; counter < 8; counter++) {
-            m_9_verticalAngles[counter] = sensorIDs_32[currentSensorID + 3];    
-        }
-            }
-
+        
             EnvironmentViewerGLWidget::~EnvironmentViewerGLWidget() {
                 OPENDAVINCI_CORE_DELETE_POINTER(m_root);
                 OPENDAVINCI_CORE_DELETE_POINTER(m_selectableNodeDescriptorTree);
@@ -356,7 +357,7 @@ namespace cockpit {
                 switch (distanceEncoding) {
                     case CompactPointCloud::CM : distance = static_cast<float>(distanceCPCPoint / 100.0f); //convert to meter from resolution 1 cm
                                                  break;
-                    case CompactPointCloud::MM : distance = static_cast<float>(distanceCPCPoint / 500.0f); //convert to meter from resolution 2mm
+                    case CompactPointCloud::MM : distance = static_cast<float>(distanceCPCPoint / 500.0f); //convert to meter from resolution 2 mm
                                                  break;
                 }
                 if (distance > 1.0f) {//Only viualize the point when the distance is larger than 1m
@@ -388,7 +389,7 @@ namespace cockpit {
                 switch (distanceEncoding) {
                     case CompactPointCloud::CM : distance = static_cast<float>(cappedDistance / 100.0f); //convert to meter from resolution 1 cm
                                                  break;
-                    case CompactPointCloud::MM : distance = static_cast<float>(cappedDistance / 500.0f); //convert to meter from resolution 2mm
+                    case CompactPointCloud::MM : distance = static_cast<float>(cappedDistance / 500.0f); //convert to meter from resolution 2 mm
                                                  break;
                 }
                 if (distance > 1.0f) {//Only viualize the point when the distance is larger than 1m
@@ -495,7 +496,7 @@ namespace cockpit {
                  HDL-32E: from -30.67 to 10.67 degrees, with alternating increment 1.33 and 1.34).
                  A compact point cloud contains: (1) the starting azimuth, (2) the ending azimuth,
                  (3) number of points per azimuth, and (4) a string with the distance values of all
-                 points in the container*/
+                 points in the container */
                 if (m_CPCReceived && !m_SPCReceived) {
                     Lock lockCPC(m_cpcMutex);
                     const float startAzimuth = m_cpc.getStartAzimuth();
@@ -531,7 +532,7 @@ namespace cockpit {
                     glColor3f(1.0f, 1.0f, 0.0);//Yellow color
 
                     uint16_t distance_integer = 0;
-                    if (entriesPerAzimuth == 16) {
+                    if (entriesPerAzimuth == 16) {//A VLP-16 CPC
                         float azimuth = startAzimuth;
                         const string distances = m_cpc.getDistances();
                         const uint32_t numberOfPoints = distances.size() / 2;
@@ -552,8 +553,8 @@ namespace cockpit {
                             }
                             azimuth += azimuthIncrement;
                         }
-                    } else {
-                        if ((m_cpcMask_32 & 0x04) > 0) {
+                    } else {//A HDL-32E CPC, one of the three parts of a complete scan
+                        if ((m_cpcMask_32 & 0x04) > 0) {//The first part, 12 layers
                             float azimuth = startAzimuth;
                             const uint32_t numberOfPoints = m_12_cpcDistance_32.size() / 2;
                             const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
@@ -571,7 +572,7 @@ namespace cockpit {
                                 azimuth += azimuthIncrement;
                             }
                         }
-                        if ((m_cpcMask_32 & 0x02) > 0) {
+                        if ((m_cpcMask_32 & 0x02) > 0) {//The second part, 11 layers
                             float azimuth = startAzimuth;
                             const uint32_t numberOfPoints = m_11_cpcDistance_32.size() / 2;
                             const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
@@ -589,7 +590,7 @@ namespace cockpit {
                                 azimuth += azimuthIncrement;
                             }
                         }
-                        if ((m_cpcMask_32 & 0x01) > 0) {
+                        if ((m_cpcMask_32 & 0x01) > 0) {//The third part, 9 layers
                             float azimuth = startAzimuth;
                             const uint32_t numberOfPoints = m_9_cpcDistance_32.size() / 2;
                             const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
@@ -762,12 +763,13 @@ namespace cockpit {
                         Lock lockCPC(m_cpcMutex);
                         m_cpc = c.getData<CompactPointCloud>();  
                         uint8_t numberOfLayers = m_cpc.getEntriesPerAzimuth();
+                        //Currently odcockpit supports the visualization of SPC for Velodyne 16/32/64 and the visualization of CPC for Velodyne 16/32.
+                        //If a CPC does not contain 16 layers, it is assumed to be a HDL-32E CPC
                         if (numberOfLayers != 16) {
                             uint64_t currentTime = ts.toMicroseconds();
-                            //Check if this HDL-32E CPC comes from a new scan, the interval between two scans is roughly 100ms. It is safe to assume that a new CPC comes from a new scan if the interval is longer than 50ms
+                            //Check if this HDL-32E CPC comes from a new scan. The interval between two scans is roughly 100ms. It is safe to assume that a new CPC comes from a new scan if the interval is longer than 50ms
                             if (currentTime - m_previousCPC32TimeStamp > 50000) {
-                                //m_cpcString_32 = m_cpc.getDistances();
-                                m_cpcMask_32 = 0;
+                                m_cpcMask_32 = 0;//Reset the mask that represents which HDL-32E CPC part has arrived
                             }
                             m_previousCPC32TimeStamp = currentTime;
                             if (numberOfLayers == 12) {
