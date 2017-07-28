@@ -55,8 +55,6 @@ namespace odplayerh264 {
     using namespace odcore::io::tcp;
     using namespace odtools::player;
 
-    const uint32_t BUFFER_SIZE = 16384;
-
     PlayerH264Decoder::PlayerH264Decoder() :
         PlayerH264Decoder(0) {}
 
@@ -69,16 +67,16 @@ namespace odplayerh264 {
         m_mySharedMemory(NULL),
         m_mySharedImage(),
         m_frameCounter(0),
-        m_readFromFileBuffer(NULL),
         m_internalBuffer(),
         m_inputFile(NULL),
+        m_positionInFile(0),
         m_decodeContext(NULL),
         m_parser(NULL),
         m_picture(NULL),
         m_pixelTransformationContext(NULL),
         m_frameBGR(NULL) {
         if (0 < port) {
-            // Try to connect to odrecorderh264 process to exchange Containers to encode.
+            // Try to connect to odplayerh264 process to exchange Containers to encode.
             try {
                 m_connection = shared_ptr<TCPConnection>(TCPFactory::createTCPConnectionTo("127.0.0.1", port));
                 m_connection->setConnectionListener(this);
@@ -93,9 +91,6 @@ namespace odplayerh264 {
                 cerr << "[odplayerh264] Could not connect to odplayerh264: " << exception << endl;
             }
         }
-
-        // Create a buffer to read from file.
-        m_readFromFileBuffer = new uint8_t[BUFFER_SIZE + FF_INPUT_BUFFER_PADDING_SIZE];
     }
 
     PlayerH264Decoder::~PlayerH264Decoder() {
@@ -134,11 +129,6 @@ namespace odplayerh264 {
 
             // Free buffer.
             m_internalBuffer.clear();
-            if (m_readFromFileBuffer != NULL) {
-                delete [] m_readFromFileBuffer;
-                m_readFromFileBuffer = NULL;
-            }
-
             cout << "[odplayerh264] Cleaned h264 decoding child." << endl;
         }
     }
@@ -178,7 +168,7 @@ namespace odplayerh264 {
 
             // If we have a valid shared memory segment, decode next frame.
             if (m_mySharedMemory->isValid()) {
-                if (getNextFrame()) {
+                if (getNextFrame(h264frame.getFrameSize())) {
                     replacementContainer = Container(m_mySharedImage);
                     replacementContainer.setSentTimeStamp(c.getSentTimeStamp());
                     replacementContainer.setReceivedTimeStamp(c.getReceivedTimeStamp());
@@ -256,48 +246,15 @@ namespace odplayerh264 {
                 return false;
             }
 
-            // Fill buffer from file.
-            fillBuffer();
-
             clog << "[odplayerh264] h264 decoder initialized." << endl;
             retVal = true;
         }
         return retVal;
     }
 
-    bool PlayerH264Decoder::getNextFrame() {
-        bool readMore = false;
-
-        // Decode next frame (or fill buffer if needed).
-        while (!update(readMore)) {
-            if (readMore) {
-                fillBuffer();
-            }
-
-            // Leave loop if EOF.
-            if (feof(m_inputFile)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    int PlayerH264Decoder::fillBuffer() {
-        int32_t nbytes = static_cast<int32_t>(fread(m_readFromFileBuffer, sizeof(uint8_t), BUFFER_SIZE, m_inputFile));
-
-        if (nbytes > 0) {
-            // Add bytes from file to our internal buffer.
-            copy(m_readFromFileBuffer, m_readFromFileBuffer + nbytes, back_inserter(m_internalBuffer));
-        }
-
-        return nbytes;
-    }
-
-    bool PlayerH264Decoder::update(bool &readMoreBytes) {
-        readMoreBytes = false;
-
+    bool PlayerH264Decoder::getNextFrame(const uint32_t &bytesToRead) {
         if (feof(m_inputFile)) {
+            cerr << "[odplayerh264] Cannot read from file." << endl;
             return false;
         }
 
@@ -306,10 +263,24 @@ namespace odplayerh264 {
             return false;
         }
 
-        if (m_internalBuffer.size() == 0) {
-            readMoreBytes = true;
+        if (0 == bytesToRead) {
             return false;
         }
+
+        m_internalBuffer.reserve(m_internalBuffer.size() + bytesToRead);
+        uint8_t *buffer = new uint8_t[bytesToRead];
+cout << "pos before = " << ftell(m_inputFile) << endl;
+        int nbytes = fread(buffer, sizeof(uint8_t), bytesToRead, m_inputFile);
+cout << "pos after = " << ftell(m_inputFile) << ", read " << nbytes << endl;
+        if (0 > nbytes) {
+            return false;
+        }
+        if (static_cast<uint32_t>(nbytes) != bytesToRead) {
+            cerr << "[odplayerh264] Cannot read " << bytesToRead << " from file." << endl;
+            return false;
+        }
+        copy(buffer, buffer + bytesToRead, back_inserter(m_internalBuffer));
+        delete [] buffer;
 
         uint8_t* data = NULL;
         int size = 0;
@@ -318,11 +289,12 @@ namespace odplayerh264 {
                                       0, 0, AV_NOPTS_VALUE);
 
         if ((size == 0) && (length >= 0)) {
-            readMoreBytes = true;
+            cerr << "[odplayerh264] Need to read more bytes: length = " << length << ", size = " << size << endl;
             return false;
         }
 
         if (length > 0) {
+cout << "s = " << size << ", l = " << length << endl;
             decodeFrame(&m_internalBuffer[0], size);
             m_internalBuffer.erase(m_internalBuffer.begin(), m_internalBuffer.begin() + length);
             return true;
@@ -347,8 +319,6 @@ namespace odplayerh264 {
         else {
             if (gotPicture) {
                 m_frameCounter++;
-
-                // cout << "[odplayerh264] Read frame " << m_picture->pts << endl;
 
                 // Transform from YUV420p into BGR24 format.
                 sws_scale(m_pixelTransformationContext, m_picture->data, m_picture->linesize, 0, m_mySharedImage.getHeight(), m_frameBGR->data, m_frameBGR->linesize);
