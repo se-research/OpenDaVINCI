@@ -120,25 +120,10 @@ namespace odplayerh264 {
             /**
              * This method returns the next frame from the given h264 file.
              *
+             * @param bytesToRead Bytes to read from file.
              * @return true if succeeded; the shared memory segment contains the decoded frame in BGR24 format.
              */
-            bool getNextFrame();
-
-            /**
-             * This method fills up the internal buffe with bytes.
-             *
-             * @return The amount of bytes read into the internal buffer.
-             */
-            int fillBuffer();
-
-            /**
-             * This method is called whenever more bytes in the internal buffer
-             * are needed.
-             *
-             * @param readMoreBytes indicate whether we need to read more bytes.
-             * @return true if succeeded.
-             */
-            bool update(bool &readMoreBytes);
+            bool getNextFrame(const uint32_t &bytesToRead);
 
             /**
              * This method does the actual decoding.
@@ -175,6 +160,7 @@ namespace odplayerh264 {
 
             // Handle to input file.
             FILE *m_inputFile;
+            uint64_t m_positionInFile;
 
             // Decoder context.
             AVCodecContext *m_decodeContext;
