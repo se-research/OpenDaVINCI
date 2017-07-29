@@ -18,6 +18,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 
 #include "opencv2/imgproc/imgproc_c.h"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -30,12 +31,22 @@ namespace automotive {
         OpenCVCamera::OpenCVCamera(const string &name, const uint32_t &id, const uint32_t &width, const uint32_t &height, const uint32_t &bpp) :
             Camera(name, id, width, height, bpp),
             m_capture(NULL),
-            m_image(NULL) {
+            m_image(NULL),
+            m_font() {
 
             m_capture = cvCaptureFromCAM(id);
             if (m_capture) {
                 cvSetCaptureProperty(m_capture, CV_CAP_PROP_FRAME_WIDTH, width);
                 cvSetCaptureProperty(m_capture, CV_CAP_PROP_FRAME_HEIGHT, height);
+
+                // Initialize fonts.
+                const double hscale = 0.4;
+                const double vscale = 0.3;
+                const double shear = 0.2;
+                const int thickness = 1;
+                const int lineType = 6;
+
+                cvInitFont(&m_font, CV_FONT_HERSHEY_DUPLEX, hscale, vscale, shear, thickness, lineType);
             }
             else {
                 cerr << "proxy: Could not open camera '" << name << "' with ID: " << id << endl;
@@ -53,10 +64,13 @@ namespace automotive {
             return (m_capture != NULL);
         }
 
-        bool OpenCVCamera::captureFrame() {
+        bool OpenCVCamera::captureFrame(odcore::data::TimeStamp &sampleTime) {
             bool retVal = false;
             if (m_capture != NULL) {
                 if (cvGrabFrame(m_capture)) {
+                    odcore::data::TimeStamp now;
+                    sampleTime = now;
+
                     if (getBPP() == 1) {
                         IplImage *tmpFrame = cvRetrieveFrame(m_capture);
 
@@ -69,6 +83,11 @@ namespace automotive {
                     else {
                         m_image = cvRetrieveFrame(m_capture);
                     }
+
+                    stringstream sstr;
+                    sstr << now.getYYYYMMDD_HHMMSSms();
+                    CvScalar red = CV_RGB(255, 0, 0);
+                    cvPutText(m_image, sstr.str().c_str(), cvPoint(100, 100), &m_font, red);
 
                     retVal = true;
                 }

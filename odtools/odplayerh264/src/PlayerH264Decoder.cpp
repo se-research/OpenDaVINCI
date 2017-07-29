@@ -67,6 +67,7 @@ namespace odplayerh264 {
         m_mySharedMemory(NULL),
         m_mySharedImage(),
         m_frameCounter(0),
+        m_readFromFileBuffer(NULL),
         m_internalBuffer(),
         m_inputFile(NULL),
         m_positionInFile(0),
@@ -91,6 +92,8 @@ namespace odplayerh264 {
                 cerr << "[odplayerh264] Could not connect to odplayerh264: " << exception << endl;
             }
         }
+
+        m_readFromFileBuffer = new uint8_t[1024 * 1024 * 10]; // 10 MB buffer.
     }
 
     PlayerH264Decoder::~PlayerH264Decoder() {
@@ -129,6 +132,7 @@ namespace odplayerh264 {
 
             // Free buffer.
             m_internalBuffer.clear();
+            delete [] m_readFromFileBuffer;
             cout << "[odplayerh264] Cleaned h264 decoding child." << endl;
         }
     }
@@ -254,12 +258,12 @@ namespace odplayerh264 {
 
     bool PlayerH264Decoder::getNextFrame(const uint32_t &bytesToRead) {
         if (feof(m_inputFile)) {
-            cerr << "[odplayerh264] Cannot read from file." << endl;
+            cerr << "[odplayerh264] Cannot read from file: EOF" << endl;
             return false;
         }
 
         if (!m_inputFile) {
-            cerr << "[odplayerh264] Cannot read from file." << endl;
+            cerr << "[odplayerh264] Cannot read from file: NULL" << endl;
             return false;
         }
 
@@ -268,19 +272,18 @@ namespace odplayerh264 {
         }
 
         m_internalBuffer.reserve(m_internalBuffer.size() + bytesToRead);
-        uint8_t *buffer = new uint8_t[bytesToRead];
 cout << "pos before = " << ftell(m_inputFile) << endl;
-        int nbytes = fread(buffer, sizeof(uint8_t), bytesToRead, m_inputFile);
+        int nbytes = fread(m_readFromFileBuffer, sizeof(uint8_t), bytesToRead, m_inputFile);
 cout << "pos after = " << ftell(m_inputFile) << ", read " << nbytes << endl;
         if (0 > nbytes) {
+            cerr << "[odplayerh264] Cannot read from file: -1" << endl;
             return false;
         }
         if (static_cast<uint32_t>(nbytes) != bytesToRead) {
             cerr << "[odplayerh264] Cannot read " << bytesToRead << " from file." << endl;
             return false;
         }
-        copy(buffer, buffer + bytesToRead, back_inserter(m_internalBuffer));
-        delete [] buffer;
+        copy(m_readFromFileBuffer, m_readFromFileBuffer + bytesToRead, back_inserter(m_internalBuffer));
 
         uint8_t* data = NULL;
         int size = 0;
@@ -294,7 +297,6 @@ cout << "pos after = " << ftell(m_inputFile) << ", read " << nbytes << endl;
         }
 
         if (length > 0) {
-cout << "s = " << size << ", l = " << length << endl;
             decodeFrame(&m_internalBuffer[0], size);
             m_internalBuffer.erase(m_internalBuffer.begin(), m_internalBuffer.begin() + length);
             return true;

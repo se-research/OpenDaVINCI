@@ -72,11 +72,12 @@ namespace automotive {
 
                 virtual bool isValid() const;
 
-                virtual bool captureFrame();
+                virtual bool captureFrame(odcore::data::TimeStamp &sampleTime);
 
             private:
                 CvCapture *m_capture;
                 IplImage *m_image;
+                CvFont m_font;
         };
 
     }
