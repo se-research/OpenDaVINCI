@@ -20,6 +20,7 @@
 #include <ctime>
 
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <memory>
 
@@ -351,7 +352,7 @@ namespace odcore {
 
         const string TimeStamp::getYYYYMMDD_HHMMSSms() const {
             stringstream s;
-            s << getYYYYMMDD_HHMMSS() << "." << getMicroseconds();
+            s << getYYYYMMDD_HHMMSS() << "." << setfill('0') << setw(6) << getMicroseconds();
             return s.str();
         }
 
