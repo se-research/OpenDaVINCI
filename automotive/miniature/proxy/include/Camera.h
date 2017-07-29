@@ -24,6 +24,7 @@
 #include <string>
 
 #include <memory>
+#include "opendavinci/odcore/data/TimeStamp.h"
 #include "opendavinci/odcore/wrapper/SharedMemory.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
@@ -75,6 +76,8 @@ namespace automotive {
                  */
                 odcore::data::image::SharedImage capture();
 
+                odcore::data::TimeStamp getSampleTime() const;
+
             protected:
                 /**
                  * This method is responsible to copy the image from the
@@ -86,7 +89,7 @@ namespace automotive {
                  */
                 virtual bool copyImageTo(char *dest, const uint32_t &size) = 0;
 
-                virtual bool captureFrame() = 0;
+                virtual bool captureFrame(odcore::data::TimeStamp &sampleTime) = 0;
 
                 virtual bool isValid() const = 0;
 
@@ -105,7 +108,8 @@ namespace automotive {
             private:
                 odcore::data::image::SharedImage m_sharedImage;
                 std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedMemory;
-                
+                odcore::data::TimeStamp m_sampleTime;
+
             protected:
                 string m_name;
                 uint32_t m_id;

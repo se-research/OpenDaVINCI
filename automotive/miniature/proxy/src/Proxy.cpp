@@ -126,6 +126,7 @@ namespace automotive {
                     odcore::data::image::SharedImage si = m_camera->capture();
 
                     Container c(si);
+                    c.setSampleTimeStamp(m_camera->getSampleTime());
                     distribute(c);
                     captureCounter++;
                 }

@@ -32,6 +32,7 @@ namespace automotive {
         Camera::Camera(const string &name, const uint32_t &id, const uint32_t &width, const uint32_t &height, const uint32_t &bpp) :
             m_sharedImage(),
             m_sharedMemory(),
+            m_sampleTime(),
             m_name(name),
             m_id(id),
             m_width(width),
@@ -76,9 +77,13 @@ namespace automotive {
             return m_size;
         }
 
+        odcore::data::TimeStamp Camera::getSampleTime() const {
+            return m_sampleTime;
+        }
+
         odcore::data::image::SharedImage Camera::capture() {
             if (isValid()) {
-                if (captureFrame()) {
+                if (captureFrame(m_sampleTime)) {
                     if (m_sharedMemory.get() && m_sharedMemory->isValid()) {
                         m_sharedMemory->lock();
                             copyImageTo((char*)m_sharedMemory->getSharedMemory(), m_size);

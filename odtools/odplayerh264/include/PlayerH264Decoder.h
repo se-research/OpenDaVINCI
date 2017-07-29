@@ -154,8 +154,6 @@ namespace odplayerh264 {
 
             // Buffer to read from video file.
             uint8_t *m_readFromFileBuffer;
-
-            // Internal buffer to handle processed and unprocessed data.
             vector<uint8_t> m_internalBuffer;
 
             // Handle to input file.

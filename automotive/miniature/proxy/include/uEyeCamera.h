@@ -76,7 +76,7 @@ namespace automotive {
 
                 virtual bool isValid() const;
 
-                virtual bool captureFrame();
+                virtual bool captureFrame(odcore::data::TimeStamp &sampleTime);
 
             private:
                 HIDS m_capture;
