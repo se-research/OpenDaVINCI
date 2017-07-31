@@ -23,9 +23,10 @@ MAINTAINER Christian Berger "christian.berger@gu.se"
 ADD opt /opt
 
 # Change owner for binaries.
-RUN groupadd odv && \
-    useradd odv -g odv && \
+RUN if [ "$(getent group|cut -f1 -d":"|grep 'odv')" != "odv" -a "x`which groupadd`" != "x" ]; then groupadd odv; fi && \
+    if [ "$(getent passwd|cut -f1 -d":"|grep 'odv')" != "odv" -a "x`which useradd`" != "x" ]; then useradd odv -g odv; fi && \
     chown -R odv:odv /opt/od4
+
 
 # Environment parameters to allow GUIs.
 ENV QT_X11_NO_MITSHM=1
