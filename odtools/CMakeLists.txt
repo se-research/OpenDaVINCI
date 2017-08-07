@@ -53,6 +53,7 @@ ENDIF()
 ###########################################################################
 # Add subdirectories.
 ADD_SUBDIRECTORY (odfilter)
+ADD_SUBDIRECTORY (odmjpegstreamer)
 IF(FUSE_FOUND)
     ADD_SUBDIRECTORY (odrec2fuse)
 ENDIF()
