@@ -72,7 +72,11 @@ FIND_PACKAGE (GLUT REQUIRED)
 
 ###########################################################################
 # Find OpenCV.
-SET(OPENCV_ROOT_DIR "/usr")
+IF( (EXISTS "/usr/pkg/include/opencv") OR (EXISTS "/usr/pkg/include/opencv2") )
+    SET(OPENCV_ROOT_DIR "/usr/pkg")
+ELSE()
+    SET(OPENCV_ROOT_DIR "/usr")
+ENDIF()
 IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
     SET(OPENCV_ROOT_DIR "/usr/local")
 ENDIF()

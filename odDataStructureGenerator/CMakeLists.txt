@@ -31,19 +31,36 @@ INCLUDE (CheckJavaBuildEnvironment)
 ###########################################################################
 # As this project uses ant to build the binary, we simply delegate
 # the actual compilation, test, and packaging to ant.
-ExternalProject_Add (odDataStructureGenerator
-    DOWNLOAD_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.datamodel ${CMAKE_BINARY_DIR}/org.opendavinci.datamodel
-    DOWNLOAD_COMMAND ""
-    UPDATE_COMMAND ""
-    PATCH_COMMAND ""
-    SOURCE_DIR "${CMAKE_BINARY_DIR}/org.opendavinci.datamodel"
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml compile-java
-    BUILD_IN_SOURCE 1
-    TEST_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml test-java
-    TEST_BEFORE_INSTALL 1
-    INSTALL_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml create-runnable-jar
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/org.opendavinci.datamodel/odDataStructureGenerator-latest.jar ${CMAKE_BINARY_DIR})
+
+IF($ENV{DOWNLOAD_ODDATASTRUCTUREGENERATOR})
+    IF(UNIX)
+        FILE(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/../VERSION" OPENDAVINCI_VERSION)
+        MESSAGE("Trying to download odDataStructureGenerator, version ${OPENDAVINCI_VERSION}")
+
+        ExternalProject_Add (odDataStructureGenerator
+            DOWNLOAD_COMMAND curl http://opendavinci.cse.chalmers.se/ubuntu/pool/main/o/opendavinci-oddatastructuregenerator/opendavinci_${OPENDAVINCI_VERSION}_x86_64-odDataStructureGenerator.deb > ${CMAKE_BINARY_DIR}/odDataStructureGenerator.deb
+            UPDATE_COMMAND ar p ${CMAKE_BINARY_DIR}/odDataStructureGenerator.deb data.tar.gz | tar xvz -C ${CMAKE_BINARY_DIR}
+            PATCH_COMMAND ""
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND ""
+            TEST_COMMAND ""
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/usr/bin/odDataStructureGenerator-latest.jar ${CMAKE_BINARY_DIR})
+    ENDIF()
+ELSE()
+    ExternalProject_Add (odDataStructureGenerator
+        DOWNLOAD_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/org.opendavinci.datamodel ${CMAKE_BINARY_DIR}/org.opendavinci.datamodel
+        DOWNLOAD_COMMAND ""
+        UPDATE_COMMAND ""
+        PATCH_COMMAND ""
+        SOURCE_DIR "${CMAKE_BINARY_DIR}/org.opendavinci.datamodel"
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml compile-java
+        BUILD_IN_SOURCE 1
+        TEST_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml test-java
+        TEST_BEFORE_INSTALL 1
+        INSTALL_COMMAND ${ANT_EXECUTABLE} -lib lib -f ant-build.xml create-runnable-jar
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/org.opendavinci.datamodel/odDataStructureGenerator-latest.jar ${CMAKE_BINARY_DIR})
+ENDIF()
 
 # Install odDataStructureGenerator.
 INSTALL(FILES "${CMAKE_BINARY_DIR}/odDataStructureGenerator-latest.jar" DESTINATION bin COMPONENT odDataStructureGenerator)

@@ -169,6 +169,9 @@ class FieldTest : public CxxTest::TestSuite {
             CSVFromVisitableVisitor csv(output, ADD_HEADER, DELIMITER);
             mv.accept(csv);
 
+            TS_ASSERT(csv.getHeader() == "att1%att2%att3%att4%");
+            TS_ASSERT(csv.getEntry() == "1%-1.234%12.3456%Hello World%");
+
             TS_ASSERT(output.str() == expected.str());
         }
 

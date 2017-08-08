@@ -36,7 +36,7 @@ ENDIF()
 
 ###########################################################################
 # Compile flags to enable C++11.
-SET (CXX_OPTIONS       "-O2 -std=c++11 -Wall -Werror -Wshadow -Wextra")
+SET (CXX_OPTIONS       "-O2 -std=c++11 -Wall -Werror -Wshadow -Wextra -Wno-error=deprecated")
 SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC ${CXX_OPTIONS} -pipe")
 
 ###########################################################################

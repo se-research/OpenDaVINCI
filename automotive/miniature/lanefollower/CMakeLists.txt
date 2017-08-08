@@ -53,7 +53,11 @@ FIND_PACKAGE (AutomotiveData REQUIRED)
 
 ###########################################################################
 # Find OpenCV.
-SET(OPENCV_ROOT_DIR "/usr")
+IF( (EXISTS "/usr/pkg/include/opencv") OR (EXISTS "/usr/pkg/include/opencv2") )
+    SET(OPENCV_ROOT_DIR "/usr/pkg")
+ELSE()
+    SET(OPENCV_ROOT_DIR "/usr")
+ENDIF()
 FIND_PACKAGE (OpenCV REQUIRED)
 
 ###########################################################################
@@ -66,7 +70,7 @@ INCLUDE_DIRECTORIES (${OPENDAVINCI_INCLUDE_DIRS})
 # Set header files from AutomotiveData.
 INCLUDE_DIRECTORIES (${AUTOMOTIVEDATA_INCLUDE_DIRS})
 # Set header files from OpenCV.
-INCLUDE_DIRECTORIES (${OPENCV_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES (SYSTEM ${OPENCV_INCLUDE_DIRS})
 # Set include directory.
 INCLUDE_DIRECTORIES(include)
 

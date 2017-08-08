@@ -78,6 +78,10 @@ namespace plugins { class PlugInProvider; }
             static string getStartupDirectory();
             static string m_startupDirectory;
 
+        public:
+            static CockpitWindow& getInstance();
+            void watchSignalUsingChartPlugIn(const string &title, const int32_t &dataType, const uint32_t &senderStamp, const string &fieldName);
+
         public slots:
             void close();
             void maximizeActiveSubWindow();
@@ -89,7 +93,10 @@ namespace plugins { class PlugInProvider; }
             void constructLayout();
             void loadPlugIn(const string &s);
 
+            void setupPlugIn(std::shared_ptr<plugins::PlugIn> plugIn);
+
         private:
+            static CockpitWindow *m_instance;
             odcore::base::KeyValueConfiguration m_kvc;
             odcore::base::DataStoreManager &m_dataStoreManager;
             FIFOMultiplexer *m_multiplexer;

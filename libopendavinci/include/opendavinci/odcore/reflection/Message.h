@@ -104,7 +104,14 @@ namespace odcore {
 
             public:
                 /**
-                 * This method adds a field to this generic message representation.
+                 * This method inserts a field to this generic message representation at the beginning of the list of fields.
+                 *
+                 * @param Field to be added.
+                 */
+                void insertField(const std::shared_ptr<odcore::data::reflection::AbstractField> &f);
+
+                /**
+                 * This method adds a field to this generic message representation at the end of the list of fields.
                  *
                  * @param Field to be added.
                  */
