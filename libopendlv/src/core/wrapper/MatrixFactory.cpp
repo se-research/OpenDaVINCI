@@ -50,7 +50,18 @@ namespace core {
                     }
 
                     // Add to disposal service.
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
                     odcore::wrapper::DisposalService::getInstance().addDisposableForFinalRemoval((Disposable**)&MatrixFactory::m_singleton);
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
                 }
             }
             MatrixFactory::m_singletonMutex->unlock();

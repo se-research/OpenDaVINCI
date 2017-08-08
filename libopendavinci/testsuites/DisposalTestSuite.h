@@ -52,8 +52,19 @@ class DisposalTest : public CxxTest::TestSuite {
             TS_ASSERT(trash1regular != trash2final);
 
             {
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
                 odcore::wrapper::DisposalService::getInstance().addDisposableForRegularRemoval((odcore::wrapper::Disposable**)&trash1regular);
                 odcore::wrapper::DisposalService::getInstance().addDisposableForFinalRemoval((odcore::wrapper::Disposable**)&trash2final);
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
                 odcore::base::Thread::usleepFor(2 * 1000 * 1000);
 
                 odcore::wrapper::DisposalService &ds1 = odcore::wrapper::DisposalService::getInstance();
