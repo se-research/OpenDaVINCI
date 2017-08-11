@@ -414,6 +414,72 @@ namespace cockpit {
                     glVertex3f(xData, yData, zData);//Plot the point 
                 }
             }
+            
+            void EnvironmentViewerGLWidget::drawCPC32noIntensity(const uint8_t &part, const uint8_t &entriesPerAzimuth, const float &startAzimuth, const float &endAzimuth, const uint8_t &distanceEncoding) {
+                float azimuth = startAzimuth;
+                uint32_t numberOfPoints;
+                stringstream sstr;
+                if (part == 1) {
+                    numberOfPoints = m_12_cpcDistance_32.size() / 2;
+                    sstr.str(m_12_cpcDistance_32);
+                } else if (part == 2) {
+                    numberOfPoints = m_11_cpcDistance_32.size() / 2;
+                    sstr.str(m_11_cpcDistance_32);
+                } else {
+                    numberOfPoints = m_9_cpcDistance_32.size() / 2;
+                    sstr.str(m_9_cpcDistance_32);
+                }
+                uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
+                float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
+                uint16_t distance = 0;
+
+                for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                    for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
+                        sstr.read((char*)(&distance), 2); // Read distance value from the string in a CPC container point by point
+                        if (part == 1) {
+                            drawOneCPCPointNoIntensity(distance, azimuth, m_12_verticalAngles[sensorIndex], distanceEncoding);
+                        } else if (part == 2) {
+                            drawOneCPCPointNoIntensity(distance, azimuth, m_11_verticalAngles[sensorIndex], distanceEncoding);
+                        } else {
+                            drawOneCPCPointNoIntensity(distance, azimuth, m_9_verticalAngles[sensorIndex], distanceEncoding);
+                        }
+                    }
+                    azimuth += azimuthIncrement;
+                }
+            }
+            
+            void EnvironmentViewerGLWidget::drawCPC32withIntensity(const uint8_t &part, const uint8_t &entriesPerAzimuth, const float &startAzimuth, const float &endAzimuth, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &mask, const float &intensityMaxValue) {
+                float azimuth = startAzimuth;
+                uint32_t numberOfPoints;
+                stringstream sstr;
+                if (part == 1) {
+                    numberOfPoints = m_12_cpcDistance_32.size() / 2;
+                    sstr.str(m_12_cpcDistance_32);
+                } else if (part == 2) {
+                    numberOfPoints = m_11_cpcDistance_32.size() / 2;
+                    sstr.str(m_11_cpcDistance_32);
+                } else {
+                    numberOfPoints = m_9_cpcDistance_32.size() / 2;
+                    sstr.str(m_9_cpcDistance_32);
+                }
+                uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
+                float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
+                uint16_t distance = 0;
+
+                for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
+                    for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
+                        sstr.read((char*)(&distance), 2); // Read distance value from the string in a CPC container point by point
+                        if (part == 1) {
+                            drawOneCPCPointWithIntensity(distance, azimuth, m_12_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, mask, intensityMaxValue);
+                        } else if (part == 2) {
+                            drawOneCPCPointWithIntensity(distance, azimuth, m_11_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, mask, intensityMaxValue);
+                        } else {
+                            drawOneCPCPointWithIntensity(distance, azimuth, m_9_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, mask, intensityMaxValue);
+                        }
+                    }
+                    azimuth += azimuthIncrement;
+                }
+            }
 
             void EnvironmentViewerGLWidget::drawSceneInternal() {
                 m_root->render(m_renderingConfiguration);
@@ -555,57 +621,24 @@ namespace cockpit {
                         }
                     } else {//A HDL-32E CPC, one of the three parts of a complete scan
                         if ((m_cpcMask_32 & 0x04) > 0) {//The first part, 12 layers
-                            float azimuth = startAzimuth;
-                            const uint32_t numberOfPoints = m_12_cpcDistance_32.size() / 2;
-                            const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
-                            const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
-                            stringstream sstr(m_12_cpcDistance_32);
-                            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
-                                for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
-                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                                    if (numberOfBitsForIntensity == 0) {
-                                        drawOneCPCPointNoIntensity(distance_integer, azimuth, m_12_verticalAngles[sensorIndex], distanceEncoding);
-                                    } else {
-                                        drawOneCPCPointWithIntensity(distance_integer, azimuth, m_12_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
-                                    }
-                                }
-                                azimuth += azimuthIncrement;
+                            if (numberOfBitsForIntensity == 0) {
+                                drawCPC32noIntensity(1, entriesPerAzimuth, startAzimuth, endAzimuth, distanceEncoding);
+                            } else {
+                            drawCPC32withIntensity(1, entriesPerAzimuth, startAzimuth, endAzimuth, distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
                             }
                         }
                         if ((m_cpcMask_32 & 0x02) > 0) {//The second part, 11 layers
-                            float azimuth = startAzimuth;
-                            const uint32_t numberOfPoints = m_11_cpcDistance_32.size() / 2;
-                            const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
-                            const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
-                            stringstream sstr(m_11_cpcDistance_32);
-                            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
-                                for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
-                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                                    if (numberOfBitsForIntensity == 0) {
-                                        drawOneCPCPointNoIntensity(distance_integer, azimuth, m_11_verticalAngles[sensorIndex], distanceEncoding);
-                                    } else {
-                                        drawOneCPCPointWithIntensity(distance_integer, azimuth, m_11_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
-                                    }
-                                }
-                                azimuth += azimuthIncrement;
+                            if (numberOfBitsForIntensity == 0) {
+                                drawCPC32noIntensity(2, entriesPerAzimuth, startAzimuth, endAzimuth, distanceEncoding);
+                            } else {
+                            drawCPC32withIntensity(2, entriesPerAzimuth, startAzimuth, endAzimuth, distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
                             }
                         }
                         if ((m_cpcMask_32 & 0x01) > 0) {//The third part, 9 layers
-                            float azimuth = startAzimuth;
-                            const uint32_t numberOfPoints = m_9_cpcDistance_32.size() / 2;
-                            const uint32_t numberOfAzimuths = numberOfPoints / entriesPerAzimuth;
-                            const float azimuthIncrement = (endAzimuth - startAzimuth) / numberOfAzimuths;//Calculate the azimuth increment
-                            stringstream sstr(m_9_cpcDistance_32);
-                            for (uint32_t azimuthIndex = 0; azimuthIndex < numberOfAzimuths; azimuthIndex++) {
-                                for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
-                                    sstr.read((char*)(&distance_integer), 2); // Read distance value from the string in a CPC container point by point
-                                    if (numberOfBitsForIntensity == 0) {
-                                        drawOneCPCPointNoIntensity(distance_integer, azimuth, m_9_verticalAngles[sensorIndex], distanceEncoding);
-                                    } else {
-                                        drawOneCPCPointWithIntensity(distance_integer, azimuth, m_9_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
-                                    }
-                                }
-                                azimuth += azimuthIncrement;
+                            if (numberOfBitsForIntensity == 0) {
+                                drawCPC32noIntensity(3, entriesPerAzimuth, startAzimuth, endAzimuth, distanceEncoding);
+                            } else {
+                            drawCPC32withIntensity(3, entriesPerAzimuth, startAzimuth, endAzimuth, distanceEncoding, numberOfBitsForIntensity, intensityPlacement, tmpMask, intensityMaxValue);
                             }
                         }
                     }
@@ -768,7 +801,7 @@ namespace cockpit {
                         if (numberOfLayers != 16) {
                             uint64_t currentTime = ts.toMicroseconds();
                             //Check if this HDL-32E CPC comes from a new scan. The interval between two scans is roughly 100ms. It is safe to assume that a new CPC comes from a new scan if the interval is longer than 50ms
-                            if (currentTime - m_previousCPC32TimeStamp > 50000) {
+                            if (abs(currentTime - m_previousCPC32TimeStamp) > 50000) {
                                 m_cpcMask_32 = 0;//Reset the mask that represents which HDL-32E CPC part has arrived
                             }
                             m_previousCPC32TimeStamp = currentTime;

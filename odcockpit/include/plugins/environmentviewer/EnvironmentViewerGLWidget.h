@@ -109,6 +109,11 @@ class SelectableNodeDescriptor;
                 private:
                     void drawOneCPCPointNoIntensity(const uint16_t &distance_integer, const float &azimuth, const float &verticalAngle, const uint8_t &distanceEncoding);
                     void drawOneCPCPointWithIntensity(const uint16_t &distance_integer, const float &azimuth, const float &verticalAngle, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &mask, const float &intensityMaxValue);
+                    void drawCPC32noIntensity(const uint8_t &part, const uint8_t &entriesPerAzimuth, const float &startAzimuth, const float &endAzimuth, const uint8_t &distanceEncoding);
+                    //part == 1: the first CPC of a HDL-32E scan with 12 layers
+                    //part == 2: the second CPC of a HDL-32E scan with 11 layers
+                    //part == 3: the third CPC of a HDL-32E scan with 9 layers
+                    void drawCPC32withIntensity(const uint8_t &part, const uint8_t &entriesPerAzimuth, const float &startAzimuth, const float &endAzimuth, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &mask, const float &intensityMaxValue);
                     void drawSceneInternal();
 
                 private:
