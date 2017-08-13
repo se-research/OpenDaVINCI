@@ -85,6 +85,12 @@ namespace automotive {
             m_address.can_family = AF_CAN;
             m_address.can_ifindex = ifr.ifr_ifindex;
 
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic push
+#endif
+#if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
             if (bind(m_socketCAN, reinterpret_cast<struct sockaddr *>(&m_address), sizeof(m_address)) < 0) {
                 cerr << "failed." << endl;
 
@@ -93,6 +99,10 @@ namespace automotive {
                 throw s.str();
             }
             cerr << "done." << endl;
+#if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#    pragma GCC diagnostic pop
+#endif
+
 #else
             cerr << "failed (SocketCAN not available on this platform). ";
 #endif
