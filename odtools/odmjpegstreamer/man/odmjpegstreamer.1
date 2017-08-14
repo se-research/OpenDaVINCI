@@ -32,6 +32,15 @@ odsupercomponent(1).
 .RE
 
 
+.B --bgr2rgb=<0,1>
+.RS
+odmjpegstreamer will convert the input image from BGR to RGB layout in case of
+three channel input image.
+
+If this parameter is omitted, the default quality level of 15 is used.
+.RE
+
+
 .B --jpegquality=<1..100>
 .RS
 odmjpegstreamer will compress data of type SharedImage using JPEG. This parameter
@@ -39,6 +48,16 @@ specifies the quality in the range [1,100].
 
 If this parameter is omitted, the default quality level of 15 is used.
 .RE
+
+
+.B --sharedimagename=<Name>
+.RS
+odmjpegstreamer will use the data from the image provided using the given name
+for streaming.
+
+If this parameter is omitted, the default quality level of 15 is used.
+.RE
+
 
 
 .B --realtime=<0..49>
@@ -63,9 +82,10 @@ This parameter specifies the verbosity level that is used to print some informat
 
 
 .SH EXAMPLES
-The following command creates an HTTP-encapsulated MJPEG stream of quality 20:
+The following command creates an HTTP-encapsulated MJPEG stream of quality 20
+for the shared image with the name "WebCam":
 
-.B odmjpegstreamer --cid=111 --jpegquality=20
+.B odmjpegstreamer --cid=111 --jpegquality=20 --sharedimagename=WebCam
 
 
 .SH SEE ALSO

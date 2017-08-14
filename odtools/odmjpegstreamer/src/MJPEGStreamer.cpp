@@ -44,20 +44,30 @@ namespace odmjpegstreamer {
         m_tcpAcceptor(),
         m_listOfConnections(),
         m_listOfClientHandlers(),
-        m_jpegQuality(15) {
+        m_jpegQuality(15),
+        m_bgr2rgb(false),
+        m_sharedimagename(""),
+        m_buffer(NULL) {
         // Parse command line arguments.
         parseAdditionalCommandLineParameters(argc, argv);
     }
 
-    MJPEGStreamer::~MJPEGStreamer() {}
+    MJPEGStreamer::~MJPEGStreamer() {
+        // Free pointer to compressed data.
+        OPENDAVINCI_CORE_FREE_POINTER(m_buffer);
+    }
 
     void MJPEGStreamer::parseAdditionalCommandLineParameters(const int &argc, char **argv) {
         CommandLineParser cmdParser;
         cmdParser.addCommandLineArgument("jpegquality");
+        cmdParser.addCommandLineArgument("sharedimagename");
+        cmdParser.addCommandLineArgument("bgr2rgb");
 
         cmdParser.parse(argc, argv);
 
         CommandLineArgument cmdArgumentJPEGQUALITY = cmdParser.getCommandLineArgument("jpegquality");
+        CommandLineArgument cmdArgumentSHAREDIMAGENAME = cmdParser.getCommandLineArgument("sharedimagename");
+        CommandLineArgument cmdArgumentBGR2RGB = cmdParser.getCommandLineArgument("bgr2rgb");
 
         if (cmdArgumentJPEGQUALITY.isSet()) {
             m_jpegQuality = cmdArgumentJPEGQUALITY.getValue<int32_t>();
@@ -66,6 +76,14 @@ namespace odmjpegstreamer {
                 clog << "Value for parameter --jpegquality must be between 1 and 100; using default value 15." << endl;
                 m_jpegQuality = 15;
             }
+        }
+
+        if (cmdArgumentSHAREDIMAGENAME.isSet()) {
+            m_sharedimagename = cmdArgumentSHAREDIMAGENAME.getValue<string>();
+        }
+
+        if (cmdArgumentBGR2RGB.isSet()) {
+            m_bgr2rgb = cmdArgumentBGR2RGB.getValue<int32_t>() == 1;
         }
     }
 
@@ -121,30 +139,45 @@ namespace odmjpegstreamer {
         if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
             odcore::data::image::SharedImage si = c.getData<odcore::data::image::SharedImage>();
 
-            // TODO: Match name of shared image to be provided as MJPEG stream.
             if ( (1 == si.getBytesPerPixel()) || 
                  (3 == si.getBytesPerPixel()) ) {
-                bool retVal = false;
-                int compressedSize = si.getWidth() * si.getHeight() * si.getBytesPerPixel();
-                void *buffer = ::malloc(compressedSize);
-                if (NULL != buffer) {
-                    std::shared_ptr<odcore::wrapper::SharedMemory> memory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
-                    if (memory->isValid()) {
-                        Lock l(memory);
-                        retVal = odcore::wrapper::jpg::JPG::compress(buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<const unsigned char*>(memory->getSharedMemory()), m_jpegQuality);
-                    }
+                // No shared image set via console. Select the first one.
+                if (m_sharedimagename == "") {
+                    clog << "[odmjpegstreamer]: No shared image selected; using " << si.getName() << "." << std::endl;
+                    m_sharedimagename = si.getName();
+                }
 
-                    if (retVal) {
-                        for(auto it = m_listOfClientHandlers.begin(); it != m_listOfClientHandlers.end(); it++) {
-                            (*it)->sendImage(static_cast<char*>(buffer), compressedSize);
+                if (m_sharedimagename == si.getName()) {
+                    bool retVal = false;
+                    int compressedSize = si.getWidth() * si.getHeight() * si.getBytesPerPixel();
+                    if (NULL == m_buffer) {
+                        m_buffer = ::malloc(compressedSize);
+                    }
+                    if (NULL != m_buffer) {
+                        std::shared_ptr<odcore::wrapper::SharedMemory> memory = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(si.getName());
+                        if (memory->isValid()) {
+                            Lock l(memory);
+
+                            unsigned char *input = (unsigned char*)memory->getSharedMemory();
+                            if (m_bgr2rgb && (3 == si.getBytesPerPixel())) {
+                                for(int32_t i = 0; i < compressedSize; i += 3) {
+                                    std::swap(input[i + 0], input[i + 2]);
+                                }
+                            }
+
+                            retVal = odcore::wrapper::jpg::JPG::compress(m_buffer, compressedSize, si.getWidth(), si.getHeight(), si.getBytesPerPixel(), static_cast<unsigned char*>(input), m_jpegQuality);
+                        }
+
+                        if (retVal) {
+                            for(auto it = m_listOfClientHandlers.begin(); it != m_listOfClientHandlers.end(); it++) {
+                                (*it)->sendImage(static_cast<char*>(m_buffer), compressedSize);
+                            }
+                        }
+                        if (!retVal) {
+                            cerr << "[odmjpegstreamer]: Warning! Failed to compress image. Image skipped." << std::endl;
                         }
                     }
-                    if (!retVal) {
-                        cerr << "[odmjpegstreamer]: Warning! Failed to compress image. Image skipped." << std::endl;
-                    }
                 }
-                // Free pointer to compressed data.
-                OPENDAVINCI_CORE_FREE_POINTER(buffer);
             }
             else {
                 cerr << "[odmjpegstreamer]: Warning! Color space not supported. Image skipped." << std::endl;
