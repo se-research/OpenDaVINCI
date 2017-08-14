@@ -90,6 +90,9 @@ namespace odmjpegstreamer {
             vector<shared_ptr<MJPEGClientHandler> > m_listOfClientHandlers;
 
             int32_t m_jpegQuality;
+            bool m_bgr2rgb;
+            string m_sharedimagename;
+            void *m_buffer;
     };
 
 } // odmjpegstreamer
