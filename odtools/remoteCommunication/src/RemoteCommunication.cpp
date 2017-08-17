@@ -129,8 +129,7 @@ namespace automotive {
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 Container ms = getKeyValueDataStore().get(odcore::data::dmcp::ModuleStatistics::ID());
                 nextContainer(ms);
-                cout <<"Container :"<< ms.toString() <<endl;
-
+                
                 //send TCP and UDP
                 //--------------------------------------------------------------//
             
