@@ -228,18 +228,22 @@ class Serializable;
         }
 
         uint8_t ProtoDeserializer::decodeVarInt(istream &in, uint64_t &value) {
-            value = 0;
+            value = 0x0;
             uint8_t size = 0;
-            char c = 0;
+            char c = 0x0;
+            uint64_t byte = 0x0;
+            const uint64_t bit_shift=0x7;
+            const uint64_t byte_mask=0x7f;
+            const uint64_t msb=0x80;
+            
             while (in.good()) {
                 c = in.get();
-                value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
-                if ( !(c & 0x80) ) break;
+                byte = c & byte_mask;
+                value |= byte << (bit_shift * size++) ;
+                if ( !(c & msb) ) break;
             }
-
             // Protobuf's VarInt is based on little endian.
             value = le64toh(value);
-
             return size;
         }
 
