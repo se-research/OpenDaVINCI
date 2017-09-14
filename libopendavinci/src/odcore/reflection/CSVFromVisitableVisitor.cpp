@@ -108,7 +108,6 @@ namespace odcore {
                 m_header << shortName << m_delimiter;
             }
             m_entry << static_cast<int32_t>(v) << m_delimiter;
-//            m_entry << (int32_t)v << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int16_t &v) {
@@ -116,7 +115,6 @@ namespace odcore {
                 m_header << shortName << m_delimiter;
             }
             m_entry << static_cast<int32_t>(v) << m_delimiter;
-//            m_entry << (int32_t)v << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint16_t &v) {
@@ -124,7 +122,6 @@ namespace odcore {
                 m_header << shortName << m_delimiter;
             }
             m_entry << static_cast<uint32_t>(v) << m_delimiter;
-//            m_entry << (uint32_t)v << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int32_t &v) {

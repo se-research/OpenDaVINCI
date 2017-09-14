@@ -253,6 +253,46 @@ class FieldTest : public CxxTest::TestSuite {
             TS_ASSERT(output.str() == expected.str());
         }
 
+        void testCSV_Message() {
+            TestMessage10 tm1;
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+
+            uint32_t *tm1_arr1 = tm1.getMyArray1();
+            tm1_arr1[0] = 1; tm1_arr1[1] = 2;
+            float *tm1_arr2 = tm1.getMyArray2();
+            tm1_arr2[0] = -1.2345; tm1_arr2[1] = -2.3456; tm1_arr2[2] = -3.4567;
+
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+            TS_ASSERT(tm1_arr1[0] == 1);
+            TS_ASSERT(tm1_arr1[1] == 2);
+            TS_ASSERT_DELTA(tm1_arr2[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm1_arr2[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm1_arr2[2], -3.4567, 1e-4);
+
+            TS_ASSERT(tm1.getMyArray1()[0] == 1);
+            TS_ASSERT(tm1.getMyArray1()[1] == 2);
+            TS_ASSERT_DELTA(tm1.getMyArray2()[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm1.getMyArray2()[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm1.getMyArray2()[2], -3.4567, 1e-4);
+
+            stringstream output;
+            const bool ADD_HEADER = true;
+            const char DELIMITER = '%';
+
+//            stringstream expected;
+//            expected << "field1%field2%field3%field4%field5%field6%field7%field8%field9%field10%field11%field12.field1%" << endl;
+//            expected << "3%-3%103%-103%10003%-10003%54321%-54321%-5.4321%-50.4321%Hello OpenDaVINCI World!%150%" << endl;
+
+
+            CSVFromVisitableVisitor csv(output, ADD_HEADER, DELIMITER);
+            tm1.accept(csv);
+
+cout << "'" << output.str() << "'" << endl;
+//            TS_ASSERT(output.str() == expected.str());
+        }
+
 };
 
 #endif /*CORE_CSVFROMVISITABLEVISITORTESTSUITE_H_*/
