@@ -32,9 +32,10 @@ namespace odcore {
         using namespace odcore::base;
         using namespace odcore::serialization;
 
-        CSVFromVisitableVisitor::CSVFromVisitableVisitor(ostream &out, const bool &header, const char &delimiter) :
+        CSVFromVisitableVisitor::CSVFromVisitableVisitor(ostream &out, const bool &header, const char &delimiter, const string &headerPrefix) :
             m_buffer(out),
             m_header(),
+            m_headerPrefix(headerPrefix),
             m_entry(),
             m_entryBackup(),
             m_addHeader(header),
@@ -71,11 +72,11 @@ namespace odcore {
                 Visitable &visitable = dynamic_cast<Visitable&>(v);
 
                 stringstream buffer;
-                CSVFromVisitableVisitor csv(buffer, m_addHeader, m_delimiter);
+                CSVFromVisitableVisitor csv(buffer, m_addHeader, m_delimiter, m_headerPrefix + shortName + ".");
                 visitable.accept(csv);
 
                 if (m_addHeader) {
-                    m_header << shortName << "." << csv.getHeader(); // No delimiter as the nested CSVFromVisitableVisitor has added a trailing m_delimiter already.
+                    m_header << csv.getHeader(); // No delimiter as the nested CSVFromVisitableVisitor has added a trailing m_delimiter already.
                 }
                 m_entry << csv.getEntry(); // No delimiter as the nested CSVFromVisitableVisitor has added a trailing m_delimiter already.
             }
@@ -84,77 +85,77 @@ namespace odcore {
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, bool &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, char &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << static_cast<int32_t>(v) << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, unsigned char &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << static_cast<uint32_t>(v) << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int8_t &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << static_cast<int32_t>(v) << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int16_t &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << static_cast<int32_t>(v) << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint16_t &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << static_cast<uint32_t>(v) << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int32_t &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint32_t &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int64_t &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint64_t &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, float &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             const streamsize oldPrecision = m_entry.precision();
             m_entry.precision(numeric_limits<float>::digits10 + 1);
@@ -164,7 +165,7 @@ namespace odcore {
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, double &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             const streamsize oldPrecision = m_entry.precision();
             m_entry.precision(numeric_limits<double>::digits10 + 1);
@@ -174,7 +175,7 @@ namespace odcore {
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, string &v) {
             if (m_addHeader) {
-                m_header << shortName << m_delimiter;
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
             }
             m_entry << v << m_delimiter;
         }
