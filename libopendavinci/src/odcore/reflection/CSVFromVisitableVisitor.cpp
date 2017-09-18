@@ -18,6 +18,7 @@
  */
 
 #include <iomanip>
+#include <iostream>
 #include <limits>
 #include <sstream>
 
@@ -181,6 +182,23 @@ namespace odcore {
         }
 
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
+        }
+
+        void CSVFromVisitableVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) {
+            if (m_addHeader) {
+                m_header << (m_headerPrefix + shortName) << m_delimiter;
+            }
+            m_entry << "(";
+            for(uint32_t i = 0; i < count; i++) {
+                if (t == odcore::FLOAT_T) {
+                    m_entry << *(static_cast<float*>(data)+i);
+                }
+                if (t == odcore::UINT32_T) {
+                    m_entry << *(static_cast<uint32_t*>(data)+i);
+                }
+                m_entry << (i+1<count ? ", " : "");
+            }
+            m_entry << ")" << m_delimiter;
         }
 
     }

@@ -20,6 +20,7 @@
 #ifndef OPENDAVINCI_CORE_BASE_VISITOR_H_
 #define OPENDAVINCI_CORE_BASE_VISITOR_H_
 
+#include <iostream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
@@ -204,6 +205,11 @@ namespace odcore {
                  * @param size Length of the data to be serialized.
                  */
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) = 0;
+
+                // TODO: Rename to visit.
+                virtual void visitArray(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) /* = 0*/ {
+                    std::cout << "Visitor::visitArray(" << id << ", " << longName << ", " << shortName << ", " << data << ", " << count << ", " << t << ")" << std::endl;
+                }
         };
 
     }
