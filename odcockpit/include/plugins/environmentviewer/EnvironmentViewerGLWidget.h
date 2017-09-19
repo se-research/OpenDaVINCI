@@ -25,6 +25,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <array>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/Mutex.h"
@@ -109,10 +110,17 @@ class SelectableNodeDescriptor;
                 private:
                     void drawOneCPCPointNoIntensity(const uint16_t &distance_integer, const float &azimuth, const float &verticalAngle, const uint8_t &distanceEncoding);
                     void drawOneCPCPointWithIntensity(const uint16_t &distance_integer, const float &azimuth, const float &verticalAngle, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &mask, const float &intensityMaxValue);
+                    /** 
+                     * Assuming 10Hz rotation rate, HDL-32E is able to fire up to 70,000 points per scan, 
+                     * which cannot be all squeezed into one single UDP packet by CPC.
+                     * Therefore, the data of a complete scan of HDL-32E is stored into three separate CPC messages, 
+                     * with each CPC containing a subset of the 32 layers.
+
+                     * part == 1: the first CPC of a HDL-32E scan with 12 layers -> including layers 0, 1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31
+                     * part == 2: the second CPC of a HDL-32E scan with 11 layers -> including layers 2, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30
+                     * part == 3: the third CPC of a HDL-32E scan with 9 layers -> including layers 5, 8, 11, 14, 17, 20, 23, 26, 29
+                     */
                     void drawCPC32noIntensity(const uint8_t &part, const uint8_t &entriesPerAzimuth, const float &startAzimuth, const float &endAzimuth, const uint8_t &distanceEncoding);
-                    //part == 1: the first CPC of a HDL-32E scan with 12 layers
-                    //part == 2: the second CPC of a HDL-32E scan with 11 layers
-                    //part == 3: the third CPC of a HDL-32E scan with 9 layers
                     void drawCPC32withIntensity(const uint8_t &part, const uint8_t &entriesPerAzimuth, const float &startAzimuth, const float &endAzimuth, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &mask, const float &intensityMaxValue);
                     void drawSceneInternal();
 
@@ -155,9 +163,9 @@ class SelectableNodeDescriptor;
                     uint8_t m_12_startingSensorID_32; //From which layer for the first part(12 layers) of CPC for HDL-32E
                     uint8_t m_11_startingSensorID_32; //From which layer for the second part(11 layers) of CPC for HDL-32E
                     uint8_t m_9_startingSensorID_32; //From which layer for the third part(9 layers) of CPC for HDL-32E
-                    float m_12_verticalAngles[12]; //Store the 12 vertical angles for the first part (including 12 layers) of CPC for HDL-32E
-                    float m_11_verticalAngles[11]; //Store the 11 vertical angles for the second part (including 11 layers) of CPC for HDL-32E
-                    float m_9_verticalAngles[9]; //Store the 9 vertical angles for the third part (including 9 layers) of CPC for HDL-32E
+                    std::array<float, 12>  m_12_verticalAngles; //Store the 12 vertical angles for the first part (including 12 layers) of CPC for HDL-32E
+                    std::array<float, 11> m_11_verticalAngles; //Store the 11 vertical angles for the second part (including 11 layers) of CPC for HDL-32E
+                    std::array<float, 9> m_9_verticalAngles; //Store the 9 vertical angles for the third part (including 9 layers) of CPC for HDL-32E
                     std::string m_12_cpcDistance_32; //The distance string for the first part of CPC for HDL-32E    
                     std::string m_11_cpcDistance_32; //The distance string for the second part of CPC for HDL-32E    
                     std::string m_9_cpcDistance_32; //The distance string for the third part of CPC for HDL-32E    

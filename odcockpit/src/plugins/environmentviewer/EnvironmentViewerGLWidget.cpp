@@ -33,6 +33,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <array>
 
 #include "opendavinci/odcore/opendavinci.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
@@ -128,6 +129,9 @@ namespace cockpit {
                     m_12_startingSensorID_32(0),//The first HDL-32E CPC starts from Layer 0
                     m_11_startingSensorID_32(2),//The second HDL-32E CPC starts from Layer 2
                     m_9_startingSensorID_32(5),//The third HDL-32E CPC starts from Layer 5
+                    m_12_verticalAngles(),
+                    m_11_verticalAngles(),
+                    m_9_verticalAngles(),
                     m_12_cpcDistance_32(""),
                     m_11_cpcDistance_32(""),
                     m_9_cpcDistance_32(""),
@@ -139,16 +143,12 @@ namespace cockpit {
                     m_CPCReceived(false),
                     m_recordingYear(0) {
                     
-                float sensorIDs_32[32];
+                std::array<float, 32>  sensorIDs_32;
                 bool use32IncrementA = true;
                 sensorIDs_32[0] = START_V_ANGLE_32;
                 //Derive the 32 vertical angles for HDL-32E based on the starting angle and the two increments
                 for (uint8_t counter = 1; counter < 31; counter++) {
-                    if (use32IncrementA) {
-                        sensorIDs_32[counter] += V_INCREMENT_32_A;
-                    } else {
-                        sensorIDs_32[counter] += V_INCREMENT_32_B;
-                    }
+                    sensorIDs_32[counter] += use32IncrementA ?  V_INCREMENT_32_A : V_INCREMENT_32_B;
                     use32IncrementA = !use32IncrementA;
                 }
                 //Derive the 12 vertical angles associated with the first part of CPC for HDL-32E
