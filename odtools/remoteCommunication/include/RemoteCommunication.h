@@ -38,8 +38,11 @@ namespace automotive {
 
                 virtual ~RemoteCommunication();
                 virtual void nextContainer(odcore::data::Container &c);
-
-
+                virtual void handleIP(const string &ipAddress,const int &portNum);
+                virtual void connectSockets();
+                virtual bool checkUDP(int &client);
+                virtual bool checkTCP(int &client);
+                virtual void sendData();
                 odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
 
             private:

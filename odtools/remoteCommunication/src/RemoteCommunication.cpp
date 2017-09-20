@@ -66,7 +66,59 @@ namespace automotive {
                 m_sentMessage = ss.str();
                 m_containerHandlerMutex ->unlock();
             }
+        }
+        void RemoteCommunication::handleIP(string const &ipAddress,int const &portNum) {
+            char const* ip = ipAddress.c_str();
+            m_server_addr.sin_family = AF_INET;
+            
+            m_server_addr.sin_addr.s_addr=inet_addr("127.0.0.1");//fix this
+            inet_pton(AF_INET, ip, &m_server_addr.sin_addr);
+            
+            m_server_addr.sin_port =htons(portNum);
+        }
+        void RemoteCommunication::connectSockets(){
+            m_clientTCP=socket(AF_INET,SOCK_STREAM,0);
+            connect(m_clientTCP,(struct sockaddr *)&m_server_addr,sizeof(m_server_addr));
 
+            m_clientUDP = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
+            connect(m_clientUDP,(struct sockaddr *)&m_server_addr, sizeof(m_server_addr));
+        }
+        bool RemoteCommunication::checkTCP(int &client){
+            if(client < 0){
+                cout << "TCP socket couldnt create..."<< endl;
+                return false;
+            }
+            return true;
+            cout <<"TCP socket created!" << endl;
+            
+            // if (connect(m_clientTCP,(struct sockaddr *)&m_server_addr,sizeof(m_server_addr)) ==0){
+            //     cout << "Connecting TCP.." <<endl;
+            // }
+        }
+        bool RemoteCommunication::checkUDP(int &client){
+            if (client<0){
+                cout << "UDP socket coudlnt create..." << endl;
+                exit(1);
+                return false;
+            }
+            return true;
+        }
+        void RemoteCommunication::sendData(){
+            if (!checkUDP(m_clientUDP)){
+                cout << "UDP check failed"<<endl;
+                exit(1);
+            }
+            if(!checkTCP(m_clientTCP)){
+                cout << "TCP check failed"<<endl;
+                exit(1);
+            }
+            m_containerHandlerMutex -> lock();
+            sendto(m_clientUDP, m_sentMessage.c_str(), m_sentMessage.length(), 0, (struct sockaddr *)&m_server_addr, sizeof(m_server_addr));
+            sendto(m_clientTCP, m_sentMessage.c_str(), m_sentMessage.length(), 0, (struct sockaddr *)&m_server_addr, sizeof(m_server_addr));
+            m_containerHandlerMutex -> unlock();
+            cout << "the message :" << m_sentMessage <<endl;
+            cout <<"Sent UDP"<< endl;
+            cout <<"Sent TCP"<< endl;
         }
         void RemoteCommunication::setUp() {
             cout << "Setup started" << endl;
@@ -74,44 +126,23 @@ namespace automotive {
             m_containerHandlerMutex = unique_ptr<odcore::wrapper::Mutex>(MutexFactory::createMutex());
             KeyValueConfiguration kv = getKeyValueConfiguration();
                                 
-            string theIp = kv.getValue<string>("remoteCommunication.ip");
-            char const* ip = theIp.c_str();
+            const string ipAddress = kv.getValue<string>("remoteCommunication.ip");
             const int portNum = kv.getValue<int>("remoteCommunication.port");
-            m_server_addr.sin_family = AF_INET;
-            
-            m_server_addr.sin_addr.s_addr=inet_addr("127.0.0.1");
-            inet_pton(AF_INET, ip, &m_server_addr.sin_addr);
-            
-            m_server_addr.sin_port =htons(portNum);
+            handleIP(ipAddress,portNum);
+            connectSockets();
 
-            //CLIENT TCP
-            //-----------------------------------------------------//
-
-            m_clientTCP=socket(AF_INET,SOCK_STREAM,0);
-            if(m_clientTCP < 0){
-                cout << "TCP socket couldnt create..."<< endl;
+            if (!checkUDP(m_clientUDP))
                 exit(1);
-            }
-            cout <<"TCP socket created!" << endl;
-            
-            if (connect(m_clientTCP,(struct sockaddr *)&m_server_addr,sizeof(m_server_addr)) ==0){
-                cout << "Connecting TCP.." <<endl;
-            }
-          
-            // CLIENT UDP
-            //--------------------------------------------------------------------//
-            
-            
-            m_clientUDP = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
-            
-            if (m_clientUDP<0){
-                cout << "UDP socket coudlnt create..." << endl;
+            if(!checkTCP(m_clientTCP))
                 exit(1);
-            }
-            cout <<"UDP socket created! " << endl;
 
-            if (connect(m_clientUDP,(struct sockaddr *)&m_server_addr, sizeof(m_server_addr)) == 0)
-                cout << "Connecting UDP.. " << endl;
+
+            //CLIENT TCP /////////////////////////////////////////////////// Connect TCP - 
+            //-----------------------------------------------------// Connect UDP 
+            // Check connections
+            //Tear it down
+            //
+
         }
         
         void RemoteCommunication::tearDown() {
@@ -129,18 +160,7 @@ namespace automotive {
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 Container ms = getKeyValueDataStore().get(odcore::data::dmcp::ModuleStatistics::ID());
                 nextContainer(ms);
-                
-                //send TCP and UDP
-                //--------------------------------------------------------------//
-            
-                m_containerHandlerMutex -> lock();
-                sendto(m_clientUDP, m_sentMessage.c_str(), m_sentMessage.length(), 0, (struct sockaddr *)&m_server_addr, sizeof(m_server_addr));
-                sendto(m_clientTCP, m_sentMessage.c_str(), m_sentMessage.length(), 0, (struct sockaddr *)&m_server_addr, sizeof(m_server_addr));
-                m_containerHandlerMutex -> unlock();
-                cout << "the message :" << m_sentMessage <<endl;
-                cout <<"Sent UDP"<< endl;
-                cout <<"Sent TCP"<< endl;
-
+                sendData();
             }   
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
