@@ -134,7 +134,7 @@ namespace automotive {
         void CANMessage::encodeSignal(const CANSignal& signal, double& value) {
             // if the range is [0,0], skip the range check
             double tolerance=1e-5;
-            if(!(signal.m_rangeB-signal.m_rangeE<tolerance && signal.m_rangeB<tolerance)) {
+            if(!(fabs(signal.m_rangeB-signal.m_rangeE)<tolerance && fabs(signal.m_rangeB)<tolerance)) {
                 if(value<signal.m_rangeB)
                     value=signal.m_rangeB;
                 else if(value>signal.m_rangeE)
