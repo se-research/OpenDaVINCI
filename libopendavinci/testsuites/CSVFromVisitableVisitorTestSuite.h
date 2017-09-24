@@ -302,7 +302,7 @@ class FieldTest : public CxxTest::TestSuite {
             TS_ASSERT(output.str() == expected.str());
         }
 
-        void testCSV_Message() {
+        void testCSV_MessageForArrays() {
             TestMessage10 tm1;
             TS_ASSERT(tm1.getSize_MyArray1() == 2);
             TS_ASSERT(tm1.getSize_MyArray2() == 3);
@@ -330,16 +330,14 @@ class FieldTest : public CxxTest::TestSuite {
             const bool ADD_HEADER = true;
             const char DELIMITER = '%';
 
-//            stringstream expected;
-//            expected << "field1%field2%field3%field4%field5%field6%field7%field8%field9%field10%field11%field12.field1%" << endl;
-//            expected << "3%-3%103%-103%10003%-10003%54321%-54321%-5.4321%-50.4321%Hello OpenDaVINCI World!%150%" << endl;
-
+            stringstream expected;
+            expected << "myArray1%myArray2%" << endl;
+            expected << "(1, 2)%(-1.2345, -2.3456, -3.4567)%" << endl;
 
             CSVFromVisitableVisitor csv(output, ADD_HEADER, DELIMITER);
             tm1.accept(csv);
 
-cout << "'" << output.str() << "'" << endl;
-//            TS_ASSERT(output.str() == expected.str());
+            TS_ASSERT(output.str() == expected.str());
         }
 
 };
