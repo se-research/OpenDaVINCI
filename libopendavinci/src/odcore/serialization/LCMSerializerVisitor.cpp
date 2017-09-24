@@ -369,6 +369,10 @@ class Serializable;
             cerr << "[core::serialization::LCMSerializerVisitor]: LCM for void* not implemented!" << endl;
         }
 
+        void LCMSerializerVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::serialization::LCMSerializerVisitor::visitArray not implemented." << std::endl;
+        }
+
     }
 } // odcore::serialization
 

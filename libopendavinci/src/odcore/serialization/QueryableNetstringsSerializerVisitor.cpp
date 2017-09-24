@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+
 #include "opendavinci/odcore/serialization/QueryableNetstringsSerializerVisitor.h"
 
 namespace odcore {
@@ -93,6 +95,11 @@ class Serializable;
         void QueryableNetstringsSerializerVisitor::visit(const uint32_t &id, const string &/*longName*/, const string &/*shortName*/, void *data, const uint32_t &size) {
             write(id, data, size);
         }
+
+        void QueryableNetstringsSerializerVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::serialization::QueryableNetstringsSerializerVisitor::visitArray not implemented." << std::endl;
+        }
+
     }
 } // odcore::serialization
 

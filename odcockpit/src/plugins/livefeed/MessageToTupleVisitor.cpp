@@ -131,6 +131,10 @@ namespace cockpit {
                m_entries.push_back(make_pair(shortName, "Could not display data."));
              }
 
+            void MessageToTupleVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+                std::cerr << "cockpit::plugins::livefeed::MessageToTupleVisitor::visitArray not implemented." << std::endl;
+            }
+
         }
     }
 }

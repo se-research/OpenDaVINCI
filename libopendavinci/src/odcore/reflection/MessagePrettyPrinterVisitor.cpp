@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <ostream>
+#include <iostream>
 
 #include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
@@ -132,6 +132,10 @@ namespace odcore {
         void MessagePrettyPrinterVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
             for (uint16_t i = 0; i < m_indent; i++) m_buffer << "\t";
             m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", size " << size << ", data = " << static_cast<char*>(data) << endl;
+        }
+
+        void MessagePrettyPrinterVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::reflection::MessagePrettyPrinterVisitor::visitArray not implemented." << std::endl;
         }
 
     }

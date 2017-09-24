@@ -19,8 +19,9 @@
 
 #include <cstdlib>
 #include <cstring>
-
+#include <iostream>
 #include <memory>
+
 #include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/reflection/Field.h"
@@ -218,6 +219,10 @@ namespace odcore {
                 f->setSize(size);
                 m_message.addField(std::shared_ptr<AbstractField>(f));
             }
+        }
+
+        void MessageFromVisitableVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::reflection::MessageFromVisitableVisitor::visitArray not implemented." << std::endl;
         }
 
     }

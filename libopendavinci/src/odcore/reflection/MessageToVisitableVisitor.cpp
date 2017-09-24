@@ -18,6 +18,7 @@
  */
 
 #include <cstring>
+#include <iostream>
 
 #include "opendavinci/odcore/serialization/Serializable.h"
 #include "opendavinci/odcore/base/Visitable.h"
@@ -175,6 +176,10 @@ namespace odcore {
                     memcpy(data, fValue->getValue().operator->(), (size <= fSize ? size : fSize));
                 }
             }
+        }
+
+        void MessageToVisitableVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::reflection::MessageToVisitableVisitor::visitArray not implemented." << std::endl;
         }
 
     }

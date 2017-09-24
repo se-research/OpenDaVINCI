@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#include <iostream>
+
 #include "opendavinci/odcore/serialization/ProtoDeserializerVisitor.h"
 
 namespace odcore {
@@ -91,6 +93,10 @@ class Serializable;
 
         void ProtoDeserializerVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
             read(id, longName, shortName, data, size);
+        }
+
+        void ProtoDeserializerVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::serialization::ProtoDeserializerVisitor::visitArray not implemented." << std::endl;
         }
 
     }
