@@ -206,10 +206,18 @@ namespace odcore {
                  */
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) = 0;
 
+                /**
+                 * This method visits undefined data of length size.
+                 *
+                 * @param id identifier for the v to be serialized.
+                 * @param longName Long identifier (ie. with package name) for the v to be serialized.
+                 * @param shortName Short identifier for the v to be serialized.
+                 * @param data Data to be serialized.
+                 * @param count Number of elements in the fixed-sized array.
+                 * @param t Data type for an element.
+                 */
                 // TODO: Rename to visit.
-                virtual void visitArray(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) /* = 0*/ {
-                    std::cout << "Visitor::visitArray(" << id << ", " << longName << ", " << shortName << ", " << data << ", " << count << ", " << t << ")" << std::endl;
-                }
+                virtual void visitArray(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) = 0;
         };
 
     }

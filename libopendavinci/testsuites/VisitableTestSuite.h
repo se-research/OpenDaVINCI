@@ -245,6 +245,10 @@ class MyPrintVisitor : public Visitor {
         virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size) {
             cout << (int)id << ", " << longName << ", " << shortName << ", " << data << ", " << size << endl;
         }
+
+        virtual void visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "VisitableTestSuite::visitArray not implemented." << std::endl;
+        }
 };
 
 // The actual test case.
