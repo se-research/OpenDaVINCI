@@ -221,8 +221,37 @@ namespace odcore {
             }
         }
 
-        void MessageFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
-            std::cerr << "core::reflection::MessageFromVisitableVisitor::visit not implemented." << std::endl;
+        void MessageFromVisitableVisitor::visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) {
+            if ( (data != NULL) && (count > 0) ) {
+                uint16_t size = 0;
+                if (t == odcore::DOUBLE_T) { size = sizeof(double); }
+                if (t == odcore::FLOAT_T) { size = sizeof(float); }
+                if (t == odcore::UCHAR_T) { size = sizeof(unsigned char); }
+                if (t == odcore::CHAR_T) { size = sizeof(char); }
+                if (t == odcore::UINT8_T) { size = sizeof(uint8_t); }
+                if (t == odcore::INT8_T) { size = sizeof(int8_t); }
+                if (t == odcore::UINT16_T) { size = sizeof(uint16_t); }
+                if (t == odcore::INT16_T) { size = sizeof(int16_t); }
+                if (t == odcore::UINT32_T) { size = sizeof(uint32_t); }
+                if (t == odcore::INT32_T) { size = sizeof(int32_t); }
+                if (t == odcore::UINT64_T) { size = sizeof(uint64_t); }
+                if (t == odcore::INT64_T) { size = sizeof(int64_t); }
+
+                // Copy the data.
+                char* ptr = static_cast<char*>(malloc(size * count));
+                memcpy(ptr, data, size * count);
+
+                // Create a field.
+                Field<std::shared_ptr<char> > *f = new Field<std::shared_ptr<char> >(std::shared_ptr<char>(ptr));
+                f->setFieldIdentifier(id);
+                f->setLongFieldName(longName);
+                f->setShortFieldName(shortName);
+                f->setFieldDataType(static_cast<odcore::data::reflection::AbstractField::FIELDDATATYPE>(t));
+                f->setSize(size);
+                f->setIsFixedArray(true);
+                f->setNumberOfElementsInFixedArray(count);
+                m_message.addField(std::shared_ptr<AbstractField>(f));
+            }
         }
 
     }

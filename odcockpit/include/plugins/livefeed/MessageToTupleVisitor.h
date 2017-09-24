@@ -60,8 +60,9 @@ namespace cockpit {
                      * Constructor.
                      *
                      * @param entries Reference to the entries to be displayed.
+                     * @param prefix Prefix to be added to the field name.
                      */
-                    MessageToTupleVisitor(vector<pair<string, string> > &entries);
+                    MessageToTupleVisitor(vector<pair<string, string> > &entries, const string &prefixForFieldName);
 
                     virtual ~MessageToTupleVisitor();
 
@@ -87,6 +88,7 @@ namespace cockpit {
                     virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t);
 
                 private:
+                    string m_prefixForFieldName;
                     vector<pair<string, string> > &m_entries;
             };
 

@@ -190,12 +190,18 @@ namespace odcore {
             }
             m_entry << "(";
             for(uint32_t i = 0; i < count; i++) {
-                if (t == odcore::FLOAT_T) {
-                    m_entry << *(static_cast<float*>(data)+i);
-                }
-                if (t == odcore::UINT32_T) {
-                    m_entry << *(static_cast<uint32_t*>(data)+i);
-                }
+                if (t == odcore::DOUBLE_T) { m_entry << *(static_cast<double*>(data)+i); }
+                if (t == odcore::FLOAT_T) { m_entry << *(static_cast<float*>(data)+i); }
+                if (t == odcore::UCHAR_T) { m_entry << *(static_cast<unsigned char*>(data)+i); }
+                if (t == odcore::CHAR_T) { m_entry << *(static_cast<char*>(data)+i); }
+                if (t == odcore::UINT8_T) { m_entry << (uint32_t)*(static_cast<uint8_t*>(data)+i); }
+                if (t == odcore::INT8_T) { m_entry << (int32_t)*(static_cast<int8_t*>(data)+i); }
+                if (t == odcore::UINT16_T) { m_entry << (uint32_t)*(static_cast<uint16_t*>(data)+i); }
+                if (t == odcore::INT16_T) { m_entry << (int32_t)*(static_cast<int16_t*>(data)+i); }
+                if (t == odcore::UINT32_T) { m_entry << *(static_cast<uint32_t*>(data)+i); }
+                if (t == odcore::INT32_T) { m_entry << *(static_cast<int32_t*>(data)+i); }
+                if (t == odcore::UINT64_T) { m_entry << *(static_cast<uint64_t*>(data)+i); }
+                if (t == odcore::INT64_T) { m_entry << *(static_cast<int64_t*>(data)+i); }
                 m_entry << (i+1<count ? ", " : "");
             }
             m_entry << ")" << m_delimiter;

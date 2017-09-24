@@ -21,6 +21,7 @@
 #include <ostream>
 
 #include "opendavinci/odcore/serialization/Serializable.h"
+#include "opendavinci/odcore/base/Visitable.h"
 #include "opendavinci/odcore/data/SerializableData.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
 
@@ -33,19 +34,20 @@ namespace cockpit {
             using namespace std;
             using namespace odcore::base;
 
-            MessageToTupleVisitor::MessageToTupleVisitor(vector<pair<string, string> > &entries) :
+            MessageToTupleVisitor::MessageToTupleVisitor(vector<pair<string, string> > &entries, const string &prefixForFieldName) :
+                m_prefixForFieldName(prefixForFieldName),
                 m_entries(entries) {}
 
             MessageToTupleVisitor::~MessageToTupleVisitor() {}
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, odcore::serialization::Serializable &v) {
                 try {
-                    odcore::data::SerializableData& tmp = dynamic_cast<odcore::data::SerializableData&>(v);
-                    m_entries.push_back(make_pair(shortName, tmp.toString()));
+                    Visitable &visitable = dynamic_cast<Visitable&>(v);
+
+                    MessageToTupleVisitor visitor(m_entries, shortName + ".");
+                    visitable.accept(visitor);
                 }
-                catch(...) {
-                    m_entries.push_back(make_pair(shortName, "Could not display Serializable."));
-                }
+                catch(...) {}
             }
 
             void MessageToTupleVisitor::beginVisit(const int32_t &/*id*/, const string &/*shortName*/, const string &/*longName*/) {}
@@ -54,85 +56,104 @@ namespace cockpit {
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, bool &v) {
                 stringstream sstr;
                 sstr << v;
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, char &v) {
                 stringstream sstr;
                 sstr << static_cast<int32_t>(v);
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, unsigned char &v) {
                 stringstream sstr;
                 sstr << static_cast<uint32_t>(v);
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int8_t &v) {
                 stringstream sstr;
                 sstr << static_cast<int32_t>(v);
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int16_t &v) {
                 stringstream sstr;
                 sstr << static_cast<int32_t>(v);
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint16_t &v) {
                 stringstream sstr;
                 sstr << static_cast<uint32_t>(v);
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int32_t &v) {
                 stringstream sstr;
                 sstr << v;
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint32_t &v) {
                 stringstream sstr;
                 sstr << v;
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, int64_t &v) {
                 stringstream sstr;
                 sstr << v;
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, uint64_t &v) {
                 stringstream sstr;
                 sstr << v;
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, float &v) {
                 stringstream sstr;
                 sstr << setprecision(10) << v << setprecision(6);
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, double &v) {
                 stringstream sstr;
                 sstr << setprecision(10) << v << setprecision(6);
-                m_entries.push_back(make_pair(shortName, sstr.str()));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, sstr.str()));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, string &v) {
-                m_entries.push_back(make_pair(shortName, v));
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, v));
             }
 
             void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, void */*data*/, const uint32_t &/*size*/) {
-               m_entries.push_back(make_pair(shortName, "Could not display data."));
+               m_entries.push_back(make_pair(m_prefixForFieldName + shortName, "Could not display data."));
              }
 
-            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
-                std::cerr << "cockpit::plugins::livefeed::MessageToTupleVisitor::visit not implemented." << std::endl;
+            void MessageToTupleVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) {
+                stringstream entry;
+                entry << "(";
+                for(uint32_t i = 0; i < count; i++) {
+                    if (t == odcore::DOUBLE_T) { entry << *(static_cast<double*>(data)+i); }
+                    if (t == odcore::FLOAT_T) { entry << *(static_cast<float*>(data)+i); }
+                    if (t == odcore::UCHAR_T) { entry << *(static_cast<unsigned char*>(data)+i); }
+                    if (t == odcore::CHAR_T) { entry << *(static_cast<char*>(data)+i); }
+                    if (t == odcore::UINT8_T) { entry << (uint32_t)*(static_cast<uint8_t*>(data)+i); }
+                    if (t == odcore::INT8_T) { entry << (int32_t)*(static_cast<int8_t*>(data)+i); }
+                    if (t == odcore::UINT16_T) { entry << (uint32_t)*(static_cast<uint16_t*>(data)+i); }
+                    if (t == odcore::INT16_T) { entry << (int32_t)*(static_cast<int16_t*>(data)+i); }
+                    if (t == odcore::UINT32_T) { entry << *(static_cast<uint32_t*>(data)+i); }
+                    if (t == odcore::INT32_T) { entry << *(static_cast<int32_t*>(data)+i); }
+                    if (t == odcore::UINT64_T) { entry << *(static_cast<uint64_t*>(data)+i); }
+                    if (t == odcore::INT64_T) { entry << *(static_cast<int64_t*>(data)+i); }
+                    entry << (i+1<count ? ", " : "");
+                }
+                entry << ")";
+                const string s = entry.str();
+                m_entries.push_back(make_pair(m_prefixForFieldName + shortName, s));
             }
 
         }
