@@ -299,8 +299,8 @@ class Serializable;
             cerr << "[core::serialization::ROSDeserializerVisitor]: ROS for void* not implemented!" << endl;
         }
 
-        void ROSDeserializerVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
-            std::cerr << "core::serialization::ROSDeserializerVisitor::visitArray not implemented." << std::endl;
+        void ROSDeserializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::serialization::ROSDeserializerVisitor::visit not implemented." << std::endl;
         }
 
     }

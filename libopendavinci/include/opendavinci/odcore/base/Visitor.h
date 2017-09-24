@@ -216,8 +216,7 @@ namespace odcore {
                  * @param count Number of elements in the fixed-sized array.
                  * @param t Data type for an element.
                  */
-                // TODO: Rename to visit.
-                virtual void visitArray(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) = 0;
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) = 0;
         };
 
     }

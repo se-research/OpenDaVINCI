@@ -134,8 +134,8 @@ namespace odcore {
             m_buffer << "identifier = " << id << ", longName = " << longName << ", shortName = " << shortName << ", size " << size << ", data = " << static_cast<char*>(data) << endl;
         }
 
-        void MessagePrettyPrinterVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
-            std::cerr << "core::reflection::MessagePrettyPrinterVisitor::visitArray not implemented." << std::endl;
+        void MessagePrettyPrinterVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::reflection::MessagePrettyPrinterVisitor::visit not implemented." << std::endl;
         }
 
     }

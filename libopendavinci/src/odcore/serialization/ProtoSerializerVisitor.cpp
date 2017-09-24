@@ -95,8 +95,8 @@ class Serializable;
             write(id, longName, shortName, data, size);
         }
 
-        void ProtoSerializerVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
-            std::cerr << "core::serialization::ProtoSerializerVisitor::visitArray not implemented." << std::endl;
+        void ProtoSerializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::serialization::ProtoSerializerVisitor::visit not implemented." << std::endl;
         }
 
     }

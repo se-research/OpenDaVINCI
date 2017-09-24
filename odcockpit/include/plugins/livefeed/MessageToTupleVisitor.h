@@ -84,7 +84,7 @@ namespace cockpit {
                     virtual void visit(const uint32_t &id, const string &longName, const string &shortName, double &v);
                     virtual void visit(const uint32_t &id, const string &longName, const string &shortName, string &v);
                     virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size);
-                    virtual void visitArray(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t);
+                    virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t);
 
                 private:
                     vector<pair<string, string> > &m_entries;

@@ -221,8 +221,8 @@ namespace odcore {
             }
         }
 
-        void MessageFromVisitableVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
-            std::cerr << "core::reflection::MessageFromVisitableVisitor::visitArray not implemented." << std::endl;
+        void MessageFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::reflection::MessageFromVisitableVisitor::visit not implemented." << std::endl;
         }
 
     }

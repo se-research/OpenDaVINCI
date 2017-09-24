@@ -184,7 +184,7 @@ namespace odcore {
         void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*size*/) {
         }
 
-        void CSVFromVisitableVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) {
+        void CSVFromVisitableVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t) {
             if (m_addHeader) {
                 m_header << (m_headerPrefix + shortName) << m_delimiter;
             }

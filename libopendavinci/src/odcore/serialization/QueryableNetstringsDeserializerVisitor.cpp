@@ -96,8 +96,8 @@ class Serializable;
             read(id, data, size);
         }
 
-        void QueryableNetstringsDeserializerVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
-            std::cerr << "core::serialization::QueryableNetstringsDeserializerVisitor::visitArray not implemented." << std::endl;
+        void QueryableNetstringsDeserializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::serialization::QueryableNetstringsDeserializerVisitor::visit not implemented." << std::endl;
         }
 
     }

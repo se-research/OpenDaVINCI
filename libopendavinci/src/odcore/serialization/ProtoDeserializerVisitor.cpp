@@ -95,8 +95,8 @@ class Serializable;
             read(id, longName, shortName, data, size);
         }
 
-        void ProtoDeserializerVisitor::visitArray(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
-            std::cerr << "core::serialization::ProtoDeserializerVisitor::visitArray not implemented." << std::endl;
+        void ProtoDeserializerVisitor::visit(const uint32_t &/*id*/, const string &/*longName*/, const string &/*shortName*/, void */*data*/, const uint32_t &/*count*/, const odcore::TYPE_ &/*t*/) {
+            std::cerr << "core::serialization::ProtoDeserializerVisitor::visit not implemented." << std::endl;
         }
 
     }
