@@ -89,6 +89,7 @@ namespace odmjpegstreamer {
             vector<shared_ptr<odcore::io::tcp::TCPConnection> > m_listOfConnections;
             vector<shared_ptr<MJPEGClientHandler> > m_listOfClientHandlers;
 
+            uint32_t m_port;
             int32_t m_jpegQuality;
             bool m_bgr2rgb;
             string m_sharedimagename;
