@@ -85,6 +85,7 @@ namespace cockpit {
 
                 public slots:
                     void treeItemChanged(QTreeWidgetItem*, int);
+                    void treeItemDoubleClick(QTreeWidgetItem*, int);
 
                 private:
                     void transformContainerToTree(Container &container);

@@ -66,7 +66,18 @@ struct equals
 {
     static bool test(X x, Y y)
     {
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic push
+# endif
+# pragma GCC diagnostic ignored "-Wsign-compare"
+#endif
         return (x == y);
+#ifndef WIN32
+# if !defined(__OpenBSD__) && !defined(__NetBSD__)
+#  pragma GCC diagnostic pop
+# endif
+#endif
     }
 };
 
