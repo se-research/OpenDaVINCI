@@ -36,12 +36,10 @@ namespace odmjpegstreamer {
 
     MJPEGClientHandler::~MJPEGClientHandler() {}
 
-    void MJPEGClientHandler::nextString(const std::string &data) {
-        cout << "Received " << data.length() << " bytes containing '" << data << "'" << endl;
-
+    void MJPEGClientHandler::nextString(const std::string &/*data*/) {
         stringstream sstr;
         sstr << "HTTP/1.1 200 OK\r\n"
-             << "Server: streamEye/%s\r\n"
+             << "Server: odmjpegstreamer\r\n"
              << "Connection: close\r\n"
              << "Max-Age: 0\r\n"
              << "Expires: 0\r\n"
