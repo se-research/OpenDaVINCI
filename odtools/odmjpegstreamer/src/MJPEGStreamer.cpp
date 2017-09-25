@@ -44,6 +44,7 @@ namespace odmjpegstreamer {
         m_tcpAcceptor(),
         m_listOfConnections(),
         m_listOfClientHandlers(),
+        m_port(8080),
         m_jpegQuality(15),
         m_bgr2rgb(false),
         m_sharedimagename(""),
@@ -59,15 +60,26 @@ namespace odmjpegstreamer {
 
     void MJPEGStreamer::parseAdditionalCommandLineParameters(const int &argc, char **argv) {
         CommandLineParser cmdParser;
+        cmdParser.addCommandLineArgument("port");
         cmdParser.addCommandLineArgument("jpegquality");
         cmdParser.addCommandLineArgument("sharedimagename");
         cmdParser.addCommandLineArgument("bgr2rgb");
 
         cmdParser.parse(argc, argv);
 
+        CommandLineArgument cmdArgumentPORT = cmdParser.getCommandLineArgument("port");
         CommandLineArgument cmdArgumentJPEGQUALITY = cmdParser.getCommandLineArgument("jpegquality");
         CommandLineArgument cmdArgumentSHAREDIMAGENAME = cmdParser.getCommandLineArgument("sharedimagename");
         CommandLineArgument cmdArgumentBGR2RGB = cmdParser.getCommandLineArgument("bgr2rgb");
+
+        if (cmdArgumentPORT.isSet()) {
+            m_port = cmdArgumentPORT.getValue<uint32_t>();
+
+            if (m_port < 1024 || m_port > 65000) {
+                clog << "Value for parameter --port must be between 1024 and 65000; using default value 8080." << endl;
+                m_port = 8080;
+            }
+        }
 
         if (cmdArgumentJPEGQUALITY.isSet()) {
             m_jpegQuality = cmdArgumentJPEGQUALITY.getValue<int32_t>();
@@ -89,7 +101,7 @@ namespace odmjpegstreamer {
 
     void MJPEGStreamer::setUp() {
         try {
-            m_tcpAcceptor = std::shared_ptr<odcore::io::tcp::TCPAcceptor>(odcore::io::tcp::TCPFactory::createTCPAcceptor(8080));
+            m_tcpAcceptor = std::shared_ptr<odcore::io::tcp::TCPAcceptor>(odcore::io::tcp::TCPFactory::createTCPAcceptor(m_port));
             m_tcpAcceptor->setAcceptorListener(this);
             m_tcpAcceptor->start();
         }
