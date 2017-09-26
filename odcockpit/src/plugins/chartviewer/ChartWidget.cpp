@@ -85,7 +85,7 @@ namespace cockpit {
                 // Set size.
                 setMinimumSize(640, 480);
 
-                const string SEARCH_PATH = kvc.getValue<string>("odcockpit.directoriesForSharedLibaries");
+                const string SEARCH_PATH = kvc.getValue<string>("odcockpit.directoriesForSharedLibraries");
                 cout << "[odcockpit/chartviewer] Trying to find libodvd*.so files in: " << SEARCH_PATH << endl;
 
                 const vector<string> paths = odcore::strings::StringToolbox::split(SEARCH_PATH, ',');
