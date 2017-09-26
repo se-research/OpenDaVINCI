@@ -84,6 +84,8 @@ message odcore.data.reflection.AbstractField [id = 70] {
     string shortFieldName [ id = 3 ];
     FIELDDATATYPE fieldDataType [ id = 4 ];
     int8 size [ default = -1, id = 5 ];
+    bool isFixedArray [ default = false, id = 6 ];
+    uint16 numberOfElementsInFixedArray [ default = 0, id = 7 ];
 }
 
 

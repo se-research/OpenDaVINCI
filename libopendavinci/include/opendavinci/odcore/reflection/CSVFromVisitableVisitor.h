@@ -61,9 +61,10 @@ namespace odcore {
                  *
                  * @param out Buffer for the output.
                  * @param header Add human-readable header.
-                 * @param delimiter Indent level.
+                 * @param delimiter Delimiter.
+                 * @param headerPrefix Prefix to prepend the actual header.
                  */
-                CSVFromVisitableVisitor(ostream &out, const bool &header = true, const char &delimiter = ',');
+                CSVFromVisitableVisitor(ostream &out, const bool &header = true, const char &delimiter = ',', const string &headerPrefix = "");
 
                 virtual ~CSVFromVisitableVisitor();
 
@@ -86,6 +87,8 @@ namespace odcore {
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, double &v);
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, string &v);
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t);
+
 
             public:
                 /**
@@ -106,6 +109,7 @@ namespace odcore {
             private:
                 ostream &m_buffer;
                 stringstream m_header;
+                string m_headerPrefix;
                 stringstream m_entry;
                 string m_entryBackup;
                 bool m_addHeader;

@@ -105,7 +105,24 @@ class DataModelGenerator implements IGenerator {
   							 "string"-> "\"Hello World!\"",
   							 "bytes"-> "\"Hello World!\""
   	)
- 
+
+    /* This hashmap defines the mapping from ODVD type to odcore::T. */
+ 	val typeToODCORE_TYPE_Map = newHashMap("double"-> "odcore::DOUBLE_T",
+  							 "float"-> "odcore::FLOAT_T",
+  							 "int8"-> "odcore::INT8_T",
+  							 "uint8"-> "odcore::UINT8_T",
+  							 "int16"-> "odcore::INT16_T",
+  							 "uint16"-> "odcore::UINT16_T",
+  							 "int32"-> "odcore::INT32_T",
+  							 "uint32"-> "odcore::UINT32_T",
+  							 "int64"-> "odcore::INT64_T",
+  							 "uint64"-> "odcore::UINT64_T",
+  							 "bool"-> "odcore::BOOL_T",
+  							 "char"-> "odcore::CHAR_T",
+  							 "string"-> "odcore::STRING_T",
+  							 "bytes"-> "odcore::STRING_T"
+  	)
+
     /* This hashmap defines test values for attribues of the respective type used as a list. */
  	val testListValuesMap = newHashMap("double"-> #[1.0, 2.0, 3.0],
   							 "float"-> #[4.5, 5.5, 6.5],
@@ -972,6 +989,11 @@ namespace «s.get(i)» {
 				«ELSE»
 					v.visit(«a.scalar.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.scalar.name»", "«a.scalar.name»", m_«a.scalar.name»);
 				«ENDIF»
+			«ENDIF»
+		«ENDIF»
+		«IF a.fixedarray != null»
+			«IF typeToODCORE_TYPE_Map.containsKey(a.fixedarray.type)»
+				v.visit(«a.fixedarray.id», "«msg.message.substring(msg.message.lastIndexOf('.') + 1)».«a.fixedarray.name»", "«a.fixedarray.name»", get«a.fixedarray.name.toFirstUpper»(), getSize_«a.fixedarray.name.toFirstUpper»(), «typeToODCORE_TYPE_Map.get(a.fixedarray.type)»);
 			«ENDIF»
 		«ENDIF»
 	'''	

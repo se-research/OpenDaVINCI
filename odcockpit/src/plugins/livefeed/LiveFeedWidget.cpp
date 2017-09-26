@@ -241,7 +241,7 @@ namespace cockpit {
                             else {
                                 msg = m_messageResolver->resolve(container, successfullyMapped);
                                 if (successfullyMapped) {
-                                    MessageToTupleVisitor mttv(entries);
+                                    MessageToTupleVisitor mttv(entries, "");
                                     msg.accept(mttv);
                                 }
                             }

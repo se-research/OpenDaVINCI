@@ -175,6 +175,13 @@ message odcore.testdata.TestMessage10 [id = 1010] {
     uint32 myArray1[2] [ id = 1 ];
     float myArray2[3] [id = 2];
 }
+
+// To test double-nested messages.
+message odcore.testdata.TestMessage11 [id = 1011] {
+    uint32 myField1 [ id = 1 ];
+    odcore.testdata.TestMessage5 field2 [ id = 2 ];
+}
+
 /* Protobuf syntax:
 syntax = "proto2";
 package odcore.testdata;
