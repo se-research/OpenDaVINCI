@@ -202,7 +202,7 @@ namespace odcore {
                 if (t == odcore::INT32_T) { m_entry << *(static_cast<int32_t*>(data)+i); }
                 if (t == odcore::UINT64_T) { m_entry << *(static_cast<uint64_t*>(data)+i); }
                 if (t == odcore::INT64_T) { m_entry << *(static_cast<int64_t*>(data)+i); }
-                m_entry << (i+1<count ? ", " : "");
+                m_entry << (i+1<count ? "," : "");
             }
             m_entry << ")" << m_delimiter;
         }
