@@ -332,7 +332,7 @@ class FieldTest : public CxxTest::TestSuite {
 
             stringstream expected;
             expected << "myArray1%myArray2%" << endl;
-            expected << "(1, 2)%(-1.2345, -2.3456, -3.4567)%" << endl;
+            expected << "(1,2)%(-1.2345,-2.3456,-3.4567)%" << endl;
 
             CSVFromVisitableVisitor csv(output, ADD_HEADER, DELIMITER);
             tm1.accept(csv);
