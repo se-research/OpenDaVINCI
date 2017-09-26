@@ -26,6 +26,7 @@
     #include <GL/glu.h>
 #endif
 
+#include <cstdlib>
 #include <cmath>
 #include <fstream>
 #include <iostream>
