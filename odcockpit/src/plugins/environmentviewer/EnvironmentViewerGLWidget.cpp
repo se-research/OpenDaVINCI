@@ -370,7 +370,7 @@ namespace cockpit {
                 }
             }
 
-            void EnvironmentViewerGLWidget::drawOneCPCPointWithIntensity(const uint16_t &distance_integer, const float &azimuth, const float &verticalAngle, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &mask, const float &intensityMaxValue) {
+            void EnvironmentViewerGLWidget::drawOneCPCPointWithIntensity(const uint16_t &distance_integer, const float &azimuth, const float &verticalAngle, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &_mask, const float &intensityMaxValue) {
                 //Recordings before 2017 do not call hton() while storing CPC.
                 //Hence, we only call ntoh() for recordings from 2017.
                 uint16_t distanceCPCPoint = distance_integer;
@@ -379,7 +379,7 @@ namespace cockpit {
                 }
                 float distance = 0.0;
                 uint8_t intensity = 0;
-                uint16_t cappedDistance = distanceCPCPoint & mask;
+                uint16_t cappedDistance = distanceCPCPoint & _mask;
                 if (intensityPlacement == 0) {//higher bits for intensity
                     intensity = distanceCPCPoint >> (16 - numberOfBitsForIntensity);
                 } else {//lower bits for intensity
@@ -448,7 +448,7 @@ namespace cockpit {
                 }
             }
             
-            void EnvironmentViewerGLWidget::drawCPC32withIntensity(const uint8_t &part, const uint8_t &entriesPerAzimuth, const float &startAzimuth, const float &endAzimuth, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &mask, const float &intensityMaxValue) {
+            void EnvironmentViewerGLWidget::drawCPC32withIntensity(const uint8_t &part, const uint8_t &entriesPerAzimuth, const float &startAzimuth, const float &endAzimuth, const uint8_t &distanceEncoding, const uint8_t &numberOfBitsForIntensity, const uint8_t &intensityPlacement, const uint16_t &_mask, const float &intensityMaxValue) {
                 float azimuth = startAzimuth;
                 uint32_t numberOfPoints;
                 stringstream sstr;
@@ -470,11 +470,11 @@ namespace cockpit {
                     for (uint8_t sensorIndex = 0; sensorIndex < entriesPerAzimuth; sensorIndex++) {
                         sstr.read((char*)(&distance), 2); // Read distance value from the string in a CPC container point by point
                         if (part == 1) {
-                            drawOneCPCPointWithIntensity(distance, azimuth, m_12_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, mask, intensityMaxValue);
+                            drawOneCPCPointWithIntensity(distance, azimuth, m_12_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, _mask, intensityMaxValue);
                         } else if (part == 2) {
-                            drawOneCPCPointWithIntensity(distance, azimuth, m_11_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, mask, intensityMaxValue);
+                            drawOneCPCPointWithIntensity(distance, azimuth, m_11_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, _mask, intensityMaxValue);
                         } else {
-                            drawOneCPCPointWithIntensity(distance, azimuth, m_9_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, mask, intensityMaxValue);
+                            drawOneCPCPointWithIntensity(distance, azimuth, m_9_verticalAngles[sensorIndex], distanceEncoding, numberOfBitsForIntensity, intensityPlacement, _mask, intensityMaxValue);
                         }
                     }
                     azimuth += azimuthIncrement;
