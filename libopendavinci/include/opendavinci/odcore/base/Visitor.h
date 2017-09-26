@@ -20,7 +20,6 @@
 #ifndef OPENDAVINCI_CORE_BASE_VISITOR_H_
 #define OPENDAVINCI_CORE_BASE_VISITOR_H_
 
-#include <iostream>
 #include <string>
 
 #include "opendavinci/odcore/opendavinci.h"
