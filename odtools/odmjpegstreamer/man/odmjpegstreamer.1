@@ -1,0 +1,103 @@
+.\" Manpage for odmjpegstreamer
+.\" Author: Christian Berger <christian.berger@gu.se>.
+
+.TH odmjpegstreamer 1 "26 September 2017" "4.16.0" "odmjpegstreamer man page"
+
+.SH NAME
+odmjpegstreamer \- This tool creates an MJPEG stream encapsulated as HTTP from a
+given source of SharedImages created from a data source local to the computer
+where this program is executed.
+
+
+.SH SYNOPSIS
+.B odmjpegstreamer --cid=<CID> --jpegquality=8 --bgr2rgb=1 [OPTIONS]
+
+
+.SH DESCRIPTION
+odmjpegstreamer belongs to OpenDaVINCI and is a tool that creates an
+HTTP-encapsulated MJPEG stream from a data source local to the computer where
+odmjpegstreamer is run (because it attaches to the shared memory segment that
+holds the actual image).
+
+This tool can only be used within an existing OpenDaVINCI container conference session
+created by odsupercomponent(1).
+
+
+.SH OPTIONS
+.B --cid=<CID>
+.RS
+This parameter specifies the conference identifier (CID) that is used to join a
+running container conference session. The session itself needs to be created by
+odsupercomponent(1).
+.RE
+
+
+.B --bgr2rgb=<0,1>
+.RS
+odmjpegstreamer will convert the input image from BGR to RGB layout in case of
+three channel input image.
+
+If this parameter is omitted, the default quality level of 15 is used.
+.RE
+
+
+.B --jpegquality=<1..100>
+.RS
+odmjpegstreamer will compress data of type SharedImage using JPEG. This parameter
+specifies the quality in the range [1,100].
+
+If this parameter is omitted, the default quality level of 15 is used.
+.RE
+
+
+.B --sharedimagename=<Name>
+.RS
+odmjpegstreamer will use the data from the image provided using the given name
+for streaming.
+
+If this parameter is omitted, the default quality level of 15 is used.
+.RE
+
+
+
+.B --realtime=<0..49>
+.RS
+This parameter will schedule odmjpegstreamer to use the SCHED_FIFO soft realtime
+scheduler. The parameter specifies the scheduling priority.
+
+Please note that this feature is only available on Linux-based systems having a
+CONFIG_PREEMPT_RT kernel. In addition, odmjpegstreamer needs to be executed with
+superuser privileges.
+
+This parameter has no effect if odsupercomponent(1) is started using the
+parameter '--managed'.
+.RE
+
+
+.B --verbose=<0..10>
+.RS
+This parameter specifies the verbosity level that is used to print some information to stdlog.
+.RE
+
+
+
+.SH EXAMPLES
+The following command creates an HTTP-encapsulated MJPEG stream of quality 20
+for the shared image with the name "WebCam":
+
+.B odmjpegstreamer --cid=111 --jpegquality=20 --sharedimagename=WebCam
+
+
+.SH SEE ALSO
+odfilter(1), odlivefeed(1), odplayer(1), odplayerh264(1), odrecinspect(1), odrecorder(1), odrecorderh264(1), odredirector(1), odsplit(1)
+
+
+
+.SH BUGS
+No known bugs.
+
+
+
+.SH AUTHOR
+Christian Berger (christian.berger@gu.se)
+

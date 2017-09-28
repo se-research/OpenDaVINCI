@@ -1,0 +1,48 @@
+.\" Manpage for odrec2fuse
+.\" Author: Christian Berger <christian.berger@gu.se>.
+
+.TH odrec2fuse 1 "26 September 2017" "4.16.0" "odrec2fuse man page"
+
+.SH NAME
+odrec2fuse \- This tool uses FUSE to mount a container recording file into a directory.
+
+
+
+.SH SYNOPSIS
+.B odrec2fuse <FILENAME>
+
+
+
+.SH DESCRIPTION
+odrec2fuse belongs to OpenDaVINCI and is a tool to mount a recording file
+containing dumps from an OpenDaVINCI container conference session into a
+directory.
+
+
+.SH OPTIONS
+.B <FILENAME>
+.RS
+This parameter specifies the file to be mounted.
+.RE
+
+
+
+.SH EXAMPLES
+The following command inspects the content for the file specified as commandline parameter.
+
+.B odrec2fuse myRecording.rec
+
+
+.SH SEE ALSO
+odfilter(1), odplayer(1), odplayerh264(1), odrecorder(1), odrecorderh264(1), odrec2fuse(1), odredirector(1), odsplit(1), odspy(1)
+
+
+
+.SH BUGS
+No known bugs.
+
+
+
+.SH AUTHOR
+Christian Berger (christian.berger@gu.se)
+

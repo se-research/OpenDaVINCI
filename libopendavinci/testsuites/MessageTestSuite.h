@@ -30,6 +30,7 @@
 #include "cxxtest/TestSuite.h"          // for TS_ASSERT, TestSuite
 
 #include "opendavinci/odcore/opendavinci.h"
+#include "opendavinci/odcore/reflection/Field.h"
 #include "opendavinci/odcore/serialization/Deserializer.h"     // for Deserializer
 #include "opendavinci/odcore/serialization/Serializable.h"     // for Serializable
 #include "opendavinci/odcore/serialization/SerializationFactory.h"  // for SerializationFactory
@@ -40,7 +41,9 @@
 #include "opendavinci/odcore/reflection/MessageFromVisitableVisitor.h"
 #include "opendavinci/odcore/reflection/MessagePrettyPrinterVisitor.h"
 #include "opendavinci/odcore/reflection/MessageToVisitableVisitor.h"
+#include "opendavinci/odcore/reflection/CSVFromVisitableVisitor.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"  // for StringToolbox
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage10.h"
 
 using namespace std;
 using namespace odcore;
@@ -49,6 +52,7 @@ using namespace odcore::data;
 using namespace odcore::reflection;
 using namespace odcore::data::reflection;
 using namespace odcore::serialization;
+using namespace odcore::testdata;
 
 class MyRawVisitable : public odcore::serialization::Serializable, public Visitable {
     public:
@@ -364,6 +368,88 @@ class FieldTest : public CxxTest::TestSuite {
 
             found = true; extracted = true; value = msg.getValueFromScalarField<double>(6, found, extracted);
             TS_ASSERT(!found); TS_ASSERT(!extracted);
+        }
+
+        void testCreateMessageFromVisitableWithFixedArrays() {
+            TestMessage10 tm1;
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+
+            uint32_t *tm1_arr1 = tm1.getMyArray1();
+            tm1_arr1[0] = 1; tm1_arr1[1] = 2;
+            float *tm1_arr2 = tm1.getMyArray2();
+            tm1_arr2[0] = -1.2345; tm1_arr2[1] = -2.3456; tm1_arr2[2] = -3.4567;
+
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+            TS_ASSERT(tm1_arr1[0] == 1);
+            TS_ASSERT(tm1_arr1[1] == 2);
+            TS_ASSERT_DELTA(tm1_arr2[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm1_arr2[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm1_arr2[2], -3.4567, 1e-4);
+
+            TS_ASSERT(tm1.getMyArray1()[0] == 1);
+            TS_ASSERT(tm1.getMyArray1()[1] == 2);
+            TS_ASSERT_DELTA(tm1.getMyArray2()[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm1.getMyArray2()[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm1.getMyArray2()[2], -3.4567, 1e-4);
+
+            // Create generic representation from our data structure.
+            MessageFromVisitableVisitor mfvv;
+            tm1.accept(mfvv);
+            Message msg = mfvv.getMessage();
+
+            TS_ASSERT(msg.getNumberOfFields() == 2);
+
+            bool found = false;
+            std::shared_ptr<odcore::data::reflection::AbstractField> af1 = msg.getFieldByIdentifier(1, found);
+            TS_ASSERT(found == true);
+            TS_ASSERT(af1->getFieldIdentifier() == 1);
+            TS_ASSERT(af1->getLongFieldName() == "TestMessage10.myArray1");
+            TS_ASSERT(af1->getShortFieldName() == "myArray1");
+
+            std::shared_ptr<char> valueF1 = dynamic_cast<Field<std::shared_ptr<char> >*>(af1.get())->getValue();
+            char *valueF1Ptr = valueF1.operator->();
+            uint32_t *f1Ptr = reinterpret_cast<uint32_t*>(valueF1Ptr);
+            TS_ASSERT(f1Ptr[0] == 1);
+            TS_ASSERT(f1Ptr[1] == 2);
+            TS_ASSERT(af1->getSize() == sizeof(uint32_t));
+            TS_ASSERT(af1->getIsFixedArray() == true);
+            TS_ASSERT(af1->getNumberOfElementsInFixedArray() == 2);
+
+            found = false;
+            std::shared_ptr<odcore::data::reflection::AbstractField> af2 = msg.getFieldByIdentifier(2, found);
+            TS_ASSERT(found == true);
+            TS_ASSERT(af2->getFieldIdentifier() == 2);
+            TS_ASSERT(af2->getLongFieldName() == "TestMessage10.myArray2");
+            TS_ASSERT(af2->getShortFieldName() == "myArray2");
+            std::shared_ptr<char> valueF2 = dynamic_cast<Field<std::shared_ptr<char> >*>(af2.get())->getValue();
+            char *valueF2Ptr = valueF2.operator->();
+            float *f2Ptr = reinterpret_cast<float*>(valueF2Ptr);
+            TS_ASSERT_DELTA(f2Ptr[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(f2Ptr[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(f2Ptr[2], -3.4567, 1e-4);
+            TS_ASSERT(af2->getSize() == sizeof(float));
+            TS_ASSERT(af2->getIsFixedArray() == true);
+            TS_ASSERT(af2->getNumberOfElementsInFixedArray() == 3);
+
+            found = false;
+            msg.getFieldByIdentifier(3, found);
+            TS_ASSERT(found == false);
+
+            // Apply CSV exporter to generic message.
+            stringstream output;
+            const bool ADD_HEADER = true;
+            const char DELIMITER = '%';
+
+            stringstream expected;
+            expected << "myArray1%myArray2%" << endl;
+            expected << "(1,2)%(-1.2345,-2.3456,-3.4567)%" << endl;
+
+            CSVFromVisitableVisitor csv(output, ADD_HEADER, DELIMITER);
+            msg.accept(csv);
+
+            TS_ASSERT(output.str() == expected.str());
         }
 };
 

@@ -41,9 +41,6 @@ INCLUDE (CheckCxxTestEnvironment)
 ADD_SUBDIRECTORY (libodcantools)
 ADD_SUBDIRECTORY (odcanascreplay)
 ADD_SUBDIRECTORY (odcanproxy)
-ADD_SUBDIRECTORY (odcanmapper)
-ADD_SUBDIRECTORY (odcanbridge)
-ADD_SUBDIRECTORY (odcanproxymapper)
 
 ###########################################################################
 # Enable CPack to create .deb and .rpm.

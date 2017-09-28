@@ -94,33 +94,33 @@
 // Type convention software-wide.
 namespace odcore {
     enum TYPE_ {
-        BOOL_=0,
-        INTEGERS_START,
-        UINT8_T,  // same as unsigned char
-        INT8_T,
-        UINT16_T, // same as unsigned short
-        INT16_T,  // same as short
-        UINT32_T,
-        INT32_T,
-        UINT64_T, // same as unsigned long
-        INT64_T,  // same as long
-        INTEGERS_END,
-        CHAR_,
-        UCHAR_,
-        FLOAT_,
-        DOUBLE_,
+        BOOL_T              = 0,
+        INTEGERS_START      = 1,
+        UINT8_T             = 2,  // same as unsigned char
+        INT8_T              = 3,
+        UINT16_T            = 4, // same as unsigned short
+        INT16_T             = 5,  // same as short
+        UINT32_T            = 6,
+        INT32_T             = 7,
+        UINT64_T            = 8, // same as unsigned long
+        INT64_T             = 9,  // same as long
+        INTEGERS_END        = 10,
+        CHAR_T              = 11,
+        UCHAR_T             = 12,
+        FLOAT_T             = 13,
+        DOUBLE_T            = 14,
         /////////////////////////
         // non-primitive types //
         /////////////////////////
-        NON_PRIMITIVE_START=50,
-        STRING_,
-        DATA_,
-        SERIALIZABLE_,
-        NON_PRIMITIVE_END,
+        NON_PRIMITIVE_START = 50,
+        STRING_T            = 51,
+        DATA_T              = 52,
+        SERIALIZABLE_T      = 53,
+        NON_PRIMITIVE_END   = 54,
         //////////////////
         // delta values //
         //////////////////
-        RESERVED_=127,
+        RESERVED_= 127,
         UINT8_T_R,
         INT8_T_R,
         UINT16_T_R,

@@ -84,6 +84,8 @@ message odcore.data.reflection.AbstractField [id = 70] {
     string shortFieldName [ id = 3 ];
     FIELDDATATYPE fieldDataType [ id = 4 ];
     int8 size [ default = -1, id = 5 ];
+    bool isFixedArray [ default = false, id = 6 ];
+    uint16 numberOfElementsInFixedArray [ default = 0, id = 7 ];
 }
 
 
@@ -339,6 +341,14 @@ message odcore.data.CompactPointCloud [id = 49] {
 // for debug purposes!
 message odcockpit.SimplePlot [id = 42] {
     map<string, double> values [id = 1];
+}
+
+// This message is used to provide configuration parameters at runtime.
+// This data structure should only be used during testing; final configuration
+// settings should be made available via the configuration file supplied by
+// odsupercomponent.
+message odcockpit.RuntimeConfiguration [id = 43] {
+    map<string, double> parameters [id = 1];
 }
 
 

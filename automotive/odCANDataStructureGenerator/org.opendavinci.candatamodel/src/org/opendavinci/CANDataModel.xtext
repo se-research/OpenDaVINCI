@@ -24,17 +24,21 @@ grammar org.opendavinci.CANDataModel
 generate canDataModel "http://www.opendavinci.org/CANDataModel"
 
 Model:
-    odvdFiles         += ODVDFile+
-    cansignals        += CANSignal+
-    cansignalmappings += CANSignalMapping*
-    cansignaltestings += CANSignalTesting*;
+    odvdFiles           += ODVDFile+
+    canmessages         += CANMessage+
+    canmessagemappings  += CANMessageMapping*
+    canmessagetestings  += CANMessageTesting*;
 
 ODVDFile:
     'using' odvdFileName = ID (';'|'.odvd' ';');
 
+CANMessage: 
+    ('CAN Message'|'CAN message') canIdentifier = HEXNUMBER canMessageName = ValidIdentifier 'is' canMessageLength = FLOATNUMBER ('byte'|'bytes') '{'
+        cansignals += CANSignal+
+    '}';
+
 CANSignal:
-	cansignalname = ValidIdentifier	'in' canIdentifier = HEXNUMBER
-									'at bit' startBit = FLOATNUMBER
+	cansignalname = ValidIdentifier	'at bit' startBit = FLOATNUMBER
 									'for' (length = FLOATNUMBER ('bit'|'bits') | lengthBytes = FLOATNUMBER ('byte'|'bytes'))
 									'is' (signed = ('signed' | 'unsigned')) (endian = ('big' | 'little')) 'endian'
 									'multiply by' multiplyBy = FLOATNUMBER
@@ -42,18 +46,17 @@ CANSignal:
 									('with range' | 'within range') '[' rangeStart = FLOATNUMBER ',' rangeEnd = FLOATNUMBER ']'
 									';';
 
-CANSignalMapping:
-    (unordered='unordered')? (bit_numbering = ('vector'))?
+CANMessageMapping:
+    (unordered='unordered')?
     'mapping' mappingName = ValidIdentifier
-    ('[length' '=' payloadLength = FLOATNUMBER ']')?
     '{'
-    	mappings += Mapping*
+    	signalMappings += CANSignalMapping*
     '}';
 
-Mapping:
+CANSignalMapping:
 	cansignalname = ValidIdentifier ':' signalIdentifier = FLOATNUMBER ';';
 
-CANSignalTesting:
+CANMessageTesting:
     'test' mappingName = ValidIdentifier '{'
     	CANMessageDescriptions += CANMessageDescription*
     	Results += Result*

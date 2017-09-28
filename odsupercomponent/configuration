@@ -100,6 +100,9 @@ odcockpit.directoriesForSharedLibaries = /opt,/lib # List of directories to sear
 #odcockpit.player.input = file://recorder.rec
 #odcockpit.player.timeScale = 0.01
 #odcockpit.player.exitAtEndOfFile = 1
+odcockpit.runtimeconfiguration.key1 = 0.1
+odcockpit.runtimeconfiguration.key2 = 1.2
+odcockpit.runtimeconfiguration.key3 = -3.2
 
 
 ###############################################################################

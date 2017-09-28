@@ -20,6 +20,7 @@
 FIND_PATH(FFMPEG_AVCODEC_INCLUDE_DIR
           NAMES libavcodec/avcodec.h
           PATHS /usr/local/include
+                /usr/pkg/include/ffmpeg2
                 /usr/include)
 MARK_AS_ADVANCED(FFMPEG_AVCODEC_INCLUDE_DIR)
 FIND_LIBRARY(FFMPEG_AVCODEC_LIBRARY
@@ -36,6 +37,7 @@ MARK_AS_ADVANCED(FFMPEG_AVCODEC_LIBRARY)
 FIND_PATH(FFMPEG_AVUTIL_INCLUDE_DIR
           NAMES libavutil/avutil.h
           PATHS /usr/local/include
+                /usr/pkg/include/ffmpeg2
                 /usr/include)
 MARK_AS_ADVANCED(FFMPEG_AVUTIL_INCLUDE_DIR)
 FIND_LIBRARY(FFMPEG_AVUTIL_LIBRARY
@@ -52,6 +54,7 @@ MARK_AS_ADVANCED(FFMPEG_AVUTIL_LIBRARY)
 FIND_PATH(FFMPEG_SWSCALE_INCLUDE_DIR
           NAMES libswscale/swscale.h
           PATHS /usr/local/include
+                /usr/pkg/include/ffmpeg2
                 /usr/include)
 MARK_AS_ADVANCED(FFMPEG_SWSCALE_INCLUDE_DIR)
 FIND_LIBRARY(FFMPEG_SWSCALE_LIBRARY

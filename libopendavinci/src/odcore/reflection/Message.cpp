@@ -60,6 +60,10 @@ namespace odcore {
             return *this;
         }
 
+        void Message::insertField(const std::shared_ptr<odcore::data::reflection::AbstractField> &f) {
+            m_fields.insert(m_fields.begin(), f);
+        }
+
         void Message::addField(const std::shared_ptr<odcore::data::reflection::AbstractField> &f) {
             m_fields.push_back(f);
         }
@@ -118,100 +122,109 @@ namespace odcore {
 
             vector<std::shared_ptr<AbstractField> >::iterator it = m_fields.begin();
             while (it != m_fields.end()) {
-                switch((*it)->getFieldDataType()) {
-                    case odcore::data::reflection::AbstractField::SERIALIZABLE_T:
-                    {
-                        // If we have a nested message, we need to delegate this Visitor to the nested type.
-                        Field<Message> *f = dynamic_cast<Field<Message>*>((*it).operator->()); // Access the value of the std::shared_ptr from the iterator.
-                        if (f != NULL) {
-                            // Visit value.
-                            Message msg = f->getValue();
-                            v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), msg);
-                            f->setValue(msg);
+                if (!(*it)->getIsFixedArray()) {
+                    switch((*it)->getFieldDataType()) {
+                        case odcore::data::reflection::AbstractField::SERIALIZABLE_T:
+                        {
+                            // If we have a nested message, we need to delegate this Visitor to the nested type.
+                            Field<Message> *f = dynamic_cast<Field<Message>*>((*it).operator->()); // Access the value of the std::shared_ptr from the iterator.
+                            if (f != NULL) {
+                                // Visit value.
+                                Message msg = f->getValue();
+                                v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), msg);
+                                f->setValue(msg);
+                            }
                         }
+                        break;
+
+                        case odcore::data::reflection::AbstractField::BOOL_T :
+                            visitPrimitiveDataType<bool>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::UINT8_T:
+                            visitPrimitiveDataType<uint8_t>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::INT8_T:
+                            visitPrimitiveDataType<int8_t>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::UINT16_T:
+                            visitPrimitiveDataType<uint16_t>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::INT16_T:
+                            visitPrimitiveDataType<int16_t>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::UINT32_T:
+                            visitPrimitiveDataType<uint32_t>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::INT32_T:
+                            visitPrimitiveDataType<int32_t>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::UINT64_T:
+                            visitPrimitiveDataType<uint64_t>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::INT64_T:
+                            visitPrimitiveDataType<int64_t>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::CHAR_T:
+                            visitPrimitiveDataType<char>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::UCHAR_T:
+                            visitPrimitiveDataType<unsigned char>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::FLOAT_T:
+                            visitPrimitiveDataType<float>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::DOUBLE_T:
+                            visitPrimitiveDataType<double>(v, *it);
+                        break;
+
+                        case odcore::data::reflection::AbstractField::STRING_T:
+                        {
+                            // Read value.
+                            string value = dynamic_cast<Field<string>*>((*it).operator->())->getValue();
+                            // Visit value.
+                            v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), value);
+                            // Update value.
+                            dynamic_cast<Field<string>*>((*it).operator->())->setValue(value);
+                            (*it)->setSize(value.size());
+                        }
+                        break;
+
+                        case odcore::data::reflection::AbstractField::DATA_T :
+                        {
+                            // Read value.
+                            std::shared_ptr<char> value = dynamic_cast<Field<std::shared_ptr<char> >*>((*it).operator->())->getValue();
+                            char *valuePtr = value.operator->();
+                            uint32_t size = (*it)->getSize();
+
+                            // Visit value.
+                            v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), valuePtr, size);
+                            // Update value is not required as we deal with a pointer to a memory.
+                        }
+                        break;
+
+                        default:
+                            cerr << "[core::reflection::Message] Unknown type " << (*it)->getFieldDataType() << endl;
+                        break;
                     }
-                    break;
+                }
+                else {
+                    // Visit value.
+                    std::shared_ptr<char> value = dynamic_cast<Field<std::shared_ptr<char> >*>((*it).operator->())->getValue();
+                    char *valuePtr = value.operator->();
 
-                    case odcore::data::reflection::AbstractField::BOOL_T :
-                        visitPrimitiveDataType<bool>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::UINT8_T:
-                        visitPrimitiveDataType<uint8_t>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::INT8_T:
-                        visitPrimitiveDataType<int8_t>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::UINT16_T:
-                        visitPrimitiveDataType<uint16_t>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::INT16_T:
-                        visitPrimitiveDataType<int16_t>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::UINT32_T:
-                        visitPrimitiveDataType<uint32_t>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::INT32_T:
-                        visitPrimitiveDataType<int32_t>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::UINT64_T:
-                        visitPrimitiveDataType<uint64_t>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::INT64_T:
-                        visitPrimitiveDataType<int64_t>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::CHAR_T:
-                        visitPrimitiveDataType<char>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::UCHAR_T:
-                        visitPrimitiveDataType<unsigned char>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::FLOAT_T:
-                        visitPrimitiveDataType<float>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::DOUBLE_T:
-                        visitPrimitiveDataType<double>(v, *it);
-                    break;
-
-                    case odcore::data::reflection::AbstractField::STRING_T:
-                    {
-                        // Read value.
-                        string value = dynamic_cast<Field<string>*>((*it).operator->())->getValue();
-                        // Visit value.
-                        v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), value);
-                        // Update value.
-                        dynamic_cast<Field<string>*>((*it).operator->())->setValue(value);
-                        (*it)->setSize(value.size());
-                    }
-                    break;
-
-                    case odcore::data::reflection::AbstractField::DATA_T :
-                    {
-                        // Read value.
-                        std::shared_ptr<char> value = dynamic_cast<Field<std::shared_ptr<char> >*>((*it).operator->())->getValue();
-                        char *valuePtr = value.operator->();
-                        uint32_t size = (*it)->getSize();
-
-                        // Visit value.
-                        v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), valuePtr, size);
-                        // Update value is not required as we deal with a pointer to a memory.
-                    }
-                    break;
-
-                    default:
-                        cerr << "[core::reflection::Message] Unknown type " << (*it)->getFieldDataType() << endl;
-                    break;
+                    v.visit((*it)->getFieldIdentifier(), (*it)->getLongFieldName(), (*it)->getShortFieldName(), valuePtr, (*it)->getNumberOfElementsInFixedArray(), static_cast<odcore::TYPE_>((*it)->getFieldDataType()));
                 }
 
                 ++it;

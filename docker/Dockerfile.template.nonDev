@@ -23,12 +23,12 @@ MAINTAINER Christian Berger "christian.berger@gu.se"
 ADD opt.nonDev /opt
 
 # Change owner for binaries.
-RUN groupadd odv && \
-    useradd odv -g odv && \
+RUN if [ "$(getent group|cut -f1 -d":"|grep 'odv')" != "odv" -a "x`which groupadd`" != "x" ]; then groupadd odv; fi && \
+    if [ "$(getent passwd|cut -f1 -d":"|grep 'odv')" != "odv" -a "x`which useradd`" != "x" ]; then useradd odv -g odv; fi && \
     chown -R odv:odv /opt/od4
 
 # Environment parameters to allow GUIs.
 ENV QT_X11_NO_MITSHM=1
-ENV LD_LIBRARY_PATH=/opt/od4/lib
+ENV LD_LIBRARY_PATH=/opt/od4/lib:$LD_LIBRARY_PATH
 WORKDIR /opt/od4/bin
 

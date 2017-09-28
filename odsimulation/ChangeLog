@@ -1,3 +1,11 @@
+4.16.0 - Fix CANDataStructureGenerator to cap values to predefined range, odrec2fuse and odcockpit can handle nested messages and fixed arrays after features enhancements to GenericMessage and CSVVisitor, fix for timestamps printed in human readable format for microseconds < 100000, added feature odmjpegstreamer to export SharedImages as HTTP encapsulated jpegs, odcockpit can render Velodyne 32
+4.15.3 - Compile fixes for PKGSRC
+4.15.2 - Compile fixes for pkgsrc
+4.15.1 - Compile fix
+4.15.0 - odrec2fuse to mount .rec files and map contained messages as .csv files into virtual folder provided by fuse
+4.14.0 - New CANDataStructureGenerator
+4.13.1 - Provide feature to prefill RuntimeConfiguration in odcockpit
+4.13.0 - Dynamic configuration for software modules at runtime and plotting of values in odcockpit
 4.12.1 - Fixes for odcockpit
 4.12.0 - Updated odcockpit visualization BirdsEyeMap and Logmessage
 4.11.1 - Fix in odplayerh264 to handle non-existing .h264 files

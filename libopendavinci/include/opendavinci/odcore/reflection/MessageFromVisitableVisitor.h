@@ -77,6 +77,7 @@ namespace odcore {
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, double &v);
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, string &v);
                 virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &size);
+                virtual void visit(const uint32_t &id, const string &longName, const string &shortName, void *data, const uint32_t &count, const odcore::TYPE_ &t);
 
             public:
                 /**

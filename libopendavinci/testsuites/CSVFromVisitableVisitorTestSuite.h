@@ -39,11 +39,17 @@
 #include "opendavinci/odcore/reflection/CSVFromVisitableVisitor.h"
 #include "opendavinci/odcore/strings/StringToolbox.h"  // for StringToolbox
 
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage1.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage5.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage10.h"
+#include "opendavincitestdata/generated/odcore/testdata/TestMessage11.h"
+
 using namespace std;
 using namespace odcore;
 using namespace odcore::base;
 using namespace odcore::reflection;
 using namespace odcore::serialization;
+using namespace odcore::testdata;
 
 class MyVisitable : public Serializable, public Visitable {
     public:
@@ -169,6 +175,9 @@ class FieldTest : public CxxTest::TestSuite {
             CSVFromVisitableVisitor csv(output, ADD_HEADER, DELIMITER);
             mv.accept(csv);
 
+            TS_ASSERT(csv.getHeader() == "att1%att2%att3%att4%");
+            TS_ASSERT(csv.getEntry() == "1%-1.234%12.3456%Hello World%");
+
             TS_ASSERT(output.str() == expected.str());
         }
 
@@ -198,6 +207,139 @@ class FieldTest : public CxxTest::TestSuite {
 
             TS_ASSERT(output.str() == expected.str());
         }
+
+        void testCSV_NestedMessage() {
+            TestMessage5 tm;
+            TS_ASSERT(tm.getField1() == 1);
+            TS_ASSERT(tm.getField2() == -1);
+            TS_ASSERT(tm.getField3() == 100);
+            TS_ASSERT(tm.getField4() == -100);
+            TS_ASSERT(tm.getField5() == 10000);
+            TS_ASSERT(tm.getField6() == -10000);
+            TS_ASSERT(tm.getField7() == 12345);
+            TS_ASSERT(tm.getField8() == -12345);
+            TS_ASSERT_DELTA(tm.getField9(), -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm.getField10(), -10.2345, 1e-4);
+            TS_ASSERT(tm.getField11() == "Hello World!");
+            TS_ASSERT(tm.getField12().getField1() == 12);
+
+            TestMessage1 tmEmbedded;
+            tmEmbedded.setField1(150);
+            tm.setField12(tmEmbedded);
+
+            tm.setField1(3);
+            tm.setField2(-3);
+            tm.setField3(103);
+            tm.setField4(-103);
+            tm.setField5(10003);
+            tm.setField6(-10003);
+            tm.setField7(54321);
+            tm.setField8(-54321);
+            tm.setField9(-5.4321);
+            tm.setField10(-50.4321);
+            tm.setField11("Hello OpenDaVINCI World!");
+
+            stringstream output;
+            const bool ADD_HEADER = true;
+            const char DELIMITER = '%';
+
+            stringstream expected;
+            expected << "field1%field2%field3%field4%field5%field6%field7%field8%field9%field10%field11%field12.field1%" << endl;
+            expected << "3%-3%103%-103%10003%-10003%54321%-54321%-5.4321%-50.4321%Hello OpenDaVINCI World!%150%" << endl;
+
+            CSVFromVisitableVisitor csv(output, ADD_HEADER, DELIMITER);
+            tm.accept(csv);
+
+            TS_ASSERT(output.str() == expected.str());
+        }
+
+        void testCSV_DoubleNestedMessage() {
+            TestMessage5 tm;
+            TS_ASSERT(tm.getField1() == 1);
+            TS_ASSERT(tm.getField2() == -1);
+            TS_ASSERT(tm.getField3() == 100);
+            TS_ASSERT(tm.getField4() == -100);
+            TS_ASSERT(tm.getField5() == 10000);
+            TS_ASSERT(tm.getField6() == -10000);
+            TS_ASSERT(tm.getField7() == 12345);
+            TS_ASSERT(tm.getField8() == -12345);
+            TS_ASSERT_DELTA(tm.getField9(), -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm.getField10(), -10.2345, 1e-4);
+            TS_ASSERT(tm.getField11() == "Hello World!");
+            TS_ASSERT(tm.getField12().getField1() == 12);
+
+            TestMessage1 tmEmbedded;
+            tmEmbedded.setField1(150);
+            tm.setField12(tmEmbedded);
+
+            tm.setField1(3);
+            tm.setField2(-3);
+            tm.setField3(103);
+            tm.setField4(-103);
+            tm.setField5(10003);
+            tm.setField6(-10003);
+            tm.setField7(54321);
+            tm.setField8(-54321);
+            tm.setField9(-5.4321);
+            tm.setField10(-50.4321);
+            tm.setField11("Hello OpenDaVINCI World!");
+
+            TestMessage11 tm11;
+            tm11.setMyField1(123);
+            tm11.setField2(tm);
+
+            stringstream output;
+            const bool ADD_HEADER = true;
+            const char DELIMITER = '%';
+
+            stringstream expected;
+            expected << "myField1%field2.field1%field2.field2%field2.field3%field2.field4%field2.field5%field2.field6%field2.field7%field2.field8%field2.field9%field2.field10%field2.field11%field2.field12.field1%" << endl;
+            expected << "123%3%-3%103%-103%10003%-10003%54321%-54321%-5.4321%-50.4321%Hello OpenDaVINCI World!%150%" << endl;
+
+            CSVFromVisitableVisitor csv(output, ADD_HEADER, DELIMITER);
+            tm11.accept(csv);
+
+            TS_ASSERT(output.str() == expected.str());
+        }
+
+        void testCSV_MessageForArrays() {
+            TestMessage10 tm1;
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+
+            uint32_t *tm1_arr1 = tm1.getMyArray1();
+            tm1_arr1[0] = 1; tm1_arr1[1] = 2;
+            float *tm1_arr2 = tm1.getMyArray2();
+            tm1_arr2[0] = -1.2345; tm1_arr2[1] = -2.3456; tm1_arr2[2] = -3.4567;
+
+            TS_ASSERT(tm1.getSize_MyArray1() == 2);
+            TS_ASSERT(tm1.getSize_MyArray2() == 3);
+            TS_ASSERT(tm1_arr1[0] == 1);
+            TS_ASSERT(tm1_arr1[1] == 2);
+            TS_ASSERT_DELTA(tm1_arr2[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm1_arr2[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm1_arr2[2], -3.4567, 1e-4);
+
+            TS_ASSERT(tm1.getMyArray1()[0] == 1);
+            TS_ASSERT(tm1.getMyArray1()[1] == 2);
+            TS_ASSERT_DELTA(tm1.getMyArray2()[0], -1.2345, 1e-4);
+            TS_ASSERT_DELTA(tm1.getMyArray2()[1], -2.3456, 1e-4);
+            TS_ASSERT_DELTA(tm1.getMyArray2()[2], -3.4567, 1e-4);
+
+            stringstream output;
+            const bool ADD_HEADER = true;
+            const char DELIMITER = '%';
+
+            stringstream expected;
+            expected << "myArray1%myArray2%" << endl;
+            expected << "(1,2)%(-1.2345,-2.3456,-3.4567)%" << endl;
+
+            CSVFromVisitableVisitor csv(output, ADD_HEADER, DELIMITER);
+            tm1.accept(csv);
+
+            TS_ASSERT(output.str() == expected.str());
+        }
+
 };
 
 #endif /*CORE_CSVFROMVISITABLEVISITORTESTSUITE_H_*/

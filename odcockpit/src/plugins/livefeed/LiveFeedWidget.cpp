@@ -33,8 +33,10 @@
 
 #include "opendavinci/generated/odcockpit/SimplePlot.h"
 
+#include "CockpitWindow.h"
 #include "plugins/livefeed/LiveFeedWidget.h"
 #include "plugins/livefeed/MessageToTupleVisitor.h"
+#include "plugins/logmessage/LogMessagePlugIn.h"
 
 namespace cockpit { namespace plugins { class PlugIn; } }
 
@@ -78,6 +80,7 @@ namespace cockpit {
                 m_dataView->setHeaderLabels(headerLabel);
 
                 connect(m_dataView, SIGNAL(itemChanged(QTreeWidgetItem*, int)), this, SLOT(treeItemChanged(QTreeWidgetItem*, int)));
+                connect(m_dataView, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(treeItemDoubleClick(QTreeWidgetItem*, int)));
 
                 //add to Layout
                 mainBox->addWidget(m_dataView, 1, 0);
@@ -120,6 +123,53 @@ namespace cockpit {
                 if ( (NULL != twi) && (0 == col) ) {
                     Lock l(m_containerTypeResolvingMutex);
                     m_containerTypeResolving[twi->text(col).toStdString()] = (twi->checkState(col) == Qt::Checked);
+                }
+            }
+
+            void LiveFeedWidget::treeItemDoubleClick(QTreeWidgetItem *twi, int col) {
+                if ( (NULL != twi) && (0 == col) ) {
+                    if (     (!twi->text(0).startsWith("sender stamp"))
+                          && (!twi->text(0).startsWith("type"))
+                          && (!twi->text(0).startsWith("sent"))
+                          && (!twi->text(0).startsWith("received"))
+                          && (!twi->text(0).startsWith("sample time"))
+                       ) {
+                        QTreeWidgetItem *prnt = twi->parent();
+                        if (NULL != prnt) {
+                            int32_t containerDataType = 0;
+                            uint32_t senderStamp = 0;
+                            string fieldName = twi->text(0).toStdString();
+
+                            bool foundContainerDataType = false;
+                            bool foundSenderStamp = false;
+
+                            for(int i = 0; i < prnt->childCount(); i++) {
+                                QTreeWidgetItem *child = prnt->child(i);
+                                if ( (NULL != child) && (child->text(0).startsWith("type")) ) {
+                                    stringstream sstr;
+                                    sstr << child->text(1).toStdString();
+                                    sstr >> containerDataType;
+                                    foundContainerDataType = true;
+                                }
+                                if ( (NULL != child) && (child->text(0).startsWith("sender stamp")) ) {
+                                    stringstream sstr;
+                                    sstr << child->text(1).toStdString();
+                                    sstr >> senderStamp;
+                                    foundSenderStamp = true;
+                                }
+                                if (foundContainerDataType && foundSenderStamp) {
+                                    break;
+                                }
+                            }
+
+                            if (foundContainerDataType && foundSenderStamp) {
+                                stringstream sstr;
+                                sstr << prnt->text(0).toStdString() << "." << fieldName;
+                                const string TITLE = sstr.str();
+                                CockpitWindow::getInstance().watchSignalUsingChartPlugIn(TITLE, containerDataType, senderStamp, fieldName);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -191,7 +241,7 @@ namespace cockpit {
                             else {
                                 msg = m_messageResolver->resolve(container, successfullyMapped);
                                 if (successfullyMapped) {
-                                    MessageToTupleVisitor mttv(entries);
+                                    MessageToTupleVisitor mttv(entries, "");
                                     msg.accept(mttv);
                                 }
                             }
