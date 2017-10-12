@@ -800,9 +800,10 @@ namespace cockpit {
                         //Currently odcockpit supports the visualization of SPC for Velodyne 16/32/64 and the visualization of CPC for Velodyne 16/32.
                         //If a CPC does not contain 16 layers, it is assumed to be a HDL-32E CPC
                         if (numberOfLayers != 16) {
-                            uint64_t currentTime = ts.toMicroseconds();
+                            const uint64_t currentTime = ts.toMicroseconds();
                             //Check if this HDL-32E CPC comes from a new scan. The interval between two scans is roughly 100ms. It is safe to assume that a new CPC comes from a new scan if the interval is longer than 50ms
-                            if (abs(currentTime - m_previousCPC32TimeStamp) > 50000) {
+                            const uint64_t deltaTime = (currentTime > m_previousCPC32TimeStamp) ? (currentTime - m_previousCPC32TimeStamp) : (m_previousCPC32TimeStamp - currentTime);
+                            if (deltaTime > 50000) {
                                 m_cpcMask_32 = 0;//Reset the mask that represents which HDL-32E CPC part has arrived
                             }
                             m_previousCPC32TimeStamp = currentTime;
