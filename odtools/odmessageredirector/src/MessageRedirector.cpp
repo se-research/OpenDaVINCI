@@ -39,7 +39,8 @@ namespace messageredirector {
         m_receiverUDPPort(),
         m_UDPSender(),
         m_TCPConnection(),
-        m_TCPConnCreated(false)
+        m_TCPConnCreated(false),
+        m_count(0)
     {}
 
     MessageRedirector::~MessageRedirector() {}
@@ -53,14 +54,14 @@ namespace messageredirector {
         
         try {
             m_UDPSender = std::shared_ptr<UDPSender>(UDPFactory::createUDPSender(m_receiverIPAddr, m_receiverUDPPort));
-            cout << "UDPSender successfully created  ["<<m_receiverIPAddr<<":"<<m_receiverUDPPort<<"]" << endl ;
+            cout << "UDP Client successfully created  ["<<m_receiverIPAddr<<":"<<m_receiverUDPPort<<"]" << endl ;
         } catch(string &exception) {
             cerr << "Error creating UDPSender ["<<m_receiverIPAddr<<":"<<m_receiverUDPPort<<"] = " << exception << endl;
         }
         
         try {
             m_TCPConnection = std::shared_ptr<TCPConnection>(TCPFactory::createTCPConnectionTo(m_receiverIPAddr, m_receiverTCPPort));
-            cout << "TCPConnection successfully created  ["<<m_receiverIPAddr<<":"<<m_receiverTCPPort<<"]" << endl ;
+            cout << "TCP Client successfully created  ["<<m_receiverIPAddr<<":"<<m_receiverTCPPort<<"]" << endl ;
             m_TCPConnCreated = true;
         } catch(string &exception) {
             cerr << "Error creating TCPConnection ["<<m_receiverIPAddr<<":"<<m_receiverTCPPort<<"] = " << exception << endl;
@@ -72,23 +73,28 @@ namespace messageredirector {
     
     void MessageRedirector::nextContainer(Container &c) {
         if (c.getDataType() == odcore::data::dmcp::ModuleStatistics::ID()) {
+            stringstream msgUDP, msgTCP;
             m_containerHandlerMutex -> lock();
             
+            msgUDP<<"UDP test #"<<m_count<<"\r\n";
             try {
-                m_UDPSender->send("UDP test\r\n");
+                m_UDPSender->send(msgUDP.str());
+                cout << msgUDP.str() << endl;
             } catch(string &exception) {
                 cerr << "Data could not be sent: " << exception << endl;
             }
             
             if(m_TCPConnCreated)
             {
+                msgTCP<<"TCP test #"<<m_count<<"\r\n";
                 try {
-                    m_TCPConnection->send("TCP test\r\n");
+                    m_TCPConnection->send(msgTCP.str());
+                    cout << msgTCP.str() << endl;
                 } catch(string &exception) {
                     cerr << "Data could not be sent: " << exception << endl;
                 }
             }
-            
+            ++m_count;
             m_containerHandlerMutex->unlock();
         }
     }

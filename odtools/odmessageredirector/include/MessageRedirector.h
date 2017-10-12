@@ -45,6 +45,7 @@ namespace messageredirector {
             std::shared_ptr<UDPSender> m_UDPSender;
             std::shared_ptr<TCPConnection> m_TCPConnection;
             bool m_TCPConnCreated;
+            uint32_t m_count;
     };
 
 } // messageredirector
