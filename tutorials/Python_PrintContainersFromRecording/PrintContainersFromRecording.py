@@ -42,6 +42,11 @@ def extractAndPrintPayload(identifier, p):
         tm.ParseFromString(p)
         print "Payload: " + str(tm)
 
+    if identifier == 49:   # CompactPointCloud
+        tm = opendavinci_pb2.odcore_data_CompactPointCloud()
+        tm.ParseFromString(p)
+        print "Payload: " + str(tm)
+
 # Print Container's content.
 def printContainer(c):
     print "Container ID = " + str(c.dataType)
@@ -51,8 +56,6 @@ def printContainer(c):
 
 
 # Main.
-containers = []
-
 if len(sys.argv) != 2:
     print "Display OpenDaVINCI Containers."
     print "  Usage:", sys.argv[0], "OpenDaVINCITestData-recording.rec"
@@ -74,10 +77,9 @@ with open(sys.argv[1], "rb") as f:
         if consumedOpenDaVINCIContainerHeader:
             expectedBytes = expectedBytes - 1
             if expectedBytes == 0:
-                #container = opendavincitestdata_pb2.Container()
                 container = opendavinci_pb2.odcore_data_MessageContainer()
                 container.ParseFromString(buf)
-                containers = containers + [container]
+                printContainer(container)
                 # Start over and read next container.
                 consumedOpenDaVINCIContainerHeader = False
                 bytesRead = 0
@@ -100,9 +102,4 @@ with open(sys.argv[1], "rb") as f:
         # Read next byte.
         byte = f.read(1)
 f.close()
-
-# Print containers.
-print "Found " + str(len(containers)) + " containers."
-for cont in containers:
-    printContainer(cont)
 

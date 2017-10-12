@@ -16,6 +16,7 @@ message odcore_data_MessageContainer {
     optional odcore_data_TimePoint sent = 3;
     optional odcore_data_TimePoint received = 4;
     optional odcore_data_TimePoint sampleTimeStamp = 5;
+    optional uint32 senderStamp = 6;
 }
 
 // Message identifier: 100.
@@ -30,6 +31,8 @@ message odcore_data_reflection_AbstractField {
     optional string longFieldName = 2;
     optional string shortFieldName = 3;
     optional sint32 size = 5 [ default = -1 ];
+    optional uint32 isFixedArray = 6 /* No valid mapping for value 'false' of type 'bool' found. */;
+    optional uint32 numberOfElementsInFixedArray = 7 [ default = 0 ];
 }
 
 // Message identifier: 110.
@@ -106,7 +109,7 @@ message odcore_data_buffer_MemorySegment {
 }
 
 // Message identifier: 10.
-message odcore_data_player_PlayerCommand {
+message odcore_data_player_PlayerStatus {
 }
 
 // Message identifier: 11.
@@ -146,6 +149,25 @@ message odcore_data_SharedPointCloud {
     optional uint32 userInfo = 7;
 }
 
+// Message identifier: 49.
+message odcore_data_CompactPointCloud {
+    optional float startAzimuth = 1;
+    optional float endAzimuth = 2;
+    optional uint32 entriesPerAzimuth = 3;
+    optional bytes distances = 4;
+    optional uint32 numberOfBitsForIntensity = 5;
+}
+
+// Message identifier: 42.
+message odcockpit_SimplePlot {
+    /* No valid mapping for values of type map found. */
+}
+
+// Message identifier: 43.
+message odcockpit_RuntimeConfiguration {
+    /* No valid mapping for parameters of type map found. */
+}
+
 // Message identifier: 120.
 message odcore_data_pcap_GlobalHeader {
     optional uint32 magic_number = 1;
@@ -169,5 +191,12 @@ message odcore_data_pcap_PacketHeader {
 message odcore_data_pcap_Packet {
     optional odcore_data_pcap_PacketHeader header = 1;
     optional string payload = 2;
+}
+
+// Message identifier: 123.
+message odcore_data_Packet {
+    optional string sender = 1;
+    optional string data = 2;
+    optional odcore_data_TimePoint received = 3;
 }
 
