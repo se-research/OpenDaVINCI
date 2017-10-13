@@ -21,6 +21,8 @@
 #include <opendavinci/odcore/io/udp/UDPFactory.h>
 #include <opendavinci/odcore/io/tcp/TCPFactory.h>
 
+#include <iomanip>
+
 #include "opendavinci/generated/odcore/data/dmcp/ModuleStatistics.h"
 #include "MessageRedirector.h"
 
@@ -76,8 +78,15 @@ namespace messageredirector {
             stringstream msgUDP, msgTCP;
             m_containerHandlerMutex -> lock();
             
-            msgUDP<<"UDP test #"<<m_count<<"\r\n";
+//            msgUDP<<"UDP test #"<<m_count<<"\r\n";
+            msgUDP<<c;
+            cout<<"Payload: ";
+            for (uint64_t i = 0; i<msgUDP.str().size(); ++i)
+                cout << hex << setfill('0') << setw(2) << +msgUDP.str().c_str()[i] << dec << " ";
+            cout<<endl;
             try {
+//                m_UDPSender->send(msgUDP.str());
+//                cout << msgUDP.str() << endl;
                 m_UDPSender->send(msgUDP.str());
                 cout << msgUDP.str() << endl;
             } catch(string &exception) {
