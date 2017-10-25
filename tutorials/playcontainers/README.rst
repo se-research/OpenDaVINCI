@@ -8,7 +8,7 @@ https://github.com/se-research/OpenDaVINCI/tree/master/tutorials/playcontainers
 In order to read ``Containers``, which hold messages that are exchanged among
 distributed software components.
 
-PlayContainers.cpp::
+PlayContainers.cpp:
 
 .. code-block:: c++
 
