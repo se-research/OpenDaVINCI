@@ -386,3 +386,11 @@ message odcore.data.Packet [id = 123] {
     odcore.data.TimePoint received [id = 3];
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Message for vehicle networks 
+message automotive.GenericCANMessage [id = 71] {
+    odcore::data::TimeStamp driverTimeStamp [id = 1]; // TimeStamp from CAN driver.
+    uint64 identifier [id = 2];                       // ID of the CAN message. 
+    uint8 length [id = 3];                            // Number of data bytes (1-8).
+    uint64 data [id = 4];                             // Payload of the CAN message.
+}
