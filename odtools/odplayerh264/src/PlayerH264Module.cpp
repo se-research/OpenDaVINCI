@@ -92,6 +92,8 @@ namespace odplayerh264 {
                 getConference().send(nextContainerToBeSent);
             }
 
+            Thread::usleepFor(delay);
+
             // If replaying is finished, exit.
             if (!player.hasMoreData()) {
                 break;
