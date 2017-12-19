@@ -1,3 +1,4 @@
+4.16.1 - Missing delay in command line players added.
 4.16.0 - Fix CANDataStructureGenerator to cap values to predefined range, odrec2fuse and odcockpit can handle nested messages and fixed arrays after features enhancements to GenericMessage and CSVVisitor, fix for timestamps printed in human readable format for microseconds < 100000, added feature odmjpegstreamer to export SharedImages as HTTP encapsulated jpegs, odcockpit can render Velodyne 32
 4.15.3 - Compile fixes for PKGSRC
 4.15.2 - Compile fixes for pkgsrc
